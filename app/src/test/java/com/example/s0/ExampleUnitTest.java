@@ -1,4 +1,4 @@
-package com.example.crosstheroad;
+package com.example.s0;
 
 import org.junit.Test;
 
