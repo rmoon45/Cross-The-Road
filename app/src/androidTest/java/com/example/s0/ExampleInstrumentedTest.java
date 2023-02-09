@@ -1,4 +1,4 @@
-package com.example.crosstheroad;
+package com.example.s0;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.crosstheroad", appContext.getPackageName());
+        assertEquals("com.example.s0", appContext.getPackageName());
     }
 }
