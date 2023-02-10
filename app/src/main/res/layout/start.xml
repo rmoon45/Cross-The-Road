@@ -11,28 +11,30 @@
         android:id="@+id/topDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="78dp"
+        android:layout_marginStart="150dp"
         android:layout_marginEnd="71dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="16dp"
         android:text="Click either button below to continue
 "
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/startButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/startButton"
         android:layout_width="258dp"
         android:layout_height="92dp"
-        android:layout_marginStart="83dp"
+        android:layout_marginStart="150dp"
         android:layout_marginEnd="71dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="8dp"
         android:onClick="onStart"
         android:text="Start Game
 "
         app:layout_constraintBottom_toTopOf="@+id/endButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.647"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 
@@ -41,12 +43,13 @@
         android:layout_width="262dp"
         android:layout_height="88dp"
         android:layout_marginStart="83dp"
-        android:layout_marginEnd="66dp"
-        android:layout_marginBottom="253dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginBottom="4dp"
         android:onClick="onEnd"
         android:text="End game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 
@@ -62,8 +65,10 @@
         android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/topDisplay"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
