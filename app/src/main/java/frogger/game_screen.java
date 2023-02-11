@@ -47,11 +47,8 @@ public class game_screen extends AppCompatActivity {
             case "duck":
                 characterView.setImageResource(R.drawable.duck);
                 break;
-            case "frog":
-                characterView.setImageResource(R.drawable.frog);
-                break;
             default:
-                Log.d("test", "in Preferences, the character has been set incorrectly");
+                characterView.setImageResource(R.drawable.frog);
         }
     }
 }
