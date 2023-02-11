@@ -22,85 +22,121 @@
         android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:text="Please Input Name:"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="129dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/nameInput"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/nameInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="25dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        tools:layout_editor_absoluteX="145dp"
-        tools:layout_editor_absoluteY="118dp" />
+        app:layout_constraintStart_toEndOf="@+id/nameText"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/difficultyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="39dp"
         android:text="Please Choose A Diffculty"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:layout_editor_absoluteX="79dp"
-        tools:layout_editor_absoluteY="219dp" />
+        app:layout_constraintBottom_toTopOf="@+id/easyButton"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
     <Button
         android:id="@+id/easyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="288dp"
+        android:layout_marginEnd="42dp"
+        android:onClick="onEasySelected"
         android:text="Easy"
-        tools:layout_editor_absoluteX="57dp"
-        tools:layout_editor_absoluteY="288dp" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/mediumButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:onClick="onMediumSelected"
         android:text="Medium"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="288dp" />
+        app:layout_constraintStart_toEndOf="@+id/easyButton"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <Button
         android:id="@+id/hardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onHardSelected"
         android:text="Hard"
-        tools:layout_editor_absoluteX="266dp"
-        tools:layout_editor_absoluteY="288dp" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <Button
         android:id="@+id/startButton"
         android:layout_width="248dp"
         android:layout_height="131dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="54dp"
+        android:onClick="onStartGame"
         android:text="Start"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="48sp"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="546dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="170dp"
         android:layout_height="150dp"
-        app:srcCompat="@drawable/duck"
-        tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="348dp" />
+        android:layout_marginStart="251dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="68dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onDuckSelected"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/hardButton"
+        app:srcCompat="@drawable/duck" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="240dp"
-        android:layout_height="183dp"
-        app:srcCompat="@drawable/bunny"
-        tools:layout_editor_absoluteX="-54dp"
-        tools:layout_editor_absoluteY="336dp" />
+        android:layout_height="0dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="47dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onBunnySelected"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/easyButton"
+        app:srcCompat="@drawable/bunny" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="284dp"
+        android:layout_width="0dp"
         android:layout_height="278dp"
-        app:srcCompat="@drawable/frog"
-        tools:layout_editor_absoluteX="70dp"
-        tools:layout_editor_absoluteY="288dp" />
+        android:layout_marginStart="57dp"
+        android:layout_marginEnd="57dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onFrogSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/easyButton"
+        app:srcCompat="@drawable/frog" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
