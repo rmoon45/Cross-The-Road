@@ -50,6 +50,7 @@
         android:id="@+id/difficultyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginStart="81dp"
         android:layout_marginTop="60dp"
         android:text="Please Choose A Diffculty"
@@ -61,6 +62,7 @@
         android:id="@+id/easyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginStart="57dp"
         android:layout_marginTop="41dp"
         android:layout_marginEnd="13dp"
@@ -74,6 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
+
         android:layout_marginTop="41dp"
         android:text="Medium"
         app:layout_constraintStart_toEndOf="@+id/easyButton"
@@ -83,6 +86,7 @@
         android:id="@+id/hardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginStart="14dp"
         android:layout_marginTop="41dp"
         android:layout_marginEnd="57dp"
@@ -98,6 +102,7 @@
         android:layout_marginStart="82dp"
         android:layout_marginEnd="82dp"
         android:layout_marginBottom="54dp"
+
         android:text="Start"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="48sp"
@@ -163,5 +168,49 @@
         android:inputType="textNoSuggestions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameInput" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="170dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="251dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="68dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onDuckSelected"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/hardButton"
+        app:srcCompat="@drawable/duck" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="240dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="47dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onBunnySelected"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/easyButton"
+        app:srcCompat="@drawable/bunny" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="278dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginEnd="57dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onFrogSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/easyButton"
+        app:srcCompat="@drawable/frog" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
