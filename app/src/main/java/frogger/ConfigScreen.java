@@ -50,6 +50,7 @@ public class ConfigScreen extends AppCompatActivity {
                 } else {
                     invalidName.setVisibility(View.INVISIBLE);
                     user.setName(nameInput.getText().toString().trim());
+                    Preferences.write("name", nameInput.getText().toString().trim());
                 }
             }
         });
@@ -58,24 +59,24 @@ public class ConfigScreen extends AppCompatActivity {
         easy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                game.setDifficulty(1);
-                System.out.println(game.getDifficulty());
+                game.setDifficulty("easy");
+                Preferences.write("difficulty", "easy");
             }
         });
         medium = (Button) findViewById(R.id.mediumButton);
         medium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                game.setDifficulty(2);
-                System.out.println(game.getDifficulty());
+                game.setDifficulty("medium");
+                Preferences.write("difficulty", "medium");
             }
         });
         hard = (Button) findViewById(R.id.hardButton);
         hard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                game.setDifficulty(3);
-                System.out.println(game.getDifficulty());
+                game.setDifficulty("hard");
+                Preferences.write("difficulty", "hard");
             }
         });
 
@@ -97,7 +98,7 @@ public class ConfigScreen extends AppCompatActivity {
     }
     public void onStartGame(View v) {
 
-        Preferences.write("name", "TODO: insert name here");
+        Preferences.read("name", "Prichard");
 
         Intent intent = new Intent(ConfigScreen.this, frogger.game_screen.class);
         startActivity(intent);

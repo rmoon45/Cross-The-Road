@@ -62,11 +62,11 @@
         android:id="@+id/easyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="57dp"
         android:layout_marginTop="41dp"
         android:layout_marginEnd="13dp"
         android:text="Easy"
+        android:onClick="onEasySelected"
         app:layout_constraintEnd_toStartOf="@+id/mediumButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/difficultyText" />
@@ -76,9 +76,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
-
         android:layout_marginTop="41dp"
         android:text="Medium"
+        android:onClick="onMediumSelected"
         app:layout_constraintStart_toEndOf="@+id/easyButton"
         app:layout_constraintTop_toBottomOf="@+id/difficultyText" />
 
@@ -86,10 +86,10 @@
         android:id="@+id/hardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="14dp"
         android:layout_marginTop="41dp"
         android:layout_marginEnd="57dp"
+        android:onClick="onHardSelected"
         android:text="Hard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mediumButton"
@@ -102,10 +102,10 @@
         android:layout_marginStart="82dp"
         android:layout_marginEnd="82dp"
         android:layout_marginBottom="54dp"
-
         android:text="Start"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="48sp"
+        android:onClick="onStartGame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -117,6 +117,7 @@
         android:layout_marginStart="26dp"
         android:layout_marginTop="29dp"
         android:layout_marginEnd="9dp"
+        android:onClick="onBunnySelected"
         app:layout_constraintEnd_toStartOf="@+id/duck"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/easyButton"
@@ -129,6 +130,7 @@
         android:layout_marginStart="9dp"
         android:layout_marginTop="29dp"
         android:layout_marginEnd="9dp"
+        android:onClick="onDuckSelected"
         app:layout_constraintEnd_toStartOf="@+id/frog"
         app:layout_constraintStart_toEndOf="@+id/bunny"
         app:layout_constraintTop_toBottomOf="@+id/mediumButton"
@@ -141,6 +143,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="23dp"
         android:layout_marginEnd="33dp"
+        android:onClick="onFrogSelected"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/duck"
         app:layout_constraintTop_toBottomOf="@+id/hardButton"
@@ -168,49 +171,5 @@
         android:inputType="textNoSuggestions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameInput" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="170dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="251dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="68dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onDuckSelected"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/hardButton"
-        app:srcCompat="@drawable/duck" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="240dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="47dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onBunnySelected"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/easyButton"
-        app:srcCompat="@drawable/bunny" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="0dp"
-        android:layout_height="278dp"
-        android:layout_marginStart="57dp"
-        android:layout_marginEnd="57dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onFrogSelected"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/easyButton"
-        app:srcCompat="@drawable/frog" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
