@@ -1,17 +1,13 @@
 package frogger;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.s0.R;
-
 import preferences.Preferences;
 
-public class game_screen extends AppCompatActivity {
+public class GameScreen extends AppCompatActivity {
 
     ImageView characterView;
     TextView livesView;
