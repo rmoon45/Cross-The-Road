@@ -10,6 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.S0"
         android:name="frogger.Frogger">
+
+        <activity
+            android:name="frogger.StartActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="frogger.ConfigScreen"
             android:exported="true">

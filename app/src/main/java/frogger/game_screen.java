@@ -16,6 +16,7 @@ public class game_screen extends AppCompatActivity {
     ImageView characterView;
     TextView livesView;
     TextView difficultyView;
+    TextView nameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,9 @@ public class game_screen extends AppCompatActivity {
         characterView = findViewById(R.id.characterView);
         livesView = findViewById(R.id.livesView);
         difficultyView = findViewById(R.id.difficultyView);
+
+        nameView = findViewById(R.id.nameView);
+        nameView.setText(Preferences.read("name", "Prichard"));
 
         String difficulty = Preferences.read("difficulty", "easy");
         difficultyView.setText("Difficulty: " + difficulty);
