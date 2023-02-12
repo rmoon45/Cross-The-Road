@@ -151,8 +151,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameInput"
-        tools:visibility="invisible" />
+        app:layout_constraintTop_toBottomOf="@+id/nameInput" />
 
     <Button
         android:id="@+id/setName"
@@ -161,6 +160,7 @@
         android:layout_marginStart="149dp"
         android:layout_marginTop="5dp"
         android:text="Set Name"
+        android:inputType="textNoSuggestions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameInput" />
 
