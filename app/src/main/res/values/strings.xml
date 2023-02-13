@@ -8,4 +8,11 @@
     <string name="pop_button">Pop</string>
     <string name="delete_button">Delete</string>
     <string name="delete_hint_text">Enter a number of strings to delete</string>
+
+    <!--game screen strings-->
+    <string name="score_default_text">Score: 0</string>
+    <string name="lives_default_text">Lives: 7</string>
+    <string name="difficulty_default_text">Difficulty: easy</string>
+    <string name="character_content_description">character</string>
+    <string name="name_default_text">Prichard</string>
 </resources>

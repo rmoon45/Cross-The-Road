@@ -14,8 +14,7 @@
         android:layout_marginStart="150dp"
         android:layout_marginEnd="71dp"
         android:layout_marginBottom="16dp"
-        android:text="Click either button below to continue
-"
+        android:text="Click either button below to continue"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/startButton"
         app:layout_constraintEnd_toEndOf="parent"
