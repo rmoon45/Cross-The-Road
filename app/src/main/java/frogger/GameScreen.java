@@ -9,10 +9,10 @@ import preferences.Preferences;
 
 public class GameScreen extends AppCompatActivity {
 
-    ImageView characterView;
-    TextView livesView;
-    TextView difficultyView;
-    TextView nameView;
+    private ImageView characterView;
+    private TextView livesView;
+    private TextView difficultyView;
+    private TextView nameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,26 +29,26 @@ public class GameScreen extends AppCompatActivity {
         String difficulty = Preferences.read("difficulty", "easy");
         difficultyView.setText("Difficulty: " + difficulty);
         switch (difficulty) {
-            case "medium":
-                livesView.setText("Lives: " + 3);
-                break;
-            case "hard":
-                livesView.setText("Lives: " + 1);
-                break;
-            default:
-                livesView.setText("Lives: " + 7);
+        case "medium":
+            livesView.setText("Lives: " + 3);
+            break;
+        case "hard":
+            livesView.setText("Lives: " + 1);
+            break;
+        default:
+            livesView.setText("Lives: " + 7);
         }
 
         String character = Preferences.read("character", "duck");
-        switch(character) {
-            case "bunny":
-                characterView.setImageResource(R.drawable.bunny);
-                break;
-            case "duck":
-                characterView.setImageResource(R.drawable.duck);
-                break;
-            default:
-                characterView.setImageResource(R.drawable.frog);
+        switch (character) {
+        case "bunny":
+            characterView.setImageResource(R.drawable.bunny);
+            break;
+        case "duck":
+            characterView.setImageResource(R.drawable.duck);
+            break;
+        default:
+            characterView.setImageResource(R.drawable.frog);
         }
     }
 }

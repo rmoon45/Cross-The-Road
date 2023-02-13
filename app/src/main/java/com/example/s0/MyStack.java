@@ -7,28 +7,28 @@ package com.example.s0;
 
 public class MyStack {
     private String[] stack;
-    private int next_index;
+    private int nextIndex;
 
     public MyStack() {
         stack = new String[100];
-        next_index = 1;
+        nextIndex = 1;
     }
 
     public String pop() {
-        return stack[--next_index];
+        return stack[--nextIndex];
     }
 
     // Delete n items from the stack en-masse
     public void delete(int n) {
-        next_index -= n;
+        nextIndex -= n;
     }
 
     public void push(String string) {
-        stack[next_index++] = string;
+        stack[nextIndex++] = string;
     }
 
     public String top() {
-        return stack[next_index - 1];
+        return stack[nextIndex - 1];
     }
 
 }
