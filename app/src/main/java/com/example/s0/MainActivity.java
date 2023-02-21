@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import preferences.Preferences;
-
 public class MainActivity extends AppCompatActivity {
 
     private MyStack stack;

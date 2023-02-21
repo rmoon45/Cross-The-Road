@@ -8,8 +8,14 @@ import preferences.Preferences;
 public class Frogger extends Application {
     private static Context context;
 
-    public Preferences preferences;
+    private Preferences preferences;
 
+    public Preferences getPreferences() {
+        return preferences;
+    }
+    public void setPreferences(Preferences pref) {
+        preferences = pref;
+    }
     public void onCreate() {
         super.onCreate();
         Frogger.context = getApplicationContext();

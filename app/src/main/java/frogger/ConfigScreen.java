@@ -1,24 +1,14 @@
 package frogger;
 
-import static com.google.android.material.internal.ContextUtils.getActivity;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import com.example.s0.R;
-
 import preferences.Preferences;
-
-import com.example.s0.R;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -44,13 +34,14 @@ public class ConfigScreen extends AppCompatActivity {
         setName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (nameInput.length() == 0 || nameInput.getText().toString().trim().length() == 0) {
+                String userName = nameInput.getText().toString().trim();
+                if (nameInput.length() == 0 || userName.length() == 0) {
                     invalidName.setVisibility(View.VISIBLE);
                     nameInput.setError("Invalid Name! Please enter valid name.");
                 } else {
                     invalidName.setVisibility(View.INVISIBLE);
-                    user.setName(nameInput.getText().toString().trim());
-                    Preferences.write("name", nameInput.getText().toString().trim());
+                    user.setName(userName);
+                    Preferences.write("name", userName);
                 }
             }
         });
@@ -100,7 +91,7 @@ public class ConfigScreen extends AppCompatActivity {
 
         Preferences.read("name", "Prichard");
 
-        Intent intent = new Intent(ConfigScreen.this, frogger.game_screen.class);
+        Intent intent = new Intent(ConfigScreen.this, frogger.GameScreen.class);
         startActivity(intent);
         finish();
     }
