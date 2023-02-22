@@ -171,4 +171,16 @@ public class GameScreen extends AppCompatActivity {
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
     }
+
+    public TextView getNameView() {
+        return this.nameView;
+    }
+
+    public TextView getDifficultyView() {
+        return this.difficultyView;
+    }
+
+    public TextView getLivesView() {
+        return this.livesView;
+    }
 }
