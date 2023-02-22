@@ -136,11 +136,11 @@ public class GameScreen extends AppCompatActivity {
         String difficulty = Preferences.read("difficulty", "easy");
         difficultyView.setText("Difficulty: " + difficulty);
         switch (difficulty) {
-        case "medium":
-            livesView.setText("Lives: " + 3);
-            break;
         case "hard":
             livesView.setText("Lives: " + 1);
+            break;
+        case "medium":
+            livesView.setText("Lives: " + 3);
             break;
         default:
             livesView.setText("Lives: " + 7);
@@ -170,5 +170,17 @@ public class GameScreen extends AppCompatActivity {
         // Display the name.
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
+    }
+
+    public TextView getNameView() {
+        return this.nameView;
+    }
+
+    public TextView getDifficultyView() {
+        return this.difficultyView;
+    }
+
+    public TextView getLivesView() {
+        return this.livesView;
     }
 }
