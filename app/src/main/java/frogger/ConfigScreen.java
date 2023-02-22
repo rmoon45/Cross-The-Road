@@ -49,7 +49,6 @@ public class ConfigScreen extends AppCompatActivity {
                 }
             }
         });
-
         easy = (Button) findViewById(R.id.easyButton);
         easy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +98,9 @@ public class ConfigScreen extends AppCompatActivity {
         bunny.setBackgroundColor(Color.BLUE);
         duck.setBackgroundColor(Color.GRAY);
         frog.setBackgroundColor(Color.GRAY);
+    }
+    public TextView getInvalidName() {
+        return this.invalidName;
     }
 
     public void onFrogSelected(View v) {

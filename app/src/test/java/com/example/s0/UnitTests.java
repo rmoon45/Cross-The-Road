@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import android.view.View;
+
 import frogger.ConfigScreen;
 import frogger.Game;
 import frogger.GameScreen;
@@ -13,7 +15,18 @@ public class UnitTests {
     Game game = new Game();
     Player user = new Player();
     GameScreen gameScreen = new GameScreen();
+    ConfigScreen configScreen=new ConfigScreen();
+    //Nikki: Tests Invalid Name
+    @Test
+    public void testSpaceAsName() {
+        user.setName(" ");
+        assertTrue(configScreen.getInvalidName().getVisibility()== View.VISIBLE );
 
+    }
+    public void testnullAsName() {
+        user.setName(null);
+        assertTrue(configScreen.getInvalidName().getVisibility()==View.VISIBLE );
+    }
 
     //Ashwini: game screen displays valid name input
     @Test
