@@ -3,6 +3,7 @@ package frogger;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import com.example.s0.R;
 import preferences.Preferences;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -38,10 +40,12 @@ public class ConfigScreen extends AppCompatActivity {
                 if (nameInput.length() == 0 || userName.length() == 0) {
                     invalidName.setVisibility(View.VISIBLE);
                     nameInput.setError("Invalid Name! Please enter valid name.");
+                    setName.setBackgroundColor(Color.RED);
                 } else {
                     invalidName.setVisibility(View.INVISIBLE);
                     user.setName(userName);
                     Preferences.write("name", userName);
+                    setName.setBackgroundColor(Color.GREEN);
                 }
             }
         });
@@ -52,6 +56,9 @@ public class ConfigScreen extends AppCompatActivity {
             public void onClick(View view) {
                 game.setDifficulty("easy");
                 Preferences.write("difficulty", "easy");
+                easy.setBackgroundColor(Color.BLUE);
+                medium.setBackgroundColor( -7829368);
+                hard.setBackgroundColor( -7829368);
             }
         });
         medium = (Button) findViewById(R.id.mediumButton);
@@ -60,6 +67,9 @@ public class ConfigScreen extends AppCompatActivity {
             public void onClick(View view) {
                 game.setDifficulty("medium");
                 Preferences.write("difficulty", "medium");
+                easy.setBackgroundColor( -7829368);
+                medium.setBackgroundColor(Color.BLUE);
+                hard.setBackgroundColor( -7829368);
             }
         });
         hard = (Button) findViewById(R.id.hardButton);
@@ -68,6 +78,9 @@ public class ConfigScreen extends AppCompatActivity {
             public void onClick(View view) {
                 game.setDifficulty("hard");
                 Preferences.write("difficulty", "hard");
+                easy.setBackgroundColor( -7829368);
+                medium.setBackgroundColor( -7829368);
+                hard.setBackgroundColor(Color.BLUE);
             }
         });
 
@@ -76,16 +89,37 @@ public class ConfigScreen extends AppCompatActivity {
     public void onBunnySelected(View v) {
         Log.d("test", "bunny selected");
         Preferences.write("character", "bunny");
+
+        ImageView bunny = (ImageView) findViewById(R.id.bunny);
+        ImageView duck = (ImageView) findViewById(R.id.duck);
+        ImageView frog = (ImageView) findViewById(R.id.frog);
+        bunny.setBackgroundColor(Color.BLUE);
+        duck.setBackgroundColor(Color.GRAY);
+        frog.setBackgroundColor(Color.GRAY);
     }
 
     public void onFrogSelected(View v) {
         Log.d("test", "frog selected");
         Preferences.write("character", "frog");
+
+        ImageView bunny = (ImageView) findViewById(R.id.bunny);
+        ImageView duck = (ImageView) findViewById(R.id.duck);
+        ImageView frog = (ImageView) findViewById(R.id.frog);
+        bunny.setBackgroundColor(Color.GRAY);
+        duck.setBackgroundColor(Color.GRAY);
+        frog.setBackgroundColor(Color.BLUE);
     }
 
     public void onDuckSelected(View v) {
         Log.d("test", "duck selected");
         Preferences.write("character", "duck");
+
+        ImageView bunny = (ImageView) findViewById(R.id.bunny);
+        ImageView duck = (ImageView) findViewById(R.id.duck);
+        ImageView frog = (ImageView) findViewById(R.id.frog);
+        bunny.setBackgroundColor(Color.GRAY);
+        duck.setBackgroundColor(Color.BLUE);
+        frog.setBackgroundColor(Color.GRAY);
     }
     public void onStartGame(View v) {
 
