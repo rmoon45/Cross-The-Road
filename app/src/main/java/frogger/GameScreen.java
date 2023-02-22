@@ -175,4 +175,12 @@ public class GameScreen extends AppCompatActivity {
     public TextView getNameView() {
         return this.nameView;
     }
+
+    public TextView getDifficultyView() {
+        return this.difficultyView;
+    }
+
+    public TextView getLivesView() {
+        return this.livesView;
+    }
 }

@@ -55,6 +55,7 @@ public class ConfigScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 game.setDifficulty("easy");
+                game.setLives(7);
                 Preferences.write("difficulty", "easy");
                 easy.setBackgroundColor(Color.BLUE);
                 medium.setBackgroundColor( -7829368);
@@ -66,6 +67,7 @@ public class ConfigScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 game.setDifficulty("medium");
+                game.setLives(3);
                 Preferences.write("difficulty", "medium");
                 easy.setBackgroundColor( -7829368);
                 medium.setBackgroundColor(Color.BLUE);
@@ -77,6 +79,7 @@ public class ConfigScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 game.setDifficulty("hard");
+                game.setLives(1);
                 Preferences.write("difficulty", "hard");
                 easy.setBackgroundColor( -7829368);
                 medium.setBackgroundColor( -7829368);

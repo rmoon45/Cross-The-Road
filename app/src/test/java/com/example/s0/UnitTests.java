@@ -13,13 +13,18 @@ public class UnitTests {
     Player user = new Player();
     GameScreen gameScreen = new GameScreen();
 
-    //Ashwini: test that inputting a valid name displays it on the game screen
+    //Ashwini: game screen displays valid name input
     @Test
     public void testValidName() {
         user.setName("valid name");
         assertEquals(gameScreen.getNameView().getText().toString(), "valid name");
     }
 
-    //Ashwini:
+    //Ashwini: game screen displays chosen difficulty
+    @Test
+    public void testDifficultyShown() {
+        game.setDifficulty("medium");
+        assertEquals(gameScreen.getDifficultyView().getText().toString(), "medium");
+    }
 
 }
