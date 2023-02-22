@@ -40,7 +40,7 @@ public class UnitTests {
         assertEquals(game.getLives(), 1);
     }
 
-    //Esther: Game screen displays chosen character sprite
+    // Game screen displays chosen character sprite
     @Test
     public void testCharacterSpriteDisplay() {
 
