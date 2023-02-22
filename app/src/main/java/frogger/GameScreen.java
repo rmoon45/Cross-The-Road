@@ -136,11 +136,11 @@ public class GameScreen extends AppCompatActivity {
         String difficulty = Preferences.read("difficulty", "easy");
         difficultyView.setText("Difficulty: " + difficulty);
         switch (difficulty) {
-        case "medium":
-            livesView.setText("Lives: " + 3);
-            break;
         case "hard":
             livesView.setText("Lives: " + 1);
+            break;
+        case "medium":
+            livesView.setText("Lives: " + 3);
             break;
         default:
             livesView.setText("Lives: " + 7);
