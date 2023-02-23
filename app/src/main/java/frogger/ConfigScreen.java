@@ -23,6 +23,16 @@ public class ConfigScreen extends AppCompatActivity {
     private Button easy;
     private Button medium;
     private Button hard;
+    public Button getEasy(){
+        return easy;
+    }
+    public Button getMedium(){
+        return medium;
+    }
+    public Button getHard(){
+        return hard;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +59,6 @@ public class ConfigScreen extends AppCompatActivity {
                 }
             }
         });
-
         easy = (Button) findViewById(R.id.easyButton);
         easy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +108,9 @@ public class ConfigScreen extends AppCompatActivity {
         bunny.setBackgroundColor(Color.BLUE);
         duck.setBackgroundColor(Color.GRAY);
         frog.setBackgroundColor(Color.GRAY);
+    }
+    public TextView getInvalidName() {
+        return this.invalidName;
     }
 
     public void onFrogSelected(View v) {
