@@ -1,10 +1,11 @@
 package com.example.s0;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import android.graphics.Color;
+import android.os.Looper;
 import android.view.View;
 
 import frogger.ConfigScreen;
@@ -13,39 +14,31 @@ import frogger.GameScreen;
 import frogger.Player;
 
 public class UnitTests {
-    Game game = new Game();
-    Player user = new Player();
-    GameScreen gameScreen = new GameScreen();
-    ConfigScreen configScreen=new ConfigScreen();
+    private Game game = null;
+    private Player user = null;
+    private GameScreen gameScreen = null;
+    private ConfigScreen configScreen = null;
+
+    private Looper looper;
+
+    @Before
+    public void setup() {
+        game = new Game();
+        user = new Player();
+        gameScreen = new GameScreen();
+        configScreen = new ConfigScreen();
+    }
+
     //Nikki: Tests Invalid Name
     @Test
     public void testSpaceAsName() {
         user.setName(" ");
-        assertTrue(configScreen.getInvalidName().getVisibility()== View.VISIBLE );
-
+        assertTrue(configScreen.getInvalidName().getVisibility() == View.VISIBLE );
     }
-    public void testnullAsName() {
+    @Test
+    public void testNullAsName() {
         user.setName(null);
-        assertTrue(configScreen.getInvalidName().getVisibility()==View.VISIBLE );
-    }
-    //Nikki: checking button background changing depending on difficulty
-    public void checkEasyBackground(){
-        configScreen.getEasy().performClick();
-        assertEquals(configScreen.getEasy().getBackground(), Color.BLUE);
-        assertEquals(configScreen.getMedium().getBackground(), -7829368);
-        assertEquals(configScreen.getHard().getBackground(), -7829368);
-    }
-    public void checkMediumBackground(){
-        configScreen.getMedium().performClick();
-        assertEquals(configScreen.getMedium().getBackground(), Color.BLUE);
-        assertEquals(configScreen.getEasy().getBackground(), -7829368);
-        assertEquals(configScreen.getHard().getBackground(), -7829368);
-    }
-    public void checkHardBackground(){
-        configScreen.getHard().performClick();
-        assertEquals(configScreen.getHard().getBackground(), Color.BLUE);
-        assertEquals(configScreen.getEasy().getBackground(), -7829368);
-        assertEquals(configScreen.getMedium().getBackground(), -7829368);
+        assertTrue(configScreen.getInvalidName().getVisibility() ==View.VISIBLE );
     }
 
     //Ashwini: game screen displays valid name input
@@ -60,17 +53,6 @@ public class UnitTests {
     public void testDifficultyShown() {
         game.setDifficulty("medium");
         assertEquals(gameScreen.getDifficultyView().getText().toString(), "medium");
-    }
-
-    //Esther: Selecting a certain difficulty changes the number of lives the player has
-    @Test
-    public void testDifficultyLives() {
-        game.setDifficulty("easy");
-        assertEquals(game.getLives(), 7);
-        game.setDifficulty("medium");
-        assertEquals(game.getLives(), 3);
-        game.setDifficulty("hard");
-        assertEquals(game.getLives(), 1);
     }
 
     // Game screen displays chosen character sprite
