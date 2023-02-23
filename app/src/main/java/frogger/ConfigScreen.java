@@ -23,6 +23,9 @@ public class ConfigScreen extends AppCompatActivity {
     private Button easy;
     private Button medium;
     private Button hard;
+    private ImageView bunny = (ImageView) findViewById(R.id.bunny);
+    private ImageView duck = (ImageView) findViewById(R.id.duck);
+    private ImageView frog = (ImageView) findViewById(R.id.frog);
     public Button getEasy(){
         return easy;
     }
@@ -101,10 +104,6 @@ public class ConfigScreen extends AppCompatActivity {
     public void onBunnySelected(View v) {
         Log.d("test", "bunny selected");
         Preferences.write("character", "bunny");
-
-        ImageView bunny = (ImageView) findViewById(R.id.bunny);
-        ImageView duck = (ImageView) findViewById(R.id.duck);
-        ImageView frog = (ImageView) findViewById(R.id.frog);
         bunny.setBackgroundColor(Color.BLUE);
         duck.setBackgroundColor(Color.GRAY);
         frog.setBackgroundColor(Color.GRAY);
@@ -116,10 +115,6 @@ public class ConfigScreen extends AppCompatActivity {
     public void onFrogSelected(View v) {
         Log.d("test", "frog selected");
         Preferences.write("character", "frog");
-
-        ImageView bunny = (ImageView) findViewById(R.id.bunny);
-        ImageView duck = (ImageView) findViewById(R.id.duck);
-        ImageView frog = (ImageView) findViewById(R.id.frog);
         bunny.setBackgroundColor(Color.GRAY);
         duck.setBackgroundColor(Color.GRAY);
         frog.setBackgroundColor(Color.BLUE);
@@ -128,10 +123,6 @@ public class ConfigScreen extends AppCompatActivity {
     public void onDuckSelected(View v) {
         Log.d("test", "duck selected");
         Preferences.write("character", "duck");
-
-        ImageView bunny = (ImageView) findViewById(R.id.bunny);
-        ImageView duck = (ImageView) findViewById(R.id.duck);
-        ImageView frog = (ImageView) findViewById(R.id.frog);
         bunny.setBackgroundColor(Color.GRAY);
         duck.setBackgroundColor(Color.BLUE);
         frog.setBackgroundColor(Color.GRAY);
