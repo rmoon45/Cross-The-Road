@@ -4,6 +4,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+<<<<<<< HEAD
+=======
+import android.view.View;
+import android.os.Bundle;
+
+import frogger.ConfigScreen;
+>>>>>>> main
 import frogger.Game;
 import frogger.GameScreen;
 import frogger.Player;
@@ -25,6 +32,16 @@ public class UnitTests {
     public void testDifficultyShown() {
         game.setDifficulty("medium");
         assertEquals(gameScreen.getDifficultyView().getText().toString(), "medium");
+    }
+    ConfigScreen configScreen = new ConfigScreen();
+    GameScreen gameScreen = new GameScreen();
+
+    @Test
+    public void testValidName() {
+        String name = "Aniyah";
+        user.setName(name);
+        String gameName = gameScreen.getNameView().getText().toString();
+        assertEquals(gameName, name);
     }
 
 }
