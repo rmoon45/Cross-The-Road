@@ -23,6 +23,16 @@ public class ConfigScreen extends AppCompatActivity {
     private Button easy;
     private Button medium;
     private Button hard;
+    public Button getEasy(){
+        return easy;
+    }
+    public Button getMedium(){
+        return medium;
+    }
+    public Button getHard(){
+        return hard;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

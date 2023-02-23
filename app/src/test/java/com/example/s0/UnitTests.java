@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import android.graphics.Color;
 import android.view.View;
 
 import frogger.ConfigScreen;
@@ -26,6 +27,25 @@ public class UnitTests {
     public void testnullAsName() {
         user.setName(null);
         assertTrue(configScreen.getInvalidName().getVisibility()==View.VISIBLE );
+    }
+    //Nikki: checking button background changing depending on difficulty
+    public void checkEasyBackground(){
+        configScreen.getEasy().performClick();
+        assertEquals(configScreen.getEasy().getBackground(), Color.BLUE);
+        assertEquals(configScreen.getMedium().getBackground(), -7829368);
+        assertEquals(configScreen.getHard().getBackground(), -7829368);
+    }
+    public void checkMediumBackground(){
+        configScreen.getMedium().performClick();
+        assertEquals(configScreen.getMedium().getBackground(), Color.BLUE);
+        assertEquals(configScreen.getEasy().getBackground(), -7829368);
+        assertEquals(configScreen.getHard().getBackground(), -7829368);
+    }
+    public void checkHardBackground(){
+        configScreen.getHard().performClick();
+        assertEquals(configScreen.getHard().getBackground(), Color.BLUE);
+        assertEquals(configScreen.getEasy().getBackground(), -7829368);
+        assertEquals(configScreen.getMedium().getBackground(), -7829368);
     }
 
     //Ashwini: game screen displays valid name input
