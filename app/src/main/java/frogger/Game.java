@@ -14,6 +14,13 @@ public class Game {
 
     public void setDifficulty(String choice) {
         difficulty = choice;
+        if (difficulty.equals("hard")) {
+            this.setLives(1);
+        } else if (difficulty.equals("medium")) {
+            this.setLives(3);
+        } else {
+            this.setLives(7);
+        }
     }
     public String getDifficulty() {
         return difficulty;
