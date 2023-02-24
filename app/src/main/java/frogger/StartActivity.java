@@ -9,12 +9,10 @@ import android.content.Intent;
 
 public class StartActivity extends AppCompatActivity {
 
-    //GameScreen gameScreen = new GameScreen(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
-        //gameScreen.onDraw(new Canvas());
 
     }
 
