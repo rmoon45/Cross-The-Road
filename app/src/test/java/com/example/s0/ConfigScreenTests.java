@@ -40,6 +40,8 @@ public class ConfigScreenTests {
         when(configScreen.getHard().getBackground()).thenCallRealMethod();
         assertEquals(-7829368, configScreen.getHard().getBackground());
     }
+
+
     @Test
     public void checkMediumBackground(){
         configScreen.getMedium().performClick();
