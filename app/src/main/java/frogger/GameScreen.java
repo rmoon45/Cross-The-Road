@@ -77,7 +77,7 @@ public class GameScreen extends AppCompatActivity {
 
         backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        // TODO: if someone could fix this to get the actual usable height, that would be great.
+        // to-do: if someone could fix this to get the actual usable height, that would be great.
         // When the height is correct, the character should be at the very bottom of the screen.
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
             - getResources().getDimensionPixelSize(
@@ -190,59 +190,56 @@ public class GameScreen extends AppCompatActivity {
         // Log.d("squaresize", String.valueOf(squareSize));    //112
         // Log.d("coord", String.valueOf(characterView.getX()));   //484.0
         // Log.d("coord", String.valueOf(characterView.getY()));   //1792.0
-
-
     }
 
     //KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch(keyCode) {
-
-            //Uses WASD system.
-            case KeyEvent.KEYCODE_W:
-                movePlayer("moveUp");
-                return true;
-            case KeyEvent.KEYCODE_A:
-                movePlayer("moveLeft");
-                return true;
-            case KeyEvent.KEYCODE_D:
-                movePlayer("moveRight");
-                return true;
-            case KeyEvent.KEYCODE_S:
-                movePlayer("moveDown");
-                return true;
-            default:
-                return super.onKeyUp(keyCode, event);
+        switch (keyCode) {
+        //Uses WASD system.
+        case KeyEvent.KEYCODE_W:
+            movePlayer("moveUp");
+            return true;
+        case KeyEvent.KEYCODE_A:
+            movePlayer("moveLeft");
+            return true;
+        case KeyEvent.KEYCODE_D:
+            movePlayer("moveRight");
+            return true;
+        case KeyEvent.KEYCODE_S:
+            movePlayer("moveDown");
+            return true;
+        default:
+            return super.onKeyUp(keyCode, event);
         }
 
     }
 
     //Determines the movement of the player on grid system.
     protected void movePlayer(String movement) {
-        switch(movement) {
+        switch (movement) {
+        //based off of the input string, change the position to be moving in said direction.
+        //use subtract for going up/left and plus for down/right bc the origin is at top left.
+        case "moveUp":
+            if (characterView.getY() > 0) {
+                characterView.setY(characterView.getY() - squareSize);
+            }
+            break;
+        case "moveLeft":
+            if (characterView.getX() > 0 + (squareSize / 2)) {
+                characterView.setX(characterView.getX() - squareSize);
+            }
+            break;
+        case "moveRight":
+            if ((characterView.getX() + squareSize) < screenWidth - (squareSize / 2)) {
+                characterView.setX(characterView.getX() + squareSize);
+            }
+            break;
+        default:
+            if ((characterView.getY() + (2 * squareSize)) < screenHeight) {
+                characterView.setY(characterView.getY() + squareSize);
+            }
 
-            //based off of the input string, change the position to be moving in said direction.
-            //use subtract for going up/left and plus for down/right bc the origin is at top left.
-            case "moveUp":
-                if (characterView.getY() > 0) {
-                    characterView.setY(characterView.getY() - squareSize);
-                }
-                break;
-            case "moveLeft":
-                if (characterView.getX() > 0 + (squareSize / 2)) {
-                    characterView.setX(characterView.getX() - squareSize);
-                }
-                break;
-            case "moveRight":
-                if ((characterView.getX() + squareSize) < screenWidth - (squareSize /2)) {
-                    characterView.setX(characterView.getX() + squareSize);
-                }
-                break;
-            case "moveDown":
-                if ((characterView.getY() + (2 * squareSize)) < screenHeight) {
-                    characterView.setY(characterView.getY() + squareSize);
-                }
         }
     }
 
