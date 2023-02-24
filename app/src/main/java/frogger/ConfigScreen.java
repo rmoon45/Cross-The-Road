@@ -26,15 +26,6 @@ public class ConfigScreen extends AppCompatActivity {
     private ImageView bunny = (ImageView) findViewById(R.id.bunny);
     private ImageView duck = (ImageView) findViewById(R.id.duck);
     private ImageView frog = (ImageView) findViewById(R.id.frog);
-    public Button getEasy(){
-        return easy;
-    }
-    public Button getMedium(){
-        return medium;
-    }
-    public Button getHard(){
-        return hard;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +90,17 @@ public class ConfigScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    public Button getEasy(){
+        this.easy = (Button) findViewById(R.id.easyButton);
+        return this.easy;
+    }
+    public Button getMedium(){
+        return medium;
+    }
+    public Button getHard(){
+        return hard;
     }
 
     public void onBunnySelected(View v) {

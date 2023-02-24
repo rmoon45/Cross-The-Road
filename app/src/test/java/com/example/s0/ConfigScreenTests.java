@@ -8,14 +8,16 @@ import static org.mockito.Mockito.*;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Looper;
+import android.widget.Button;
 
 import frogger.ConfigScreen;
 
 public class ConfigScreenTests {
     private ConfigScreen configScreen = null;
     private Looper looper = null;
+    private Button easy;
 
     @Before
     public void setup() {
@@ -23,21 +25,32 @@ public class ConfigScreenTests {
         Context context = mock(Context.class);
         when(context.getMainLooper()).thenReturn(looper);
         configScreen = mock(ConfigScreen.class);
+
+    }
+
+    @Test
+    public void testEasy() {
+        //when(configScreen.getEasy()).thenCallRealMethod();
+        //when(configScreen.getEasy().performClick()).thenCallRealMethod();
+        //easy = configScreen.getEasy();
+        assertTrue(configScreen.getEasy() == null);
     }
 
     //Nikki: checking button background changing depending on difficulty
     @Test
     public void checkEasyBackground(){
-        when(configScreen.getEasy().performClick()).thenCallRealMethod();
-        configScreen.getEasy().performClick();
+        when(configScreen.getEasy()).thenCallRealMethod();
+        //when(configScreen.getEasy().performClick()).thenCallRealMethod();
+        easy = configScreen.getEasy();
+        easy.performClick();
 
-        when(configScreen.getEasy().getBackground()).thenCallRealMethod();
+        //when(configScreen.getEasy().getBackground()).thenCallRealMethod();
         assertEquals(Color.BLUE, configScreen.getEasy().getBackground());
 
-        when(configScreen.getMedium().getBackground()).thenCallRealMethod();
+        //when(configScreen.getMedium().getBackground()).thenCallRealMethod();
         assertEquals(-7829368, configScreen.getMedium().getBackground());
 
-        when(configScreen.getHard().getBackground()).thenCallRealMethod();
+        //when(configScreen.getHard().getBackground()).thenCallRealMethod();
         assertEquals(-7829368, configScreen.getHard().getBackground());
     }
 
