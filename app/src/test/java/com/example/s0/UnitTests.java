@@ -15,8 +15,9 @@ import frogger.Player;
 public class UnitTests {
     Game game = new Game();
     Player user = new Player();
-    GameScreen gameScreen = new GameScreen();
     ConfigScreen configScreen=new ConfigScreen();
+
+    GameScreen gameScreen = new GameScreen();
     //Nikki: Tests Invalid Name
     @Test
     public void testSpaceAsName() {

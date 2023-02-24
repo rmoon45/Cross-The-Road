@@ -13,7 +13,6 @@ import android.view.View;
 public class NikkiTests {
     Game game = new Game();
     Player user = new Player();
-    GameScreen gameScreen = new GameScreen();
     ConfigScreen configScreen=new ConfigScreen();
     //Nikki: Tests Invalid Name
     @Test
