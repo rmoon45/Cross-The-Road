@@ -1,7 +1,6 @@
 package frogger;
 
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,12 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.animation.TranslateAnimation;
 
 import com.example.s0.R;
 
@@ -193,9 +187,9 @@ public class GameScreen extends AppCompatActivity {
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
 
-        Log.d("squaresize", String.valueOf(squareSize));    //112
-        Log.d("coord", String.valueOf(characterView.getX()));   //484.0
-        Log.d("coord", String.valueOf(characterView.getY()));   //1792.0
+        // Log.d("squaresize", String.valueOf(squareSize));    //112
+        // Log.d("coord", String.valueOf(characterView.getX()));   //484.0
+        // Log.d("coord", String.valueOf(characterView.getY()));   //1792.0
 
 
     }
