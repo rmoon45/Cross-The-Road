@@ -172,6 +172,14 @@ public class GameScreen extends AppCompatActivity {
         nameView.setText(Preferences.read("name", "Prichard"));
     }
 
+    public void create() {
+        Bundle bundle = new Bundle();
+        this.onCreate(bundle);
+    }
+
+    public void setNameView(String name) {
+        this.nameView.setText(name);
+    }
     public TextView getNameView() {
         return this.nameView;
     }
