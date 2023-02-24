@@ -40,8 +40,8 @@ public class ConfigScreen extends AppCompatActivity {
         setName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = nameInput.getText().toString().trim();
-                if (nameInput.length() == 0 || userName.length() == 0) {
+                String userName = nameInput.getText().toString();
+                if (user.checkName(userName) == false) {
                     invalidName.setVisibility(View.VISIBLE);
                     nameInput.setError("Invalid Name! Please enter valid name.");
                     setName.setBackgroundColor(Color.RED);
