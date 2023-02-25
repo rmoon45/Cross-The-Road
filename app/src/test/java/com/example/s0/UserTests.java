@@ -16,10 +16,7 @@ import frogger.Player;
 
 //@RunWith(MockitoJUnitRunner::class)
 public class UserTests {
-    private Game game ;
     private Player user;
-    private GameScreen gameScreen;
-    private ConfigScreen configScreen;
 
     private Looper looper = null;
     private Context context;
@@ -33,20 +30,20 @@ public class UserTests {
         user = mock(Player.class);
     }
 
-    //Ashwini: valid name is valid
+    // Nicole: valid name is valid
     @Test
     public void testValidName() {
         user.setName("valid name");
         when(user.checkName("valid name")).thenReturn(true);
     }
 
-    //Nikki: test space as invalid name
+    // Esther: test space as invalid name
     @Test
     public void testSpaceAsName() {
         user.setName(" ");
         when(user.checkName(" ")).thenReturn(false);
     }
-    //Nikki: test null as invalid name
+    // Esther: test null as invalid name
     @Test
     public void testNullAsName() {
         user.setName(null);
