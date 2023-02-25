@@ -23,20 +23,18 @@ public class ConfigScreen extends AppCompatActivity {
     private Button easy;
     private Button medium;
     private Button hard;
-    public Button getEasy(){
-        return easy;
-    }
-    public Button getMedium(){
-        return medium;
-    }
-    public Button getHard(){
-        return hard;
-    }
+    private ImageView bunny;
+    private ImageView duck;
+    private ImageView frog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_screen);
+
+        bunny = (ImageView) findViewById(R.id.bunny);
+        duck = (ImageView) findViewById(R.id.duck);
+        frog = (ImageView) findViewById(R.id.frog);
 
         Game game = new Game();
         Player user = new Player();
@@ -46,8 +44,8 @@ public class ConfigScreen extends AppCompatActivity {
         setName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = nameInput.getText().toString().trim();
-                if (nameInput.length() == 0 || userName.length() == 0) {
+                String userName = nameInput.getText().toString();
+                if (user.checkName(userName) == false) {
                     invalidName.setVisibility(View.VISIBLE);
                     nameInput.setError("Invalid Name! Please enter valid name.");
                     setName.setBackgroundColor(Color.RED);
@@ -98,13 +96,20 @@ public class ConfigScreen extends AppCompatActivity {
 
     }
 
+    public Button getEasy(){
+        this.easy = (Button) findViewById(R.id.easyButton);
+        return this.easy;
+    }
+    public Button getMedium(){
+        return medium;
+    }
+    public Button getHard(){
+        return hard;
+    }
+
     public void onBunnySelected(View v) {
         Log.d("test", "bunny selected");
         Preferences.write("character", "bunny");
-
-        ImageView bunny = (ImageView) findViewById(R.id.bunny);
-        ImageView duck = (ImageView) findViewById(R.id.duck);
-        ImageView frog = (ImageView) findViewById(R.id.frog);
         bunny.setBackgroundColor(Color.BLUE);
         duck.setBackgroundColor(Color.GRAY);
         frog.setBackgroundColor(Color.GRAY);
@@ -116,10 +121,6 @@ public class ConfigScreen extends AppCompatActivity {
     public void onFrogSelected(View v) {
         Log.d("test", "frog selected");
         Preferences.write("character", "frog");
-
-        ImageView bunny = (ImageView) findViewById(R.id.bunny);
-        ImageView duck = (ImageView) findViewById(R.id.duck);
-        ImageView frog = (ImageView) findViewById(R.id.frog);
         bunny.setBackgroundColor(Color.GRAY);
         duck.setBackgroundColor(Color.GRAY);
         frog.setBackgroundColor(Color.BLUE);
@@ -128,10 +129,6 @@ public class ConfigScreen extends AppCompatActivity {
     public void onDuckSelected(View v) {
         Log.d("test", "duck selected");
         Preferences.write("character", "duck");
-
-        ImageView bunny = (ImageView) findViewById(R.id.bunny);
-        ImageView duck = (ImageView) findViewById(R.id.duck);
-        ImageView frog = (ImageView) findViewById(R.id.frog);
         bunny.setBackgroundColor(Color.GRAY);
         duck.setBackgroundColor(Color.BLUE);
         frog.setBackgroundColor(Color.GRAY);
