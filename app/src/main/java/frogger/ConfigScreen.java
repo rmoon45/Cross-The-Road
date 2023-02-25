@@ -19,6 +19,7 @@ public class ConfigScreen extends AppCompatActivity {
 
     private EditText nameInput;
     private TextView invalidName;
+    private boolean startGame;
     private Button setName;
     private Button easy;
     private Button medium;
@@ -44,6 +45,7 @@ public class ConfigScreen extends AppCompatActivity {
         setName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startGame = false;
                 String userName = nameInput.getText().toString();
                 if (user.checkName(userName) == false) {
                     invalidName.setVisibility(View.VISIBLE);
@@ -54,6 +56,7 @@ public class ConfigScreen extends AppCompatActivity {
                     user.setName(userName);
                     Preferences.write("name", userName);
                     setName.setBackgroundColor(Color.GREEN);
+                    startGame = true;
                 }
             }
         });
@@ -137,12 +140,12 @@ public class ConfigScreen extends AppCompatActivity {
         frog.setBackgroundColor(Color.GRAY);
     }
     public void onStartGame(View v) {
-
-        Preferences.read("name", "Prichard");
-
-        Intent intent = new Intent(ConfigScreen.this, frogger.GameScreen.class);
-        startActivity(intent);
-        finish();
+        if (startGame) {
+            Preferences.read("name", "Prichard");
+            Intent intent = new Intent(ConfigScreen.this, frogger.GameScreen.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void onEasySelected(View v) {
