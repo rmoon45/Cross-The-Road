@@ -75,17 +75,14 @@ public class GameScreen extends AppCompatActivity {
         rows.add("safe");
         rows.add("safe");
 
-        // Instantiate Game object
+        // Instantiate Game object and Player object
         Game game = new Game();
-
-        // Instantiate Player object
         Player user = new Player();
 
         backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         game.setScreenWidth(screenWidth);
         // to-do: if someone could fix this to get the actual usable height, that would be great.
-        // When the height is correct, the character should be at the very bottom of the screen.
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
             - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
@@ -156,22 +153,8 @@ public class GameScreen extends AppCompatActivity {
         characterView = findViewById(R.id.characterView);
         user.setCharacterView(characterView);
 
-        livesView = findViewById(R.id.livesView);
-        difficultyView = findViewById(R.id.difficultyView);
-
         // Set and display lives and difficulty.
-        String difficulty = Preferences.read("difficulty", "easy");
-        difficultyView.setText("Difficulty: " + difficulty);
-        switch (difficulty) {
-        case "hard":
-            livesView.setText("Lives: " + 1);
-            break;
-        case "medium":
-            livesView.setText("Lives: " + 3);
-            break;
-        default:
-            livesView.setText("Lives: " + 7);
-        }
+        setDifficultyText(findViewById(R.id.difficultyView), findViewById(R.id.livesView));
 
         // Choooooose your fighter~!
         String character = Preferences.read("character", "duck");
@@ -196,16 +179,27 @@ public class GameScreen extends AppCompatActivity {
         characterView.setY(squareSize * (numVerticalSquares - 2));
         user.setPosY(characterView.getY());
 
-        // Display the name.
+        // Display the name. Or the best name, Prichard.
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
-
-        // Log.d("squaresize", String.valueOf(squareSize));    //112
-        // Log.d("coord", String.valueOf(characterView.getX()));   //484.0
-        // Log.d("coord", String.valueOf(characterView.getY()));   //1792.0
     }
 
-    //KeyEvent method; opens up its own thread so no need to put in onCreate.
+    private void setDifficultyText(TextView difficultyView, TextView livesView) {
+        String difficulty = Preferences.read("difficulty", "easy");
+        difficultyView.setText("Difficulty: " + difficulty);
+        switch (difficulty) {
+        case "hard":
+            livesView.setText("Lives: " + 1);
+            break;
+        case "medium":
+            livesView.setText("Lives: " + 3);
+            break;
+        default:
+            livesView.setText("Lives: " + 7);
+        }
+    }
+
+    // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         Game game = new Game();
