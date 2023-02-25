@@ -16,10 +16,7 @@ import frogger.Player;
 
 //@RunWith(MockitoJUnitRunner::class)
 public class UserTests {
-    private Game game ;
     private Player user;
-    private GameScreen gameScreen;
-    private ConfigScreen configScreen;
 
     private Looper looper = null;
     private Context context;
