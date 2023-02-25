@@ -6,6 +6,7 @@ public class Player {
     private int character;
     private int lives;
 
+
     public Player() {
         this.name = "";
         this.character = 0;

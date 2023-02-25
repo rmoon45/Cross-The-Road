@@ -23,14 +23,18 @@ public class ConfigScreen extends AppCompatActivity {
     private Button easy;
     private Button medium;
     private Button hard;
-    private ImageView bunny = (ImageView) findViewById(R.id.bunny);
-    private ImageView duck = (ImageView) findViewById(R.id.duck);
-    private ImageView frog = (ImageView) findViewById(R.id.frog);
+    private ImageView bunny;
+    private ImageView duck;
+    private ImageView frog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_screen);
+
+        bunny = (ImageView) findViewById(R.id.bunny);
+        duck = (ImageView) findViewById(R.id.duck);
+        frog = (ImageView) findViewById(R.id.frog);
 
         Game game = new Game();
         Player user = new Player();

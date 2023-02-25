@@ -7,12 +7,15 @@ import com.example.s0.R;
 import android.content.Intent;
 
 public class StartActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
 
     }
+
+
     public void onEnd(View view) {
         finish();
     }
