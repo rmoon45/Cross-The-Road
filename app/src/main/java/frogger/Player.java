@@ -33,45 +33,41 @@ public class Player {
         }
         String userName = nameInput.trim();
         System.out.println(userName);
-        if (nameInput.length() == 0 || userName.length() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return (!(nameInput.length() == 0 || userName.length() == 0));
     }
 
     public void movePlayerTest(String movement, Game game) {
         switch (movement) {
-            //based off of the input string, change the position to be moving in said direction.
-            //use subtract for going up/left and plus for down/right bc the origin is at top left.
-            case "moveUp":
-                if (this.getPosY() >= 0) {
-                    moveUp = true;
-                } else {
-                    moveUp = false;
-                }
-                break;
-            case "moveLeft":
-                if (this.getPosX() >= 0 - (game.getSquareSize() / 2)) {
-                    moveLeft = true;
-                } else {
-                    moveLeft = false;
-                }
-                break;
-            case "moveRight":
-                if ((this.getPosX() + game.getSquareSize()) < game.getScreenWidth() - (game.getSquareSize() / 2)) {
-                    moveRight = true;
-                } else {
-                    moveRight = false;
-                }
-                break;
-            default:
-                if ((this.getPosY() + (2 * game.getSquareSize())) < game.getScreenHeight()) {
-                    moveDown = true;
-                } else {
-                    moveDown = false;
-                }
-
+        //based off of the input string, change the position to be moving in said direction.
+        //use subtract for going up/left and plus for down/right bc the origin is at top left.
+        case "moveUp":
+            if (this.getPosY() >= 0) {
+                moveUp = true;
+            } else {
+                moveUp = false;
+            }
+            break;
+        case "moveLeft":
+            if (this.getPosX() >= 0 - (game.getSquareSize() / 2)) {
+                moveLeft = true;
+            } else {
+                moveLeft = false;
+            }
+            break;
+        case "moveRight":
+            if ((this.getPosX() + game.getSquareSize())
+                < game.getScreenWidth() - (game.getSquareSize() / 2)) {
+                moveRight = true;
+            } else {
+                moveRight = false;
+            }
+            break;
+        default:
+            if ((this.getPosY() + (2 * game.getSquareSize())) < game.getScreenHeight()) {
+                moveDown = true;
+            } else {
+                moveDown = false;
+            }
         }
     }
 
@@ -81,32 +77,31 @@ public class Player {
         int screenWidth = game.getScreenWidth();
         int screenHeight = game.getScreenHeight();
         switch (movement) {
-            //based off of the input string, change the position to be moving in said direction.
-            //use subtract for going up/left and plus for down/right bc the origin is at top left.
-            case "moveUp":
-                if (characterView.getY() > 0 && moveUp) {
-                    characterView.setY(characterView.getY() - squareSize);
-                    this.posY = characterView.getY();
-                }
-                break;
-            case "moveLeft":
-                if (characterView.getX() > 0 + (squareSize / 2) && moveLeft) {
-                    characterView.setX(characterView.getX() - squareSize);
-                    this.posX = characterView.getX();
-                }
-                break;
-            case "moveRight":
-                if ((characterView.getX() + squareSize) < screenWidth - (squareSize / 2) && moveRight) {
-                    characterView.setX(characterView.getX() + squareSize);
-                    this.posX = characterView.getX();
-                }
-                break;
-            default:
-                if ((characterView.getY() + (2 * squareSize)) < screenHeight && moveDown) {
-                    characterView.setY(characterView.getY() + squareSize);
-                    this.posY = characterView.getY();
-                }
-
+        //based off of the input string, change the position to be moving in said direction.
+        //use subtract for going up/left and plus for down/right bc the origin is at top left.
+        case "moveUp":
+            if (characterView.getY() > 0 && moveUp) {
+                characterView.setY(characterView.getY() - squareSize);
+                this.posY = characterView.getY();
+            }
+            break;
+        case "moveLeft":
+            if (characterView.getX() > 0 + (squareSize / 2) && moveLeft) {
+                characterView.setX(characterView.getX() - squareSize);
+                this.posX = characterView.getX();
+            }
+            break;
+        case "moveRight":
+            if ((characterView.getX() + squareSize) < screenWidth - (squareSize / 2) && moveRight) {
+                characterView.setX(characterView.getX() + squareSize);
+                this.posX = characterView.getX();
+            }
+            break;
+        default:
+            if ((characterView.getY() + (2 * squareSize)) < screenHeight && moveDown) {
+                characterView.setY(characterView.getY() + squareSize);
+                this.posY = characterView.getY();
+            }
         }
     }
 

@@ -47,7 +47,7 @@ public class ConfigScreen extends AppCompatActivity {
             public void onClick(View view) {
                 startGame = false;
                 String userName = nameInput.getText().toString();
-                if (user.checkName(userName) == false) {
+                if (!user.checkName(userName)) {
                     invalidName.setVisibility(View.VISIBLE);
                     nameInput.setError("Invalid Name! Please enter valid name.");
                     setName.setBackgroundColor(Color.RED);
@@ -69,8 +69,8 @@ public class ConfigScreen extends AppCompatActivity {
                 user.setLives(7);
                 Preferences.write("difficulty", "easy");
                 easy.setBackgroundColor(Color.BLUE);
-                medium.setBackgroundColor( -7829368);
-                hard.setBackgroundColor( -7829368);
+                medium.setBackgroundColor(-7829368);
+                hard.setBackgroundColor(-7829368);
             }
         });
         medium = (Button) findViewById(R.id.mediumButton);
@@ -81,9 +81,9 @@ public class ConfigScreen extends AppCompatActivity {
                 game.setLives(3);
                 user.setLives(3);
                 Preferences.write("difficulty", "medium");
-                easy.setBackgroundColor( -7829368);
+                easy.setBackgroundColor(-7829368);
                 medium.setBackgroundColor(Color.BLUE);
-                hard.setBackgroundColor( -7829368);
+                hard.setBackgroundColor(-7829368);
             }
         });
         hard = (Button) findViewById(R.id.hardButton);
@@ -94,22 +94,22 @@ public class ConfigScreen extends AppCompatActivity {
                 game.setLives(1);
                 user.setLives(1);
                 Preferences.write("difficulty", "hard");
-                easy.setBackgroundColor( -7829368);
-                medium.setBackgroundColor( -7829368);
+                easy.setBackgroundColor(-7829368);
+                medium.setBackgroundColor(-7829368);
                 hard.setBackgroundColor(Color.BLUE);
             }
         });
 
     }
 
-    public Button getEasy(){
+    public Button getEasy() {
         this.easy = (Button) findViewById(R.id.easyButton);
         return this.easy;
     }
-    public Button getMedium(){
+    public Button getMedium() {
         return medium;
     }
-    public Button getHard(){
+    public Button getHard() {
         return hard;
     }
 
