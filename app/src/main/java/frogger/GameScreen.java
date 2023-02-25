@@ -8,6 +8,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.view.KeyEvent;
+
 import com.example.s0.R;
 
 import java.util.ArrayList;
@@ -22,7 +25,20 @@ public class GameScreen extends AppCompatActivity {
     private TextView livesView;
     private TextView difficultyView;
     private TextView nameView;
+
     private RelativeLayout backgroundLayout;
+
+    private Bitmap bitmap;
+
+    private int squareSize;
+
+    private int screenWidth;
+
+    private int screenHeight;
+
+    public GameScreen() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +76,15 @@ public class GameScreen extends AppCompatActivity {
         rows.add("safe");
 
         backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
-        int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        // TODO: if someone could fix this to get the actual usable height, that would be great.
+        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        // to-do: if someone could fix this to get the actual usable height, that would be great.
         // When the height is correct, the character should be at the very bottom of the screen.
-        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
             - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
             );
         int numVerticalSquares = rows.size();
-        int squareSize = screenHeight / numVerticalSquares;
+        squareSize = screenHeight / numVerticalSquares;
         int numHorizontalSquares = (screenWidth / squareSize);
         // Make sure all of the screen is covered horizontally if the numbers don't divide
         // perfectly.
@@ -170,7 +186,63 @@ public class GameScreen extends AppCompatActivity {
         // Display the name.
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
+
+        // Log.d("squaresize", String.valueOf(squareSize));    //112
+        // Log.d("coord", String.valueOf(characterView.getX()));   //484.0
+        // Log.d("coord", String.valueOf(characterView.getY()));   //1792.0
     }
+
+    //KeyEvent method; opens up its own thread so no need to put in onCreate.
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+        //Uses WASD system.
+        case KeyEvent.KEYCODE_W:
+            movePlayer("moveUp");
+            return true;
+        case KeyEvent.KEYCODE_A:
+            movePlayer("moveLeft");
+            return true;
+        case KeyEvent.KEYCODE_D:
+            movePlayer("moveRight");
+            return true;
+        case KeyEvent.KEYCODE_S:
+            movePlayer("moveDown");
+            return true;
+        default:
+            return super.onKeyUp(keyCode, event);
+        }
+
+    }
+
+    //Determines the movement of the player on grid system.
+    protected void movePlayer(String movement) {
+        switch (movement) {
+        //based off of the input string, change the position to be moving in said direction.
+        //use subtract for going up/left and plus for down/right bc the origin is at top left.
+        case "moveUp":
+            if (characterView.getY() > 0) {
+                characterView.setY(characterView.getY() - squareSize);
+            }
+            break;
+        case "moveLeft":
+            if (characterView.getX() > 0 + (squareSize / 2)) {
+                characterView.setX(characterView.getX() - squareSize);
+            }
+            break;
+        case "moveRight":
+            if ((characterView.getX() + squareSize) < screenWidth - (squareSize / 2)) {
+                characterView.setX(characterView.getX() + squareSize);
+            }
+            break;
+        default:
+            if ((characterView.getY() + (2 * squareSize)) < screenHeight) {
+                characterView.setY(characterView.getY() + squareSize);
+            }
+
+        }
+    }
+
 
     public TextView getNameView() {
         return this.nameView;

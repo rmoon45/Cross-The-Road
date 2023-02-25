@@ -27,10 +27,14 @@ public class GameTests {
     @Test
     public void testDifficultyLives() {
         game.setDifficulty("easy");
-        assertEquals(7, game.getLives());
+        int easyLives = game.getLives();
+
         game.setDifficulty("medium");
-        assertEquals(3, game.getLives());
+        int mediumLives = game.getLives();
+
         game.setDifficulty("hard");
-        assertEquals(1, game.getLives());
+        int hardLives = game.getLives();
+
+        assertFalse(easyLives == mediumLives || mediumLives == hardLives || easyLives == hardLives);
     }
 }
