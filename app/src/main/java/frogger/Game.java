@@ -13,6 +13,9 @@ public class Game {
         difficulty = "easy";
         score = 0;
         screen = "start";
+        squareSize = 92;
+        screenHeight = 1668;
+        screenWidth = 1080;
     }
 
     public void setDifficulty(String choice) {

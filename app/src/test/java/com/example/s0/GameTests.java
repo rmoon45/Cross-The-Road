@@ -23,7 +23,7 @@ public class GameTests {
         game = new Game();
     }
 
-    //Ashwini: Selecting a certain difficulty changes the number of lives the player has
+    // Nicole: Selecting a certain difficulty changes the number of lives the player has
     @Test
     public void testDifficultyLives() {
         game.setDifficulty("easy");
