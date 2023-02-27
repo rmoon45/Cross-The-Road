@@ -5,11 +5,17 @@ public class Game {
     private int score;
     private int lives;
     private String screen;
+    private int squareSize;
+    private int screenWidth;
+    private int screenHeight;
 
     public Game() {
         difficulty = "easy";
         score = 0;
         screen = "start";
+        squareSize = 92;
+        screenHeight = 1668;
+        screenWidth = 1080;
     }
 
     public void setDifficulty(String choice) {
@@ -39,5 +45,31 @@ public class Game {
     public String getScreen() {
         return this.screen;
     }
+
+
+    public int getSquareSize() {
+        return squareSize;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public void setSquareSize(int squareSize) {
+        this.squareSize = squareSize;
+    }
+
+    public void setScreenWidth(int screenWidth) {
+        this.screenWidth = screenWidth;
+    }
+
+    public void setScreenHeight(int screenHeight) {
+        this.screenHeight = screenHeight;
+    }
+
 
 }

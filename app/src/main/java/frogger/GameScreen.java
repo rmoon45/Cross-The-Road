@@ -75,16 +75,22 @@ public class GameScreen extends AppCompatActivity {
         rows.add("safe");
         rows.add("safe");
 
+        // Instantiate Game object and Player object
+        Game game = new Game();
+        Player user = new Player();
+
         backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        game.setScreenWidth(screenWidth);
         // to-do: if someone could fix this to get the actual usable height, that would be great.
-        // When the height is correct, the character should be at the very bottom of the screen.
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
             - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
             );
+        game.setScreenHeight(screenHeight);
         int numVerticalSquares = rows.size();
         squareSize = screenHeight / numVerticalSquares;
+        game.setSquareSize(squareSize);
         int numHorizontalSquares = (screenWidth / squareSize);
         // Make sure all of the screen is covered horizontally if the numbers don't divide
         // perfectly.
@@ -145,22 +151,10 @@ public class GameScreen extends AppCompatActivity {
 
         // Get the TextViews to set the text of.
         characterView = findViewById(R.id.characterView);
-        livesView = findViewById(R.id.livesView);
-        difficultyView = findViewById(R.id.difficultyView);
+        user.setCharacterView(characterView);
 
         // Set and display lives and difficulty.
-        String difficulty = Preferences.read("difficulty", "easy");
-        difficultyView.setText("Difficulty: " + difficulty);
-        switch (difficulty) {
-        case "hard":
-            livesView.setText("Lives: " + 1);
-            break;
-        case "medium":
-            livesView.setText("Lives: " + 3);
-            break;
-        default:
-            livesView.setText("Lives: " + 7);
-        }
+        setDifficultyText(findViewById(R.id.difficultyView), findViewById(R.id.livesView));
 
         // Choooooose your fighter~!
         String character = Preferences.read("character", "duck");
@@ -180,69 +174,59 @@ public class GameScreen extends AppCompatActivity {
         characterView.getLayoutParams().width = squareSize;
         // Put the character in the horizontal middle square of the map.
         characterView.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
+        user.setPosX(characterView.getX());
         // Put the character in the vertical second-to-bottommost square.
         characterView.setY(squareSize * (numVerticalSquares - 2));
+        user.setPosY(characterView.getY());
 
-        // Display the name.
+        // Display the name. Or the best name, Prichard.
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
-
-        // Log.d("squaresize", String.valueOf(squareSize));    //112
-        // Log.d("coord", String.valueOf(characterView.getX()));   //484.0
-        // Log.d("coord", String.valueOf(characterView.getY()));   //1792.0
     }
 
-    //KeyEvent method; opens up its own thread so no need to put in onCreate.
+    private void setDifficultyText(TextView difficultyView, TextView livesView) {
+        String difficulty = Preferences.read("difficulty", "easy");
+        difficultyView.setText("Difficulty: " + difficulty);
+        switch (difficulty) {
+        case "hard":
+            livesView.setText("Lives: " + 1);
+            break;
+        case "medium":
+            livesView.setText("Lives: " + 3);
+            break;
+        default:
+            livesView.setText("Lives: " + 7);
+        }
+    }
+
+    // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Game game = new Game();
+        game.setScreenHeight(screenHeight);
+        game.setScreenWidth(screenWidth);
+        game.setSquareSize(squareSize);
+        Player user = new Player();
+        user.setCharacterView(characterView);
         switch (keyCode) {
         //Uses WASD system.
         case KeyEvent.KEYCODE_W:
-            movePlayer("moveUp");
+            user.movePlayer("moveUp", game);
             return true;
         case KeyEvent.KEYCODE_A:
-            movePlayer("moveLeft");
+            user.movePlayer("moveLeft", game);
             return true;
         case KeyEvent.KEYCODE_D:
-            movePlayer("moveRight");
+            user.movePlayer("moveRight", game);
             return true;
         case KeyEvent.KEYCODE_S:
-            movePlayer("moveDown");
+            user.movePlayer("moveDown", game);
             return true;
         default:
             return super.onKeyUp(keyCode, event);
         }
 
     }
-
-    //Determines the movement of the player on grid system.
-    protected void movePlayer(String movement) {
-        switch (movement) {
-        //based off of the input string, change the position to be moving in said direction.
-        //use subtract for going up/left and plus for down/right bc the origin is at top left.
-        case "moveUp":
-            if (characterView.getY() > 0) {
-                characterView.setY(characterView.getY() - squareSize);
-            }
-            break;
-        case "moveLeft":
-            if (characterView.getX() > 0 + (squareSize / 2)) {
-                characterView.setX(characterView.getX() - squareSize);
-            }
-            break;
-        case "moveRight":
-            if ((characterView.getX() + squareSize) < screenWidth - (squareSize / 2)) {
-                characterView.setX(characterView.getX() + squareSize);
-            }
-            break;
-        default:
-            if ((characterView.getY() + (2 * squareSize)) < screenHeight) {
-                characterView.setY(characterView.getY() + squareSize);
-            }
-
-        }
-    }
-
 
     public TextView getNameView() {
         return this.nameView;
