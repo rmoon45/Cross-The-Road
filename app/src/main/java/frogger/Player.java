@@ -22,7 +22,6 @@ public class Player {
     private ArrayList<String> rowArray;
 
     public Player() {
-
         this.name = "";
         this.character = 0;
         this.lives = -1;

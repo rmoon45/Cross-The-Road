@@ -19,6 +19,10 @@ import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import frogger.ConfigScreen;
 import frogger.Game;
 import frogger.GameScreen;
@@ -50,5 +54,23 @@ public class ScoreTests {
     @Test
     public void testScoreIncreasesBy1AfterCrossingRoad() {
         assertEquals(scoreManager.getScoreAfterMove(0, "safe"), 1);
+    }
+
+    // get the correct tile the player is on
+    @Test
+    public void testCorrectTilesRetrievedUsingPlayerPosition() {
+        List<String> map = new ArrayList<String>(Arrays.asList(
+                "safe",
+                "river",
+                "road",
+                "safe",
+                "safe"
+        ));
+
+        assertEquals("safe", scoreManager.getTileCorrespondingToPosition(0, map));
+        assertEquals("safe", scoreManager.getTileCorrespondingToPosition(1, map));
+        assertEquals("road", scoreManager.getTileCorrespondingToPosition(2, map));
+        assertEquals("river", scoreManager.getTileCorrespondingToPosition(3, map));
+        assertEquals("safe", scoreManager.getTileCorrespondingToPosition(4, map));
     }
 }

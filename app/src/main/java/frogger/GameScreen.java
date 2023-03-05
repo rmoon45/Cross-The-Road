@@ -219,10 +219,11 @@ public class GameScreen extends AppCompatActivity {
                 this.greatestPos=this.currPos;
                 atGreatestSpot=true;
             }
-            System.out.println(this.map.get(this.map.size()-currPos-1));
+            System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
             if (atGreatestSpot) {
-                this.score = ScoreManager.getScoreAfterMove(this.score, this.map.get(this.map.size()-currPos-1));
-            } else{
+                this.score = ScoreManager.getScoreAfterMove(this.score,
+                        ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+            } else {
                 System.out.print("not at the greatest spot");
             }
             System.out.println("Score is " + this.score);
