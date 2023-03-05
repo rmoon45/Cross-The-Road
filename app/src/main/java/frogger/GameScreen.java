@@ -25,6 +25,10 @@ public class GameScreen extends AppCompatActivity {
     private TextView livesView;
     private TextView difficultyView;
     private TextView nameView;
+    private TextView scoreNumber;
+    private int currPos;
+    private int greatestPos;
+    private int score;
 
     private RelativeLayout backgroundLayout;
 
@@ -43,7 +47,9 @@ public class GameScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_game_screen);
+
 
         // Change the contents of the level by modifying this list.
         // The top row will always be the goal, and the bottom two rows will always be safe tiles
@@ -199,19 +205,60 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
+
     // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        ArrayList<String> rowArray = new ArrayList<String>(Arrays.asList(
+                "safe",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "safe",
+                "road",
+                "road",
+                "road",
+                "road",
+                "safe" //size=16
+        ));
         Game game = new Game();
         game.setScreenHeight(screenHeight);
         game.setScreenWidth(screenWidth);
         game.setSquareSize(squareSize);
         Player user = new Player();
         user.setCharacterView(characterView);
+        //scoreNumber = (TextView) findViewById(R.id.scoreNumber);
         switch (keyCode) {
         //Uses WASD system.
         case KeyEvent.KEYCODE_W:
+
             user.movePlayer("moveUp", game);
+            this.currPos++;
+            boolean atGreatestSpot=false;
+            if(this.currPos>this.greatestPos){
+                this.greatestPos=this.currPos;
+                atGreatestSpot=true;
+            }
+            System.out.println(rowArray.get(rowArray.size()-currPos-1));
+            if(rowArray.get(rowArray.size()-currPos-1).equals("road") && atGreatestSpot){
+                this.score+=2;
+            } else if(rowArray.get(rowArray.size()-currPos-1).equals("safe")&&atGreatestSpot){
+                this.score+=1;
+            }else if(rowArray.get(rowArray.size()-currPos-1).equals("river") &&atGreatestSpot){
+                this.score+=3;
+            } else{
+                System.out.print("not at the greatest spot");
+            }
+//            System.out.println("Score is " + this.score);
+//            System.out.println("current position is " + this.currPos);
+//            System.out.println("max Position is  " + this.greatestPos);
+            //scoreNumber.setText(score);
             return true;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", game);
@@ -221,6 +268,10 @@ public class GameScreen extends AppCompatActivity {
             return true;
         case KeyEvent.KEYCODE_S:
             user.movePlayer("moveDown", game);
+            this.currPos--;
+//            System.out.println("Score is " + this.score);
+//            System.out.println("current position is " + this.currPos);
+//            System.out.println("max Position is  " + this.greatestPos);
             return true;
         default:
             return super.onKeyUp(keyCode, event);
