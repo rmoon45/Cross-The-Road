@@ -1,10 +1,15 @@
 package frogger;
 
 import android.widget.ImageView;
+import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Player {
 
     private String name;
+
     private int character;
     private int lives;
     private float posX;
@@ -14,8 +19,10 @@ public class Player {
     private boolean moveDown;
     private boolean moveRight;
     private boolean moveLeft;
+    private ArrayList<String> rowArray;
 
     public Player() {
+
         this.name = "";
         this.character = 0;
         this.lives = -1;
@@ -83,6 +90,7 @@ public class Player {
             if (characterView.getY() > 0 && moveUp) {
                 characterView.setY(characterView.getY() - squareSize);
                 this.posY = characterView.getY();
+
             }
             break;
         case "moveLeft":
@@ -101,6 +109,7 @@ public class Player {
             if ((characterView.getY() + (2 * squareSize)) < screenHeight && moveDown) {
                 characterView.setY(characterView.getY() + squareSize);
                 this.posY = characterView.getY();
+
             }
         }
     }
