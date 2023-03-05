@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Looper;
 
 import frogger.Game;
+import frogger.GameScreen;
 import frogger.Player;
 
 public class MovementTests {
@@ -74,5 +75,9 @@ public class MovementTests {
         assertEquals(false, user.isMoveLeft());
     }
 
-
+    @Test
+    public void tttest() {
+        GameScreen gameScreen = mock(GameScreen.class);
+        when(gameScreen.onKeyUp(anyInt(), any())).thenCallRealMethod();
+    }
 }
