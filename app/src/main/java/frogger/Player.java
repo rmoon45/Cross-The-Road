@@ -90,7 +90,6 @@ public class Player {
             if (characterView.getY() > 0 && moveUp) {
                 characterView.setY(characterView.getY() - squareSize);
                 this.posY = characterView.getY();
-
             }
             break;
         case "moveLeft":

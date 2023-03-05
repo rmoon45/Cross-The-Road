@@ -40,17 +40,9 @@ public class GameScreen extends AppCompatActivity {
 
     private int screenHeight;
 
+    private ArrayList<String> map;
+
     public GameScreen() {
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_game_screen);
-
-
         // Change the contents of the level by modifying this list.
         // The top row will always be the goal, and the bottom two rows will always be safe tiles
         // for now. (the goal is to have only the bottom row need to be a safe tile, but
@@ -60,43 +52,43 @@ public class GameScreen extends AppCompatActivity {
          * Per the specs, rivers should always have a different width than roads, and safe tiles
          * should always be narrower than rivers and roads.
          */
-        List<String> rows = new ArrayList<String>(Arrays.asList(
-            "safe",
-            "river",
-            "river",
-            "river",
-            "river",
-            "river",
-            "river",
-            "river",
-            "river",
-            "river",
-            "safe",
-            "road",
-            "road",
-            "road",
-            "road"
+        this.map = new ArrayList<String>(Arrays.asList(
+                "safe",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "river",
+                "safe",
+                "road",
+                "road",
+                "road",
+                "road"
         ));
-        rows.add(0, "goal"); // Don't put these into the List definition plz thx
-        rows.add("safe");
-        rows.add("safe");
+        this.map.add(0, "goal"); // Don't put these into the List definition plz thx
+        this.map.add("safe");
+        this.map.add("safe");
+    }
 
-        // Instantiate Game object and Player object
-        Game game = new Game();
-        Player user = new Player();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_game_screen);
 
         backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        game.setScreenWidth(screenWidth);
         // to-do: if someone could fix this to get the actual usable height, that would be great.
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
             - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
             );
-        game.setScreenHeight(screenHeight);
-        int numVerticalSquares = rows.size();
+        int numVerticalSquares = this.map.size();
         squareSize = screenHeight / numVerticalSquares;
-        game.setSquareSize(squareSize);
         int numHorizontalSquares = (screenWidth / squareSize);
         // Make sure all of the screen is covered horizontally if the numbers don't divide
         // perfectly.
@@ -109,6 +101,10 @@ public class GameScreen extends AppCompatActivity {
             numHorizontalSquares++;
         }
 
+        // Instantiate game and player objects.
+        Game game = new Game(screenWidth, screenHeight, squareSize);
+        Player user = new Player();
+
         // Calculate the horizontal offset needed so that the middle column of tiles is centered.
         // This should be a negative number or zero.
         int horizontalOffset = (screenWidth / 2)
@@ -119,7 +115,7 @@ public class GameScreen extends AppCompatActivity {
         for (int i = 0; i < numVerticalSquares; i++) {
             // Get the corresponding tile image for the row.
             int imageResource = R.drawable.safe;
-            switch (rows.get(i)) {
+            switch (this.map.get(i)) {
             case "river":
                 imageResource = R.drawable.river;
                 break;
@@ -130,7 +126,7 @@ public class GameScreen extends AppCompatActivity {
                 imageResource = R.drawable.goal;
                 break;
             default:
-                if (rows.get(i) != "safe") {
+                if (this.map.get(i) != "safe") {
                     throw new RuntimeException("you dnun goofed");
                 }
             }
@@ -205,32 +201,10 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
-
     // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        ArrayList<String> rowArray = new ArrayList<String>(Arrays.asList(
-                "safe",
-                "river",
-                "river",
-                "river",
-                "river",
-                "river",
-                "river",
-                "river",
-                "river",
-                "river",
-                "safe",
-                "road",
-                "road",
-                "road",
-                "road",
-                "safe" //size=16
-        ));
-        Game game = new Game();
-        game.setScreenHeight(screenHeight);
-        game.setScreenWidth(screenWidth);
-        game.setSquareSize(squareSize);
+        Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
         Player user = new Player();
         user.setCharacterView(characterView);
         //scoreNumber = (TextView) findViewById(R.id.scoreNumber);
@@ -245,17 +219,13 @@ public class GameScreen extends AppCompatActivity {
                 this.greatestPos=this.currPos;
                 atGreatestSpot=true;
             }
-            System.out.println(rowArray.get(rowArray.size()-currPos-1));
-            if(rowArray.get(rowArray.size()-currPos-1).equals("road") && atGreatestSpot){
-                this.score+=2;
-            } else if(rowArray.get(rowArray.size()-currPos-1).equals("safe")&&atGreatestSpot){
-                this.score+=1;
-            }else if(rowArray.get(rowArray.size()-currPos-1).equals("river") &&atGreatestSpot){
-                this.score+=3;
+            System.out.println(this.map.get(this.map.size()-currPos-1));
+            if (atGreatestSpot) {
+                this.score = ScoreManager.getScoreAfterMove(this.score, this.map.get(this.map.size()-currPos-1));
             } else{
                 System.out.print("not at the greatest spot");
             }
-//            System.out.println("Score is " + this.score);
+            System.out.println("Score is " + this.score);
 //            System.out.println("current position is " + this.currPos);
 //            System.out.println("max Position is  " + this.greatestPos);
             //scoreNumber.setText(score);
@@ -289,5 +259,9 @@ public class GameScreen extends AppCompatActivity {
 
     public TextView getLivesView() {
         return this.livesView;
+    }
+
+    public void setMap(ArrayList<String> map) {
+        this.map = map;
     }
 }
