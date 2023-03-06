@@ -1,5 +1,7 @@
 package frogger;
 
+import android.widget.TextView;
+
 public class Game {
     private String difficulty;
     private int score;
@@ -8,14 +10,20 @@ public class Game {
     private int squareSize;
     private int screenWidth;
     private int screenHeight;
+    private TextView scoreNumber;
 
+    // Use this for testing only
     public Game() {
-        difficulty = "easy";
-        score = 0;
-        screen = "start";
-        squareSize = 92;
-        screenHeight = 1668;
-        screenWidth = 1080;
+        this(1080, 1668, 92);
+    }
+
+    public Game(int screenWidth, int screenHeight, int squareSize) {
+        this.difficulty = "easy";
+        this.score = 0;
+        this.screen = "start";
+        this.squareSize = squareSize;
+        this.screenHeight = screenHeight;
+        this.screenWidth = screenWidth;
     }
 
     public void setDifficulty(String choice) {
@@ -27,6 +35,10 @@ public class Game {
         } else {
             this.setLives(7);
         }
+    }
+
+    public int getScore(){
+        return this.score;
     }
     public String getDifficulty() {
         return difficulty;
@@ -70,6 +82,4 @@ public class Game {
     public void setScreenHeight(int screenHeight) {
         this.screenHeight = screenHeight;
     }
-
-
 }

@@ -14,7 +14,6 @@ import frogger.Game;
 import frogger.GameScreen;
 import frogger.Player;
 
-//@RunWith(MockitoJUnitRunner::class)
 public class UserTests {
     private Player user;
 
