@@ -22,7 +22,6 @@ public class Player {
     private ArrayList<String> rowArray;
 
     public Player() {
-
         this.name = "";
         this.character = 0;
         this.lives = -1;
@@ -90,7 +89,6 @@ public class Player {
             if (characterView.getY() > 0 && moveUp) {
                 characterView.setY(characterView.getY() - squareSize);
                 this.posY = characterView.getY();
-
             }
             break;
         case "moveLeft":
