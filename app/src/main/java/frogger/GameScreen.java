@@ -207,7 +207,7 @@ public class GameScreen extends AppCompatActivity {
         Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
         Player user = new Player();
         user.setCharacterView(characterView);
-        //scoreNumber = (TextView) findViewById(R.id.scoreNumber);
+        scoreNumber = (TextView) findViewById(R.id.scoreNumber);
         switch (keyCode) {
         //Uses WASD system.
         case KeyEvent.KEYCODE_W:
@@ -227,9 +227,9 @@ public class GameScreen extends AppCompatActivity {
                 System.out.print("not at the greatest spot");
             }
             System.out.println("Score is " + this.score);
-//            System.out.println("current position is " + this.currPos);
-//            System.out.println("max Position is  " + this.greatestPos);
-            //scoreNumber.setText(score);
+            System.out.println("current position is " + this.currPos);
+            System.out.println("max Position is  " + this.greatestPos);
+            scoreNumber.setText(""+ score);
             return true;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", game);
