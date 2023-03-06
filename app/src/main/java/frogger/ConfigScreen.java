@@ -37,7 +37,6 @@ public class ConfigScreen extends AppCompatActivity {
         duck = (ImageView) findViewById(R.id.duck);
         frog = (ImageView) findViewById(R.id.frog);
 
-        Game game = new Game();
         Player user = new Player();
         nameInput = (EditText) findViewById(R.id.nameInput);
         invalidName = (TextView) findViewById(R.id.nameInvalid);
@@ -60,46 +59,6 @@ public class ConfigScreen extends AppCompatActivity {
                 }
             }
         });
-        easy = (Button) findViewById(R.id.easyButton);
-        easy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                game.setDifficulty("easy");
-                game.setLives(7);
-                user.setLives(7);
-                Preferences.write("difficulty", "easy");
-                easy.setBackgroundColor(Color.BLUE);
-                medium.setBackgroundColor(-7829368);
-                hard.setBackgroundColor(-7829368);
-            }
-        });
-        medium = (Button) findViewById(R.id.mediumButton);
-        medium.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                game.setDifficulty("medium");
-                game.setLives(3);
-                user.setLives(3);
-                Preferences.write("difficulty", "medium");
-                easy.setBackgroundColor(-7829368);
-                medium.setBackgroundColor(Color.BLUE);
-                hard.setBackgroundColor(-7829368);
-            }
-        });
-        hard = (Button) findViewById(R.id.hardButton);
-        hard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                game.setDifficulty("hard");
-                game.setLives(1);
-                user.setLives(1);
-                Preferences.write("difficulty", "hard");
-                easy.setBackgroundColor(-7829368);
-                medium.setBackgroundColor(-7829368);
-                hard.setBackgroundColor(Color.BLUE);
-            }
-        });
-
     }
 
     public Button getEasy() {
@@ -149,16 +108,25 @@ public class ConfigScreen extends AppCompatActivity {
     }
 
     public void onEasySelected(View v) {
+        ((Button) findViewById(R.id.easyButton)).setBackgroundColor(Color.BLUE);
+        ((Button) findViewById(R.id.mediumButton)).setBackgroundColor(-7829368);
+        ((Button) findViewById(R.id.hardButton)).setBackgroundColor(-7829368);
         Log.d("test", "easy selected");
         Preferences.write("difficulty", "easy");
     }
 
     public void onMediumSelected(View v) {
+        findViewById(R.id.easyButton).setBackgroundColor(-7829368);
+        findViewById(R.id.mediumButton).setBackgroundColor(Color.BLUE);
+        findViewById(R.id.hardButton).setBackgroundColor(-7829368);
         Log.d("test", "medium selected");
         Preferences.write("difficulty", "medium");
     }
 
     public void onHardSelected(View v) {
+        findViewById(R.id.easyButton).setBackgroundColor(-7829368);
+        findViewById(R.id.mediumButton).setBackgroundColor(-7829368);
+        findViewById(R.id.hardButton).setBackgroundColor(Color.BLUE);
         Log.d("test", "hard selected");
         Preferences.write("difficulty", "hard");
     }
