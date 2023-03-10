@@ -76,6 +76,17 @@ public class Player {
             }
         }
     }
+    public void moveCar1Left(ImageView car, Game game, int startPosition) {
+        //this.movePlayerTest(movement, game);
+        int squareSize = game.getSquareSize();
+        int screenWidth = game.getScreenWidth();
+        int screenHeight = game.getScreenHeight();
+        while (car.getX() > 0 + (squareSize / 2)) {
+            car.setX(car.getX() - squareSize);
+        }
+        car.setX(startPosition);
+        //moveCar1Left(car, game, startPosition);
+    }
 
     public void movePlayer(String movement, Game game) {
         this.movePlayerTest(movement, game);
