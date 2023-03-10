@@ -1,12 +1,15 @@
 package frogger;
 
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import android.graphics.Bitmap;
 import android.view.KeyEvent;
@@ -18,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import preferences.Preferences;
+import java.util.Random;
 
 public class GameScreen extends AppCompatActivity {
 
@@ -29,6 +33,14 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
     private int score;
+    private ImageView car1;
+    private ImageView car2;
+    private ImageView car3;
+    private ArrayList<Object> spawnList;
+    private int startPositionCar1;
+    private Handler mHandler;
+    private int mInterval=1000; // 1 seconds
+
 
     private RelativeLayout backgroundLayout;
 
@@ -38,7 +50,12 @@ public class GameScreen extends AppCompatActivity {
 
     private int screenWidth;
 
+
+
     private int screenHeight;
+
+    //private int horizontalOffset;
+    //private
 
     private ArrayList<String> map;
 
@@ -72,6 +89,14 @@ public class GameScreen extends AppCompatActivity {
         this.map.add(0, "goal"); // Don't put these into the List definition plz thx
         this.map.add("safe");
         this.map.add("safe");
+        //characterView.setImageResource(R.drawable.frog);
+
+        //this.spawnList = new ArrayList<>(Arrays.asList(car1,car2,car3));
+    }
+    private void spawnObject(){
+        Random random = new Random();
+
+
     }
 
     @Override
@@ -153,6 +178,10 @@ public class GameScreen extends AppCompatActivity {
 
         // Get the TextViews to set the text of.
         characterView = findViewById(R.id.characterView);
+        car1=findViewById(R.id.car1);
+        car2=findViewById(R.id.car2);
+        car3=findViewById(R.id.car3);
+
         user.setCharacterView(characterView);
 
         // Set and display lives and difficulty.
@@ -170,10 +199,29 @@ public class GameScreen extends AppCompatActivity {
         default:
             characterView.setImageResource(R.drawable.frog);
         }
+        car1.setImageResource(R.drawable.car1);
+//        car2.setImageResource(R.drawable.car3);
+//        car3.setImageResource(R.drawable.car1);
 
         // Set the size and location of your fighter.
         characterView.getLayoutParams().height = squareSize;
         characterView.getLayoutParams().width = squareSize;
+        car1.getLayoutParams().height = squareSize;
+        car1.getLayoutParams().width = squareSize;
+        car2.getLayoutParams().height = squareSize;
+        car2.getLayoutParams().width = squareSize*2;
+        car3.getLayoutParams().height = squareSize;
+        car3.getLayoutParams().width = squareSize*3;
+//        //car1.setX(numHorizontalSquares);
+        car1.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
+        this.startPositionCar1=horizontalOffset + (numHorizontalSquares / 2) * squareSize;
+
+        car1.setY(squareSize * (numVerticalSquares - 2)-squareSize);
+        car2.setX(screenWidth);
+        car2.setY(squareSize * (numVerticalSquares - 2)-(2*squareSize));
+        car3.setX(0);
+        car3.setY(squareSize * (numVerticalSquares - 2)-(3*squareSize));
+
         // Put the character in the horizontal middle square of the map.
         characterView.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
         user.setPosX(characterView.getX());
@@ -184,7 +232,55 @@ public class GameScreen extends AppCompatActivity {
         // Display the name. Or the best name, Prichard.
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
+        mHandler=new Handler();
+        movementOfCars();
+        //movementOfCars();
+        //randomMovementCar1();
     }
+    private void movementOfCars(){
+        mStatusChecker.run();
+        //while(true){
+          //  randomMovementCar1();
+//            randomMovementCar2();
+//            randomMovementCar3();
+      //  }
+    }
+    Runnable mStatusChecker = new Runnable(){
+        @Override
+        public void run(){
+            try{
+                //updateStatus();
+            } finally {
+                randomMovementCar1();
+                randomMovementCar2();
+                randomMovementCar3();
+                mHandler.postDelayed(mStatusChecker,mInterval);
+            }
+        }
+    };
+    private void randomMovementCar1(){
+        if(car1.getX()>0){
+            car1.setX(car1.getX()-squareSize);
+        } else{
+            car1.setX(screenWidth);
+        }
+    }
+    private void randomMovementCar2(){
+        if(car2.getX()<screenWidth){
+            car2.setX(car2.getX()+squareSize);
+        } else{
+            car2.setX(0);
+        }
+    }
+    private void randomMovementCar3(){
+        if(car3.getX()>0){
+            car3.setX(car3.getX()-(2*squareSize));
+        } else{
+            car3.setX(screenWidth);
+        }
+    }
+
+
 
     private void setDifficultyText(TextView difficultyView, TextView livesView) {
         String difficulty = Preferences.read("difficulty", "easy");
@@ -200,6 +296,13 @@ public class GameScreen extends AppCompatActivity {
             livesView.setText("Lives: " + 7);
         }
     }
+    //movement for the cars
+//    public static void randomMovementCar1(){
+//        Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
+//        Player user = new Player();
+//        //user.setCharacterView(characterView);
+//        user.moveCar1Left(car1, game, startPositionCar1 );
+//    }
 
     // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
