@@ -49,6 +49,11 @@
                 android:layout_width="169dp"
                 android:layout_height="58dp"
                 app:srcCompat="@drawable/car3" />
+            <ImageView
+                android:id="@+id/car4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/car2" />
 
             <TextView
                 android:id="@+id/scoreView"
