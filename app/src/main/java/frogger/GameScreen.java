@@ -1,7 +1,6 @@
 package frogger;
 
 import android.content.res.Resources;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.example.s0.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import preferences.Preferences;
 import java.util.Random;
@@ -40,7 +38,7 @@ public class GameScreen extends AppCompatActivity {
     private ArrayList<Object> spawnList;
     private int startPositionCar1;
     private Handler mHandler;
-    private int mInterval=200; // 1 seconds
+    private int mInterval = 200; // 1 seconds
 
 
     private RelativeLayout backgroundLayout;
@@ -50,8 +48,6 @@ public class GameScreen extends AppCompatActivity {
     private int squareSize;
 
     private int screenWidth;
-
-
 
     private int screenHeight;
 
@@ -94,10 +90,8 @@ public class GameScreen extends AppCompatActivity {
 
         //this.spawnList = new ArrayList<>(Arrays.asList(car1,car2,car3));
     }
-    private void spawnObject(){
+    private void spawnObject() {
         Random random = new Random();
-
-
     }
 
     @Override
@@ -179,11 +173,10 @@ public class GameScreen extends AppCompatActivity {
 
         // Get the TextViews to set the text of.
         characterView = findViewById(R.id.characterView);
-        car1=findViewById(R.id.car1);
-        car2=findViewById(R.id.car2);
-        car3=findViewById(R.id.car3);
-        car4=findViewById(R.id.car4);
-
+        car1 = findViewById(R.id.car1);
+        car2 = findViewById(R.id.car2);
+        car3 = findViewById(R.id.car3);
+        car4 = findViewById(R.id.car4);
 
         user.setCharacterView(characterView);
 
@@ -203,8 +196,8 @@ public class GameScreen extends AppCompatActivity {
             characterView.setImageResource(R.drawable.frog);
         }
         car1.setImageResource(R.drawable.car1);
-//        car2.setImageResource(R.drawable.car3);
-//        car3.setImageResource(R.drawable.car1);
+        //car2.setImageResource(R.drawable.car3);
+        //car3.setImageResource(R.drawable.car1);
 
         // Set the size and location of your fighter.
         characterView.getLayoutParams().height = squareSize;
@@ -212,22 +205,22 @@ public class GameScreen extends AppCompatActivity {
         car1.getLayoutParams().height = squareSize;
         car1.getLayoutParams().width = squareSize;
         car2.getLayoutParams().height = squareSize;
-        car2.getLayoutParams().width = squareSize*2;
+        car2.getLayoutParams().width = squareSize * 2;
         car3.getLayoutParams().height = squareSize;
-        car3.getLayoutParams().width = squareSize*3;
+        car3.getLayoutParams().width = squareSize * 3;
         car4.getLayoutParams().height = squareSize;
-        car4.getLayoutParams().width = squareSize*4;
-//        //car1.setX(numHorizontalSquares);
+        car4.getLayoutParams().width = squareSize * 4;
+        //car1.setX(numHorizontalSquares);
         car1.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
-        this.startPositionCar1=horizontalOffset + (numHorizontalSquares / 2) * squareSize;
+        this.startPositionCar1 = horizontalOffset + (numHorizontalSquares / 2) * squareSize;
 
-        car1.setY(squareSize * (numVerticalSquares - 2)-squareSize);
+        car1.setY(squareSize * (numVerticalSquares - 2) - squareSize);
         car2.setX(screenWidth);
-        car2.setY(squareSize * (numVerticalSquares - 2)-(2*squareSize));
+        car2.setY(squareSize * (numVerticalSquares - 2) - (2 * squareSize));
         car3.setX(0);
-        car3.setY(squareSize * (numVerticalSquares - 2)-(3*squareSize));
+        car3.setY(squareSize * (numVerticalSquares - 2) - (3 * squareSize));
         car4.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
-        car4.setY(squareSize * (numVerticalSquares - 2)-(4*squareSize));
+        car4.setY(squareSize * (numVerticalSquares - 2) - (4 * squareSize));
 
         // Put the character in the horizontal middle square of the map.
         characterView.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
@@ -239,96 +232,95 @@ public class GameScreen extends AppCompatActivity {
         // Display the name. Or the best name, Prichard.
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
-        mHandler=new Handler();
+        mHandler = new Handler();
         movementOfCars();
         //movementOfCars();
         //randomMovementCar1();
     }
-    private void movementOfCars(){
+    private void movementOfCars() {
         mStatusChecker1.run();
         mStatusChecker2.run();
         mStatusChecker3.run();
         mStatusChecker4.run();
         //while(true){
-          //  randomMovementCar1();
-//            randomMovementCar2();
-//            randomMovementCar3();
-      //  }
+        //    randomMovementCar1();
+        //    randomMovementCar2();
+        //      randomMovementCar3();
+        //}
     }
-    Runnable mStatusChecker1 = new Runnable(){
+    Runnable mStatusChecker1 = new Runnable() {
         @Override
-        public void run(){
-            try{
+        public void run() {
+            try {
                 //updateStatus();
             } finally {
                 randomMovementCar1();
-                mHandler.postDelayed(mStatusChecker1,400);
+                mHandler.postDelayed(mStatusChecker1, 400);
             }
         }
     };
-    Runnable mStatusChecker2 = new Runnable(){
+    Runnable mStatusChecker2 = new Runnable() {
         @Override
-        public void run(){
-            try{
+        public void run() {
+            try {
                 //updateStatus();
             } finally {
                 randomMovementCar2();
-                mHandler.postDelayed(mStatusChecker2,500);
+                mHandler.postDelayed(mStatusChecker2, 500);
             }
         }
     };
-    Runnable mStatusChecker4 = new Runnable(){
+    Runnable mStatusChecker4 = new Runnable() {
         @Override
-        public void run(){
-            try{
+        public void run() {
+            try {
                 //updateStatus();
             } finally {
                 randomMovementCar4();
-                mHandler.postDelayed(mStatusChecker4,350);
+                mHandler.postDelayed(mStatusChecker4, 350);
             }
         }
     };
-    Runnable mStatusChecker3 = new Runnable(){
+    Runnable mStatusChecker3 = new Runnable() {
         @Override
-        public void run(){
-            try{
+        public void run() {
+            try {
                 //updateStatus();
             } finally {
                 randomMovementCar3();
-                mHandler.postDelayed(mStatusChecker3,200);
+                mHandler.postDelayed(mStatusChecker3, 200);
             }
         }
     };
-    private void randomMovementCar1(){
-        if(car1.getX()>0){
-            car1.setX(car1.getX()-squareSize);
-        } else{
+
+    private void randomMovementCar1() {
+        if (car1.getX() > -car1.getWidth()) {
+            car1.setX(car1.getX() - squareSize);
+        } else {
             car1.setX(screenWidth);
         }
     }
-    private void randomMovementCar2(){
-        if(car2.getX()<screenWidth){
-            car2.setX(car2.getX()+squareSize);
-        } else{
-            car2.setX(0);
+    private void randomMovementCar2() {
+        if (car2.getX() < screenWidth) {
+            car2.setX(car2.getX() + squareSize);
+        } else {
+            car2.setX(-car2.getWidth());
         }
     }
-    private void randomMovementCar4(){
-        if(car4.getX()<screenWidth){
-            car4.setX(car4.getX()+squareSize);
-        } else{
-            car4.setX(0);
+    private void randomMovementCar4() {
+        if (car4.getX() < screenWidth) {
+            car4.setX(car4.getX() + squareSize);
+        } else {
+            car4.setX(-car4.getWidth());
         }
     }
-    private void randomMovementCar3(){
-        if(car3.getX()>0){
-            car3.setX(car3.getX()-(2*squareSize));
-        } else{
+    private void randomMovementCar3() {
+        if (car3.getX() > -car3.getWidth()) {
+            car3.setX(car3.getX() - (2 * squareSize));
+        } else {
             car3.setX(screenWidth);
         }
     }
-
-
 
     private void setDifficultyText(TextView difficultyView, TextView livesView) {
         String difficulty = Preferences.read("difficulty", "easy");
@@ -345,12 +337,12 @@ public class GameScreen extends AppCompatActivity {
         }
     }
     //movement for the cars
-//    public static void randomMovementCar1(){
-//        Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
-//        Player user = new Player();
-//        //user.setCharacterView(characterView);
-//        user.moveCar1Left(car1, game, startPositionCar1 );
-//    }
+    //public static void randomMovementCar1(){
+    //    Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
+    //    Player user = new Player();
+    //    user.setCharacterView(characterView);
+    //    user.moveCar1Left(car1, game, startPositionCar1 );
+    //}
 
     // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
@@ -360,15 +352,14 @@ public class GameScreen extends AppCompatActivity {
         user.setCharacterView(characterView);
         scoreNumber = (TextView) findViewById(R.id.scoreNumber);
         switch (keyCode) {
-        //Uses WASD system.
+        // Uses WASD system.
         case KeyEvent.KEYCODE_W:
-
             if (user.movePlayer("moveUp", game)) {
                 this.currPos++;
-                boolean atGreatestSpot=false;
-                if(this.currPos>this.greatestPos){
-                    this.greatestPos=this.currPos;
-                    atGreatestSpot=true;
+                boolean atGreatestSpot = false;
+                if (this.currPos > this.greatestPos) {
+                    this.greatestPos = this.currPos;
+                    atGreatestSpot = true;
                 }
                 System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
                 if (atGreatestSpot) {
@@ -380,27 +371,31 @@ public class GameScreen extends AppCompatActivity {
                 System.out.println("Score is " + this.score);
                 System.out.println("current position is " + this.currPos);
                 System.out.println("max Position is  " + this.greatestPos);
-                scoreNumber.setText(""+ score);
+                scoreNumber.setText("" + score);
             }
-            return true;
+            //return true;
+            break;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", game);
-            return true;
+            //return true;
+            break;
         case KeyEvent.KEYCODE_D:
             user.movePlayer("moveRight", game);
-            return true;
+            //return true;
+            break;
         case KeyEvent.KEYCODE_S:
             if (user.movePlayer("moveDown", game)) {
                 this.currPos--;
-//            System.out.println("Score is " + this.score);
-//            System.out.println("current position is " + this.currPos);
-//            System.out.println("max Position is  " + this.greatestPos);
-                return true;
+                //System.out.println("Score is " + this.score);
+                //System.out.println("current position is " + this.currPos);
+                //System.out.println("max Position is  " + this.greatestPos);
+                //return true;
             }
+            break;
         default:
             return super.onKeyUp(keyCode, event);
         }
-
+        return true;
     }
 
     public TextView getNameView() {
