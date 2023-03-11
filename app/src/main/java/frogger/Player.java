@@ -88,7 +88,7 @@ public class Player {
         //moveCar1Left(car, game, startPosition);
     }
 
-    public void movePlayer(String movement, Game game) {
+    public boolean movePlayer(String movement, Game game) {
         this.movePlayerTest(movement, game);
         int squareSize = game.getSquareSize();
         int screenWidth = game.getScreenWidth();
@@ -100,6 +100,7 @@ public class Player {
             if (characterView.getY() > 0 && moveUp) {
                 characterView.setY(characterView.getY() - squareSize);
                 this.posY = characterView.getY();
+                return true;
             }
             break;
         case "moveLeft":
@@ -118,9 +119,10 @@ public class Player {
             if ((characterView.getY() + (2 * squareSize)) < screenHeight && moveDown) {
                 characterView.setY(characterView.getY() + squareSize);
                 this.posY = characterView.getY();
-
+                return true;
             }
         }
+        return false;
     }
 
     public void setName(String input) {
