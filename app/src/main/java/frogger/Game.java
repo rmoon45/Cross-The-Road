@@ -37,7 +37,7 @@ public class Game {
         }
     }
 
-    public int getScore(){
+    public int getScore() {
         return this.score;
     }
     public String getDifficulty() {

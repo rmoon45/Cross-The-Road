@@ -363,24 +363,25 @@ public class GameScreen extends AppCompatActivity {
         //Uses WASD system.
         case KeyEvent.KEYCODE_W:
 
-            user.movePlayer("moveUp", game);
-            this.currPos++;
-            boolean atGreatestSpot=false;
-            if(this.currPos>this.greatestPos){
-                this.greatestPos=this.currPos;
-                atGreatestSpot=true;
+            if (user.movePlayer("moveUp", game)) {
+                this.currPos++;
+                boolean atGreatestSpot=false;
+                if(this.currPos>this.greatestPos){
+                    this.greatestPos=this.currPos;
+                    atGreatestSpot=true;
+                }
+                System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+                if (atGreatestSpot) {
+                    this.score = ScoreManager.getScoreAfterMove(this.score,
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+                } else {
+                    System.out.print("not at the greatest spot");
+                }
+                System.out.println("Score is " + this.score);
+                System.out.println("current position is " + this.currPos);
+                System.out.println("max Position is  " + this.greatestPos);
+                scoreNumber.setText(""+ score);
             }
-            System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
-            if (atGreatestSpot) {
-                this.score = ScoreManager.getScoreAfterMove(this.score,
-                        ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
-            } else {
-                System.out.print("not at the greatest spot");
-            }
-            System.out.println("Score is " + this.score);
-            System.out.println("current position is " + this.currPos);
-            System.out.println("max Position is  " + this.greatestPos);
-            scoreNumber.setText(""+ score);
             return true;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", game);
@@ -389,12 +390,13 @@ public class GameScreen extends AppCompatActivity {
             user.movePlayer("moveRight", game);
             return true;
         case KeyEvent.KEYCODE_S:
-            user.movePlayer("moveDown", game);
-            this.currPos--;
+            if (user.movePlayer("moveDown", game)) {
+                this.currPos--;
 //            System.out.println("Score is " + this.score);
 //            System.out.println("current position is " + this.currPos);
 //            System.out.println("max Position is  " + this.greatestPos);
-            return true;
+                return true;
+            }
         default:
             return super.onKeyUp(keyCode, event);
         }
