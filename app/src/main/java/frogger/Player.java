@@ -4,11 +4,6 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class Player {
-
-    private String name;
-
-    private int character;
-    private int lives;
     private float posX;
     private float posY;
     private ImageView characterView;
@@ -16,12 +11,9 @@ public class Player {
     private boolean moveDown;
     private boolean moveRight;
     private boolean moveLeft;
-    private ArrayList<String> rowArray;
+    private String name;
 
     public Player() {
-        this.name = "";
-        this.character = 0;
-        this.lives = -1;
         this.posX = 0;
         this.posY = 0;
         this.moveUp = false;
@@ -73,7 +65,7 @@ public class Player {
             }
         }
     }
-    public void moveCar1Left(ImageView car, Game game, int startPosition) {
+    /*public void moveCar1Left(ImageView car, Game game, int startPosition) {
         //this.movePlayerTest(movement, game);
         int squareSize = game.getSquareSize();
         int screenWidth = game.getScreenWidth();
@@ -83,7 +75,7 @@ public class Player {
         }
         car.setX(startPosition);
         //moveCar1Left(car, game, startPosition);
-    }
+    }*/
 
     public boolean movePlayer(String movement, Game game) {
         this.movePlayerTest(movement, game);
@@ -122,17 +114,6 @@ public class Player {
         return false;
     }
 
-    public void setName(String input) {
-        name = input;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-    public int getLives() {
-        return this.lives;
-    }
-
     public void setPosX(float x) {
         posX = x;
     }
@@ -146,10 +127,6 @@ public class Player {
         return this.posY;
     }
 
-    public ImageView getCharacterView() {
-        return characterView;
-    }
-
     public void setCharacterView(ImageView characterView) {
         this.characterView = characterView;
     }
@@ -158,32 +135,19 @@ public class Player {
         return moveUp;
     }
 
-    public void setMoveUp(boolean moveUp) {
-        this.moveUp = moveUp;
-    }
-
     public boolean isMoveDown() {
         return moveDown;
-    }
-
-    public void setMoveDown(boolean moveDown) {
-        this.moveDown = moveDown;
     }
 
     public boolean isMoveRight() {
         return moveRight;
     }
 
-    public void setMoveRight(boolean moveRight) {
-        this.moveRight = moveRight;
-    }
-
     public boolean isMoveLeft() {
         return moveLeft;
     }
 
-    public void setMoveLeft(boolean moveLeft) {
-        this.moveLeft = moveLeft;
+    public void setName(String input) {
+        this.name = input;
     }
-
 }

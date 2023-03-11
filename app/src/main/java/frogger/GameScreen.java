@@ -9,8 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import android.graphics.Bitmap;
 import android.view.KeyEvent;
 
 import com.example.s0.R;
@@ -19,13 +17,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import preferences.Preferences;
-import java.util.Random;
 
 public class GameScreen extends AppCompatActivity {
 
     private ImageView characterView;
-    private TextView livesView;
-    private TextView difficultyView;
     private TextView nameView;
     private TextView scoreNumber;
     private int currPos;
@@ -35,15 +30,9 @@ public class GameScreen extends AppCompatActivity {
     private ImageView car2;
     private ImageView car3;
     private ImageView car4;
-    private ArrayList<Object> spawnList;
-    private int startPositionCar1;
+    //private int startPositionCar1;
     private Handler mHandler;
-    private int mInterval = 200; // 1 seconds
-
-
     private RelativeLayout backgroundLayout;
-
-    private Bitmap bitmap;
 
     private int squareSize;
 
@@ -51,10 +40,13 @@ public class GameScreen extends AppCompatActivity {
 
     private int screenHeight;
 
-    //private int horizontalOffset;
-    //private
-
     private ArrayList<String> map;
+
+    private Runnable mStatusChecker1;
+    private Runnable mStatusChecker2;
+    private Runnable mStatusChecker3;
+    private Runnable mStatusChecker4;
+
 
     public GameScreen() {
         // Change the contents of the level by modifying this list.
@@ -86,12 +78,42 @@ public class GameScreen extends AppCompatActivity {
         this.map.add(0, "goal"); // Don't put these into the List definition plz thx
         this.map.add("safe");
         this.map.add("safe");
-        //characterView.setImageResource(R.drawable.frog);
 
-        //this.spawnList = new ArrayList<>(Arrays.asList(car1,car2,car3));
-    }
-    private void spawnObject() {
-        Random random = new Random();
+        this.mStatusChecker1 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar1();
+                mHandler.postDelayed(mStatusChecker1, 400);
+            }
+        };
+
+        this.mStatusChecker2 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar2();
+                mHandler.postDelayed(mStatusChecker2, 500);
+            }
+        };
+
+        this.mStatusChecker3 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar3();
+                mHandler.postDelayed(mStatusChecker3, 200);
+            }
+        };
+
+        this.mStatusChecker4 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar4();
+                mHandler.postDelayed(mStatusChecker4, 350);
+            }
+        };
     }
 
     @Override
@@ -212,7 +234,7 @@ public class GameScreen extends AppCompatActivity {
         car4.getLayoutParams().width = squareSize * 4;
         //car1.setX(numHorizontalSquares);
         car1.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
-        this.startPositionCar1 = horizontalOffset + (numHorizontalSquares / 2) * squareSize;
+        //this.startPositionCar1 = horizontalOffset + (numHorizontalSquares / 2) * squareSize;
 
         car1.setY(squareSize * (numVerticalSquares - 2) - squareSize);
         car2.setX(screenWidth);
@@ -242,56 +264,7 @@ public class GameScreen extends AppCompatActivity {
         mStatusChecker2.run();
         mStatusChecker3.run();
         mStatusChecker4.run();
-        //while(true){
-        //    randomMovementCar1();
-        //    randomMovementCar2();
-        //      randomMovementCar3();
-        //}
     }
-    Runnable mStatusChecker1 = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                //updateStatus();
-            } finally {
-                randomMovementCar1();
-                mHandler.postDelayed(mStatusChecker1, 400);
-            }
-        }
-    };
-    Runnable mStatusChecker2 = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                //updateStatus();
-            } finally {
-                randomMovementCar2();
-                mHandler.postDelayed(mStatusChecker2, 500);
-            }
-        }
-    };
-    Runnable mStatusChecker4 = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                //updateStatus();
-            } finally {
-                randomMovementCar4();
-                mHandler.postDelayed(mStatusChecker4, 350);
-            }
-        }
-    };
-    Runnable mStatusChecker3 = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                //updateStatus();
-            } finally {
-                randomMovementCar3();
-                mHandler.postDelayed(mStatusChecker3, 200);
-            }
-        }
-    };
 
     private void randomMovementCar1() {
         if (car1.getX() > -car1.getWidth()) {
@@ -373,15 +346,12 @@ public class GameScreen extends AppCompatActivity {
                 System.out.println("max Position is  " + this.greatestPos);
                 scoreNumber.setText("" + score);
             }
-            //return true;
             break;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", game);
-            //return true;
             break;
         case KeyEvent.KEYCODE_D:
             user.movePlayer("moveRight", game);
-            //return true;
             break;
         case KeyEvent.KEYCODE_S:
             if (user.movePlayer("moveDown", game)) {
@@ -396,21 +366,5 @@ public class GameScreen extends AppCompatActivity {
             return super.onKeyUp(keyCode, event);
         }
         return true;
-    }
-
-    public TextView getNameView() {
-        return this.nameView;
-    }
-
-    public TextView getDifficultyView() {
-        return this.difficultyView;
-    }
-
-    public TextView getLivesView() {
-        return this.livesView;
-    }
-
-    public void setMap(ArrayList<String> map) {
-        this.map = map;
     }
 }

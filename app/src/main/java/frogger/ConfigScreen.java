@@ -14,16 +14,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 public class ConfigScreen extends AppCompatActivity {
 
     private EditText nameInput;
     private TextView invalidName;
     private boolean startGame;
     private Button setName;
-    private Button easy;
-    private Button medium;
-    private Button hard;
     private ImageView bunny;
     private ImageView duck;
     private ImageView frog;
@@ -52,7 +48,6 @@ public class ConfigScreen extends AppCompatActivity {
                     setName.setBackgroundColor(Color.RED);
                 } else {
                     invalidName.setVisibility(View.INVISIBLE);
-                    user.setName(userName);
                     Preferences.write("name", userName);
                     setName.setBackgroundColor(Color.GREEN);
                     startGame = true;
@@ -61,26 +56,12 @@ public class ConfigScreen extends AppCompatActivity {
         });
     }
 
-    public Button getEasy() {
-        this.easy = (Button) findViewById(R.id.easyButton);
-        return this.easy;
-    }
-    public Button getMedium() {
-        return medium;
-    }
-    public Button getHard() {
-        return hard;
-    }
-
     public void onBunnySelected(View v) {
         Log.d("test", "bunny selected");
         Preferences.write("character", "bunny");
         bunny.setBackgroundColor(Color.BLUE);
         duck.setBackgroundColor(Color.GRAY);
         frog.setBackgroundColor(Color.GRAY);
-    }
-    public TextView getInvalidName() {
-        return this.invalidName;
     }
 
     public void onFrogSelected(View v) {
