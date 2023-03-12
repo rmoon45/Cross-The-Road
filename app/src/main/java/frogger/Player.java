@@ -1,7 +1,6 @@
 package frogger;
 
 import android.widget.ImageView;
-import java.util.ArrayList;
 
 public class Player {
     private float posX;
