@@ -27,17 +27,8 @@ public class Preferences {
         sharedPreferencesEditor.putString(key, val);
         sharedPreferencesEditor.commit();
     }
-    public static void write(String key, int val) {
-        sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putInt(key, val);
-        sharedPreferencesEditor.commit();
-    }
     public static String read(String key, String defaultValue) {
         return sharedPreferences.getString(key, defaultValue);
-    }
-
-    public static int read(String key, int defaultValue) {
-        return sharedPreferences.getInt(key, defaultValue);
     }
 
     // Credit to
