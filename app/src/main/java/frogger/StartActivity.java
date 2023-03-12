@@ -6,6 +6,8 @@ import android.view.View;
 import com.example.s0.R;
 import android.content.Intent;
 
+import preferences.Preferences;
+
 public class StartActivity extends AppCompatActivity {
 
     @Override
@@ -18,6 +20,7 @@ public class StartActivity extends AppCompatActivity {
         finish();
     }
     public void onStart(View view) {
+        new Preferences(getApplicationContext());
         Intent intent = new Intent(StartActivity.this, ConfigScreen.class);
         startActivity(intent);
     }
