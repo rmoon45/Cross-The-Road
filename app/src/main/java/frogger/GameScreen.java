@@ -144,7 +144,6 @@ public class GameScreen extends AppCompatActivity {
         }
 
         // Instantiate game and player objects.
-        Game game = new Game(screenWidth, screenHeight, squareSize);
         Player user = new Player();
 
         // Calculate the horizontal offset needed so that the middle column of tiles is centered.
@@ -320,14 +319,13 @@ public class GameScreen extends AppCompatActivity {
     // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
         Player user = new Player();
         user.setCharacterView(characterView);
         scoreNumber = (TextView) findViewById(R.id.scoreNumber);
         switch (keyCode) {
         // Uses WASD system.
         case KeyEvent.KEYCODE_W:
-            if (user.movePlayer("moveUp", game)) {
+            if (user.movePlayer("moveUp", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos++;
                 boolean atGreatestSpot = false;
                 if (this.currPos > this.greatestPos) {
@@ -348,13 +346,13 @@ public class GameScreen extends AppCompatActivity {
             }
             break;
         case KeyEvent.KEYCODE_A:
-            user.movePlayer("moveLeft", game);
+            user.movePlayer("moveLeft", this.squareSize, this.screenWidth, this.screenHeight);
             break;
         case KeyEvent.KEYCODE_D:
-            user.movePlayer("moveRight", game);
+            user.movePlayer("moveRight", this.squareSize, this.screenWidth, this.screenHeight);
             break;
         case KeyEvent.KEYCODE_S:
-            if (user.movePlayer("moveDown", game)) {
+            if (user.movePlayer("moveDown", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos--;
                 //System.out.println("Score is " + this.score);
                 //System.out.println("current position is " + this.currPos);

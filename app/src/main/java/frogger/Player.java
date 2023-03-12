@@ -1,7 +1,6 @@
 package frogger;
 
 import android.widget.ImageView;
-import java.util.ArrayList;
 
 public class Player {
     private float posX;
@@ -31,7 +30,7 @@ public class Player {
         return (!(nameInput.length() == 0 || userName.length() == 0));
     }
 
-    public void movePlayerTest(String movement, Game game) {
+    public void movePlayerTest(String movement, int squareSize, int screenWidth, int screenHeight) {
         switch (movement) {
         //based off of the input string, change the position to be moving in said direction.
         //use subtract for going up/left and plus for down/right bc the origin is at top left.
@@ -43,22 +42,22 @@ public class Player {
             }
             break;
         case "moveLeft":
-            if (this.getPosX() >= 0 - (game.getSquareSize() / 2)) {
+            if (this.getPosX() >= 0 - (squareSize / 2)) {
                 moveLeft = true;
             } else {
                 moveLeft = false;
             }
             break;
         case "moveRight":
-            if ((this.getPosX() + game.getSquareSize())
-                < game.getScreenWidth() - (game.getSquareSize() / 2)) {
+            if ((this.getPosX() + squareSize)
+                < screenWidth - (squareSize / 2)) {
                 moveRight = true;
             } else {
                 moveRight = false;
             }
             break;
         default:
-            if ((this.getPosY() + (2 * game.getSquareSize())) < game.getScreenHeight()) {
+            if ((this.getPosY() + (2 * squareSize)) < screenHeight) {
                 moveDown = true;
             } else {
                 moveDown = false;
@@ -77,11 +76,8 @@ public class Player {
         //moveCar1Left(car, game, startPosition);
     }*/
 
-    public boolean movePlayer(String movement, Game game) {
-        this.movePlayerTest(movement, game);
-        int squareSize = game.getSquareSize();
-        int screenWidth = game.getScreenWidth();
-        int screenHeight = game.getScreenHeight();
+    public boolean movePlayer(String movement, int squareSize, int screenWidth, int screenHeight) {
+        this.movePlayerTest(movement, squareSize, screenWidth, screenHeight);
         switch (movement) {
         //based off of the input string, change the position to be moving in said direction.
         //use subtract for going up/left and plus for down/right bc the origin is at top left.
