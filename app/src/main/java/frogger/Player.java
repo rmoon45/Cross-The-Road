@@ -1,17 +1,8 @@
 package frogger;
 
 import android.widget.ImageView;
-import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Player {
-
-    private String name;
-
-    private int character;
-    private int lives;
     private float posX;
     private float posY;
     private ImageView characterView;
@@ -19,12 +10,9 @@ public class Player {
     private boolean moveDown;
     private boolean moveRight;
     private boolean moveLeft;
-    private ArrayList<String> rowArray;
+    private String name;
 
     public Player() {
-        this.name = "";
-        this.character = 0;
-        this.lives = -1;
         this.posX = 0;
         this.posY = 0;
         this.moveUp = false;
@@ -42,7 +30,7 @@ public class Player {
         return (!(nameInput.length() == 0 || userName.length() == 0));
     }
 
-    public void movePlayerTest(String movement, Game game) {
+    public void movePlayerTest(String movement, int squareSize, int screenWidth, int screenHeight) {
         switch (movement) {
         //based off of the input string, change the position to be moving in said direction.
         //use subtract for going up/left and plus for down/right bc the origin is at top left.
@@ -54,34 +42,42 @@ public class Player {
             }
             break;
         case "moveLeft":
-            if (this.getPosX() >= 0 - (game.getSquareSize() / 2)) {
+            if (this.getPosX() >= 0 - (squareSize / 2)) {
                 moveLeft = true;
             } else {
                 moveLeft = false;
             }
             break;
         case "moveRight":
-            if ((this.getPosX() + game.getSquareSize())
-                < game.getScreenWidth() - (game.getSquareSize() / 2)) {
+            if ((this.getPosX() + squareSize)
+                < screenWidth - (squareSize / 2)) {
                 moveRight = true;
             } else {
                 moveRight = false;
             }
             break;
         default:
-            if ((this.getPosY() + (2 * game.getSquareSize())) < game.getScreenHeight()) {
+            if ((this.getPosY() + (2 * squareSize)) < screenHeight) {
                 moveDown = true;
             } else {
                 moveDown = false;
             }
         }
     }
-
-    public void movePlayer(String movement, Game game) {
-        this.movePlayerTest(movement, game);
+    /*public void moveCar1Left(ImageView car, Game game, int startPosition) {
+        //this.movePlayerTest(movement, game);
         int squareSize = game.getSquareSize();
         int screenWidth = game.getScreenWidth();
         int screenHeight = game.getScreenHeight();
+        while (car.getX() > 0 + (squareSize / 2)) {
+            car.setX(car.getX() - squareSize);
+        }
+        car.setX(startPosition);
+        //moveCar1Left(car, game, startPosition);
+    }*/
+
+    public boolean movePlayer(String movement, int squareSize, int screenWidth, int screenHeight) {
+        this.movePlayerTest(movement, squareSize, screenWidth, screenHeight);
         switch (movement) {
         //based off of the input string, change the position to be moving in said direction.
         //use subtract for going up/left and plus for down/right bc the origin is at top left.
@@ -89,6 +85,7 @@ public class Player {
             if (characterView.getY() > 0 && moveUp) {
                 characterView.setY(characterView.getY() - squareSize);
                 this.posY = characterView.getY();
+                return true;
             }
             break;
         case "moveLeft":
@@ -107,20 +104,10 @@ public class Player {
             if ((characterView.getY() + (2 * squareSize)) < screenHeight && moveDown) {
                 characterView.setY(characterView.getY() + squareSize);
                 this.posY = characterView.getY();
-
+                return true;
             }
         }
-    }
-
-    public void setName(String input) {
-        name = input;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-    public int getLives() {
-        return this.lives;
+        return false;
     }
 
     public void setPosX(float x) {
@@ -136,10 +123,6 @@ public class Player {
         return this.posY;
     }
 
-    public ImageView getCharacterView() {
-        return characterView;
-    }
-
     public void setCharacterView(ImageView characterView) {
         this.characterView = characterView;
     }
@@ -148,32 +131,19 @@ public class Player {
         return moveUp;
     }
 
-    public void setMoveUp(boolean moveUp) {
-        this.moveUp = moveUp;
-    }
-
     public boolean isMoveDown() {
         return moveDown;
-    }
-
-    public void setMoveDown(boolean moveDown) {
-        this.moveDown = moveDown;
     }
 
     public boolean isMoveRight() {
         return moveRight;
     }
 
-    public void setMoveRight(boolean moveRight) {
-        this.moveRight = moveRight;
-    }
-
     public boolean isMoveLeft() {
         return moveLeft;
     }
 
-    public void setMoveLeft(boolean moveLeft) {
-        this.moveLeft = moveLeft;
+    public void setName(String input) {
+        this.name = input;
     }
-
 }
