@@ -2,37 +2,37 @@ package frogger;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
 import android.view.KeyEvent;
 
 import com.example.s0.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import preferences.Preferences;
 
 public class GameScreen extends AppCompatActivity {
 
     private ImageView characterView;
-    private TextView livesView;
-    private TextView difficultyView;
     private TextView nameView;
     private TextView scoreNumber;
     private int currPos;
     private int greatestPos;
     private int score;
-
+    private ImageView car1;
+    private ImageView car2;
+    private ImageView car3;
+    private ImageView car4;
+    //private int startPositionCar1;
+    private Handler mHandler;
     private RelativeLayout backgroundLayout;
-
-    private Bitmap bitmap;
 
     private int squareSize;
 
@@ -41,6 +41,12 @@ public class GameScreen extends AppCompatActivity {
     private int screenHeight;
 
     private ArrayList<String> map;
+
+    private Runnable mStatusChecker1;
+    private Runnable mStatusChecker2;
+    private Runnable mStatusChecker3;
+    private Runnable mStatusChecker4;
+
 
     public GameScreen() {
         // Change the contents of the level by modifying this list.
@@ -72,6 +78,42 @@ public class GameScreen extends AppCompatActivity {
         this.map.add(0, "goal"); // Don't put these into the List definition plz thx
         this.map.add("safe");
         this.map.add("safe");
+
+        this.mStatusChecker1 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar1();
+                mHandler.postDelayed(mStatusChecker1, 400);
+            }
+        };
+
+        this.mStatusChecker2 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar2();
+                mHandler.postDelayed(mStatusChecker2, 500);
+            }
+        };
+
+        this.mStatusChecker3 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar3();
+                mHandler.postDelayed(mStatusChecker3, 200);
+            }
+        };
+
+        this.mStatusChecker4 = () -> {
+            try {
+                //updateStatus();
+            } finally {
+                randomMovementCar4();
+                mHandler.postDelayed(mStatusChecker4, 350);
+            }
+        };
     }
 
     @Override
@@ -102,7 +144,6 @@ public class GameScreen extends AppCompatActivity {
         }
 
         // Instantiate game and player objects.
-        Game game = new Game(screenWidth, screenHeight, squareSize);
         Player user = new Player();
 
         // Calculate the horizontal offset needed so that the middle column of tiles is centered.
@@ -153,6 +194,11 @@ public class GameScreen extends AppCompatActivity {
 
         // Get the TextViews to set the text of.
         characterView = findViewById(R.id.characterView);
+        car1 = findViewById(R.id.car1);
+        car2 = findViewById(R.id.car2);
+        car3 = findViewById(R.id.car3);
+        car4 = findViewById(R.id.car4);
+
         user.setCharacterView(characterView);
 
         // Set and display lives and difficulty.
@@ -170,10 +216,33 @@ public class GameScreen extends AppCompatActivity {
         default:
             characterView.setImageResource(R.drawable.frog);
         }
+        car1.setImageResource(R.drawable.car1);
+        //car2.setImageResource(R.drawable.car3);
+        //car3.setImageResource(R.drawable.car1);
 
         // Set the size and location of your fighter.
         characterView.getLayoutParams().height = squareSize;
         characterView.getLayoutParams().width = squareSize;
+        car1.getLayoutParams().height = squareSize;
+        car1.getLayoutParams().width = squareSize;
+        car2.getLayoutParams().height = squareSize;
+        car2.getLayoutParams().width = squareSize * 2;
+        car3.getLayoutParams().height = squareSize;
+        car3.getLayoutParams().width = squareSize * 3;
+        car4.getLayoutParams().height = squareSize;
+        car4.getLayoutParams().width = squareSize * 4;
+        //car1.setX(numHorizontalSquares);
+        car1.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
+        //this.startPositionCar1 = horizontalOffset + (numHorizontalSquares / 2) * squareSize;
+
+        car1.setY(squareSize * (numVerticalSquares - 2) - squareSize);
+        car2.setX(screenWidth);
+        car2.setY(squareSize * (numVerticalSquares - 2) - (2 * squareSize));
+        car3.setX(0);
+        car3.setY(squareSize * (numVerticalSquares - 2) - (3 * squareSize));
+        car4.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
+        car4.setY(squareSize * (numVerticalSquares - 2) - (4 * squareSize));
+
         // Put the character in the horizontal middle square of the map.
         characterView.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
         user.setPosX(characterView.getX());
@@ -184,6 +253,45 @@ public class GameScreen extends AppCompatActivity {
         // Display the name. Or the best name, Prichard.
         nameView = findViewById(R.id.nameView);
         nameView.setText(Preferences.read("name", "Prichard"));
+        mHandler = new Handler();
+        movementOfCars();
+        //movementOfCars();
+        //randomMovementCar1();
+    }
+    private void movementOfCars() {
+        mStatusChecker1.run();
+        mStatusChecker2.run();
+        mStatusChecker3.run();
+        mStatusChecker4.run();
+    }
+
+    private void randomMovementCar1() {
+        if (car1.getX() > -car1.getWidth()) {
+            car1.setX(car1.getX() - squareSize);
+        } else {
+            car1.setX(screenWidth);
+        }
+    }
+    private void randomMovementCar2() {
+        if (car2.getX() < screenWidth) {
+            car2.setX(car2.getX() + squareSize);
+        } else {
+            car2.setX(-car2.getWidth());
+        }
+    }
+    private void randomMovementCar4() {
+        if (car4.getX() < screenWidth) {
+            car4.setX(car4.getX() + squareSize);
+        } else {
+            car4.setX(-car4.getWidth());
+        }
+    }
+    private void randomMovementCar3() {
+        if (car3.getX() > -car3.getWidth()) {
+            car3.setX(car3.getX() - (2 * squareSize));
+        } else {
+            car3.setX(screenWidth);
+        }
     }
 
     private void setDifficultyText(TextView difficultyView, TextView livesView) {
@@ -200,69 +308,61 @@ public class GameScreen extends AppCompatActivity {
             livesView.setText("Lives: " + 7);
         }
     }
+    //movement for the cars
+    //public static void randomMovementCar1(){
+    //    Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
+    //    Player user = new Player();
+    //    user.setCharacterView(characterView);
+    //    user.moveCar1Left(car1, game, startPositionCar1 );
+    //}
 
     // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
         Player user = new Player();
         user.setCharacterView(characterView);
-        //scoreNumber = (TextView) findViewById(R.id.scoreNumber);
+        scoreNumber = (TextView) findViewById(R.id.scoreNumber);
         switch (keyCode) {
-        //Uses WASD system.
+        // Uses WASD system.
         case KeyEvent.KEYCODE_W:
-
-            user.movePlayer("moveUp", game);
-            this.currPos++;
-            boolean atGreatestSpot=false;
-            if(this.currPos>this.greatestPos){
-                this.greatestPos=this.currPos;
-                atGreatestSpot=true;
+            if (user.movePlayer("moveUp", this.squareSize, this.screenWidth, this.screenHeight)) {
+                this.currPos++;
+                boolean atGreatestSpot = false;
+                if (this.currPos > this.greatestPos) {
+                    this.greatestPos = this.currPos;
+                    atGreatestSpot = true;
+                }
+                System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+                if (atGreatestSpot) {
+                    this.score = ScoreManager.getScoreAfterMove(this.score,
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+                } else {
+                    System.out.print("not at the greatest spot");
+                }
+                System.out.println("Score is " + this.score);
+                System.out.println("current position is " + this.currPos);
+                System.out.println("max Position is  " + this.greatestPos);
+                scoreNumber.setText("" + score);
             }
-            System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
-            if (atGreatestSpot) {
-                this.score = ScoreManager.getScoreAfterMove(this.score,
-                        ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
-            } else {
-                System.out.print("not at the greatest spot");
-            }
-            System.out.println("Score is " + this.score);
-//            System.out.println("current position is " + this.currPos);
-//            System.out.println("max Position is  " + this.greatestPos);
-            //scoreNumber.setText(score);
-            return true;
+            break;
         case KeyEvent.KEYCODE_A:
-            user.movePlayer("moveLeft", game);
-            return true;
+            user.movePlayer("moveLeft", this.squareSize, this.screenWidth, this.screenHeight);
+            break;
         case KeyEvent.KEYCODE_D:
-            user.movePlayer("moveRight", game);
-            return true;
+            user.movePlayer("moveRight", this.squareSize, this.screenWidth, this.screenHeight);
+            break;
         case KeyEvent.KEYCODE_S:
-            user.movePlayer("moveDown", game);
-            this.currPos--;
-//            System.out.println("Score is " + this.score);
-//            System.out.println("current position is " + this.currPos);
-//            System.out.println("max Position is  " + this.greatestPos);
-            return true;
+            if (user.movePlayer("moveDown", this.squareSize, this.screenWidth, this.screenHeight)) {
+                this.currPos--;
+                //System.out.println("Score is " + this.score);
+                //System.out.println("current position is " + this.currPos);
+                //System.out.println("max Position is  " + this.greatestPos);
+                //return true;
+            }
+            break;
         default:
             return super.onKeyUp(keyCode, event);
         }
-
-    }
-
-    public TextView getNameView() {
-        return this.nameView;
-    }
-
-    public TextView getDifficultyView() {
-        return this.difficultyView;
-    }
-
-    public TextView getLivesView() {
-        return this.livesView;
-    }
-
-    public void setMap(ArrayList<String> map) {
-        this.map = map;
+        return true;
     }
 }
