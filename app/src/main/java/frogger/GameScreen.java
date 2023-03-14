@@ -26,6 +26,7 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
     private int score;
+    private boolean scoreChange;
     private ImageView car1;
     private ImageView car2;
     private ImageView car3;
@@ -47,6 +48,9 @@ public class GameScreen extends AppCompatActivity {
     private Runnable mStatusChecker4;
     private Game game;
 
+    int numVerticalSquares;
+    int numHorizontalSquares;
+    int horizontalOffset;
 
     public GameScreen() {
         // Change the contents of the level by modifying this list.
@@ -122,6 +126,13 @@ public class GameScreen extends AppCompatActivity {
 
         setContentView(R.layout.activity_game_screen);
 
+
+        layoutSetup();
+        playerAndVehiclesOnGame();
+
+    }
+
+    public void layoutSetup() {
         backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         // to-do: if someone could fix this to get the actual usable height, that would be great.
@@ -129,9 +140,9 @@ public class GameScreen extends AppCompatActivity {
             - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
             );
-        int numVerticalSquares = this.map.size();
+        numVerticalSquares = this.map.size();
         squareSize = screenHeight / numVerticalSquares;
-        int numHorizontalSquares = (screenWidth / squareSize);
+        numHorizontalSquares = (screenWidth / squareSize);
         // Make sure all of the screen is covered horizontally if the numbers don't divide
         // perfectly.
         if (numHorizontalSquares * squareSize < screenWidth) {
@@ -143,13 +154,11 @@ public class GameScreen extends AppCompatActivity {
             numHorizontalSquares++;
         }
 
-        // Instantiate game and player objects.
-        game = new Game();
-        Player user = new Player();
+
 
         // Calculate the horizontal offset needed so that the middle column of tiles is centered.
         // This should be a negative number or zero.
-        int horizontalOffset = (screenWidth / 2)
+        horizontalOffset = (screenWidth / 2)
                 - (squareSize / 2)
                 - (numHorizontalSquares / 2) * squareSize;
 
@@ -158,19 +167,19 @@ public class GameScreen extends AppCompatActivity {
             // Get the corresponding tile image for the row.
             int imageResource = R.drawable.safe;
             switch (this.map.get(i)) {
-            case "river":
-                imageResource = R.drawable.river;
-                break;
-            case "road":
-                imageResource = R.drawable.road;
-                break;
-            case "goal":
-                imageResource = R.drawable.goal;
-                break;
-            default:
-                if (this.map.get(i) != "safe") {
-                    throw new RuntimeException("you dnun goofed");
-                }
+                case "river":
+                    imageResource = R.drawable.river;
+                    break;
+                case "road":
+                    imageResource = R.drawable.road;
+                    break;
+                case "goal":
+                    imageResource = R.drawable.goal;
+                    break;
+                default:
+                    if (this.map.get(i) != "safe") {
+                        throw new RuntimeException("you dnun goofed");
+                    }
             }
 
             // Populate the tile image onto each square in the row.
@@ -193,6 +202,15 @@ public class GameScreen extends AppCompatActivity {
         params.width = numHorizontalSquares * squareSize;
         backgroundLayout.setLayoutParams(params);
 
+
+
+    }
+
+    public void playerAndVehiclesOnGame() {
+        // Instantiate game and player objects.
+        game = new Game();
+        Player user = new Player();
+
         // Get the TextViews to set the text of.
         characterView = findViewById(R.id.characterView);
         car1 = findViewById(R.id.car1);
@@ -208,14 +226,14 @@ public class GameScreen extends AppCompatActivity {
         // Choooooose your fighter~!
         String character = Preferences.read("character", "duck");
         switch (character) {
-        case "bunny":
-            characterView.setImageResource(R.drawable.bunny);
-            break;
-        case "duck":
-            characterView.setImageResource(R.drawable.duck);
-            break;
-        default:
-            characterView.setImageResource(R.drawable.frog);
+            case "bunny":
+                characterView.setImageResource(R.drawable.bunny);
+                break;
+            case "duck":
+                characterView.setImageResource(R.drawable.duck);
+                break;
+            default:
+                characterView.setImageResource(R.drawable.frog);
         }
         car1.setImageResource(R.drawable.car1);
         //car2.setImageResource(R.drawable.car3);
@@ -232,6 +250,7 @@ public class GameScreen extends AppCompatActivity {
         car3.getLayoutParams().width = squareSize * 3;
         car4.getLayoutParams().height = squareSize;
         car4.getLayoutParams().width = squareSize * 4;
+        System.out.println("hii" + getCar1Width());
         //car1.setX(numHorizontalSquares);
         car1.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
         //this.startPositionCar1 = horizontalOffset + (numHorizontalSquares / 2) * squareSize;
@@ -258,6 +277,7 @@ public class GameScreen extends AppCompatActivity {
         movementOfCars();
         //movementOfCars();
         //randomMovementCar1();
+
     }
     private void movementOfCars() {
         mStatusChecker1.run();
@@ -331,6 +351,7 @@ public class GameScreen extends AppCompatActivity {
         case KeyEvent.KEYCODE_W:
             if (user.movePlayer("moveUp", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos++;
+
                 boolean atGreatestSpot = false;
                 if (this.currPos > this.greatestPos) {
                     this.greatestPos = this.currPos;
@@ -339,8 +360,10 @@ public class GameScreen extends AppCompatActivity {
                 System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
                 if (atGreatestSpot) {
                     this.score = ScoreManager.getScoreAfterMove(this.score,
-                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map), true);
                 } else {
+                    this.score = ScoreManager.getScoreAfterMove(this.score,
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
                     System.out.print("not at the greatest spot");
                 }
                 //System.out.println("Score is " + this.score);
@@ -351,13 +374,19 @@ public class GameScreen extends AppCompatActivity {
             break;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", this.squareSize, this.screenWidth, this.screenHeight);
+            this.score = ScoreManager.getScoreAfterMove(this.score,
+                    ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
             break;
         case KeyEvent.KEYCODE_D:
             user.movePlayer("moveRight", this.squareSize, this.screenWidth, this.screenHeight);
+            this.score = ScoreManager.getScoreAfterMove(this.score,
+                    ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
             break;
         case KeyEvent.KEYCODE_S:
             if (user.movePlayer("moveDown", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos--;
+                this.score = ScoreManager.getScoreAfterMove(this.score,
+                        ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
                 //System.out.println("Score is " + this.score);
                 //System.out.println("current position is " + this.currPos);
                 //System.out.println("max Position is  " + this.greatestPos);
@@ -369,4 +398,64 @@ public class GameScreen extends AppCompatActivity {
         }
         return true;
     }
+    public void setCurrPos(int currPos) {
+        this.currPos = currPos;
+    }
+
+    public void setGreatestPos(int greatestPos) {
+        this.greatestPos = greatestPos;
+    }
+
+    public boolean getScoreChange(String movement) {
+        if (movement == "moveUp") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //car1.getLayoutParams().height = squareSize;
+    //        car1.getLayoutParams().width = squareSize;
+    //        car2.getLayoutParams().height = squareSize;
+    //        car2.getLayoutParams().width = squareSize * 2;
+    //        car3.getLayoutParams().height = squareSize;
+    //        car3.getLayoutParams().width = squareSize * 3;
+    //        car4.getLayoutParams().height = squareSize;
+    //        car4.getLayoutParams().width = squareSize * 4;
+    public int getCar1Width() {
+        return car1.getLayoutParams().width;
+    }
+
+    public int getCar2Width() {
+        return car2.getLayoutParams().width;
+    }
+
+    public int getCar3Width() {
+        return car3.getLayoutParams().width;
+    }
+
+    public int getCar4Width() {
+        return car4.getLayoutParams().width;
+    }
+
+    public float getCar1Y() {
+        return car1.getY();
+    }
+
+    public float getCar2Y() {
+        return car4.getY();
+    }
+
+    public float getCar1Speed() {
+        return car1.getX() - squareSize;
+    }
+
+    public float getCar3Speed() {
+        return car3.getX() - (2 * squareSize);
+    }
+
+    public int getNumVerticalSquares() {
+        return this.map.size();
+    }
+    
+
 }
