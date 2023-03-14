@@ -146,4 +146,12 @@ public class Player {
     public void setName(String input) {
         this.name = input;
     }
+
+    public boolean scoreChange(String movement) {
+        if (movement == "moveup") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

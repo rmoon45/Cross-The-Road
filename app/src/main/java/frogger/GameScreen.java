@@ -26,6 +26,7 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
     private int score;
+    private boolean scoreChange;
     private ImageView car1;
     private ImageView car2;
     private ImageView car3;
@@ -327,6 +328,7 @@ public class GameScreen extends AppCompatActivity {
         case KeyEvent.KEYCODE_W:
             if (user.movePlayer("moveUp", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos++;
+
                 boolean atGreatestSpot = false;
                 if (this.currPos > this.greatestPos) {
                     this.greatestPos = this.currPos;
@@ -335,8 +337,10 @@ public class GameScreen extends AppCompatActivity {
                 System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
                 if (atGreatestSpot) {
                     this.score = ScoreManager.getScoreAfterMove(this.score,
-                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map), true);
                 } else {
+                    this.score = ScoreManager.getScoreAfterMove(this.score,
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
                     System.out.print("not at the greatest spot");
                 }
                 System.out.println("Score is " + this.score);
@@ -347,13 +351,19 @@ public class GameScreen extends AppCompatActivity {
             break;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", this.squareSize, this.screenWidth, this.screenHeight);
+            this.score = ScoreManager.getScoreAfterMove(this.score,
+                    ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
             break;
         case KeyEvent.KEYCODE_D:
             user.movePlayer("moveRight", this.squareSize, this.screenWidth, this.screenHeight);
+            this.score = ScoreManager.getScoreAfterMove(this.score,
+                    ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
             break;
         case KeyEvent.KEYCODE_S:
             if (user.movePlayer("moveDown", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos--;
+                this.score = ScoreManager.getScoreAfterMove(this.score,
+                        ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
                 //System.out.println("Score is " + this.score);
                 //System.out.println("current position is " + this.currPos);
                 //System.out.println("max Position is  " + this.greatestPos);
@@ -364,5 +374,12 @@ public class GameScreen extends AppCompatActivity {
             return super.onKeyUp(keyCode, event);
         }
         return true;
+    }
+    public void setCurrPos(int currPos) {
+        this.currPos = currPos;
+    }
+
+    public void setGreatestPos(int greatestPos) {
+        this.greatestPos = greatestPos;
     }
 }
