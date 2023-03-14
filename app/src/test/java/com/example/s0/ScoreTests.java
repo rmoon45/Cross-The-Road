@@ -71,6 +71,7 @@ public class ScoreTests {
         assertEquals(scoreManager.getScoreAfterMove(0, "safe", true), 1);
     }
 
+    // score does not increase when player goes up to already travelled to lane
     @Test
     public void testScoreNotIncreasedWhenAlreadyTravelled() {
         gamescreen.setCurrPos(10);
@@ -78,9 +79,20 @@ public class ScoreTests {
         assertEquals(scoreManager.getScoreAfterMove(0, "safe",false), 0);
     }
 
+    // score does not increase when player moves but does not change lanes
     @Test
-    public void testScoreNotIncreasedWhenNotGoingUp() {
-        assertEquals(scoreManager.getScoreAfterMove(0, "safe",false), 0);
+    public void testScoreNotIncreasedWhenGoingSide() {
+        boolean scoreChangeFromRight = gamescreen.getScoreChange("moveRight");
+        assertEquals(scoreManager.getScoreAfterMove(0, "safe",scoreChangeFromRight), 0);
+        boolean scoreChangeFromLeft = gamescreen.getScoreChange("moveLeft");
+        assertEquals(scoreManager.getScoreAfterMove(0, "safe",scoreChangeFromLeft), 0);
+    }
+
+    // score does not increase when player goes down the map
+    @Test
+    public void testScoreNotIncreasedWhenGoingDown() {
+        boolean scoreChangeFromDown = gamescreen.getScoreChange("moveDown");
+        assertEquals(scoreManager.getScoreAfterMove(0, "safe",scoreChangeFromDown), 0);
 
     }
 
