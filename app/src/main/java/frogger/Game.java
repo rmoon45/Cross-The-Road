@@ -36,16 +36,4 @@ public class Game {
     public int getLives() {
         return this.lives;
     }
-
-    public int getSquareSize() {
-        return squareSize;
-    }
-
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    public int getScreenHeight() {
-        return screenHeight;
-    }
 }

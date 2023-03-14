@@ -23,6 +23,7 @@ public class ConfigScreen extends AppCompatActivity {
     private ImageView bunny;
     private ImageView duck;
     private ImageView frog;
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class ConfigScreen extends AppCompatActivity {
         frog = (ImageView) findViewById(R.id.frog);
 
         Player user = new Player();
+        Game game = new Game();
+
         nameInput = (EditText) findViewById(R.id.nameInput);
         invalidName = (TextView) findViewById(R.id.nameInvalid);
         setName = (Button) findViewById(R.id.setName);
