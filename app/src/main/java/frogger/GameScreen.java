@@ -48,9 +48,9 @@ public class GameScreen extends AppCompatActivity {
     private Runnable mStatusChecker4;
     private Game game;
 
-    int numVerticalSquares;
-    int numHorizontalSquares;
-    int horizontalOffset;
+    private int numVerticalSquares;
+    private int numHorizontalSquares;
+    private int horizontalOffset;
 
     public GameScreen() {
         // Change the contents of the level by modifying this list.
@@ -141,8 +141,12 @@ public class GameScreen extends AppCompatActivity {
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
             );
         numVerticalSquares = this.map.size();
+        System.out.println("numVerticalSquares is " + numVerticalSquares);
         squareSize = screenHeight / numVerticalSquares;
+        System.out.println("squareSize is " + squareSize);
+
         numHorizontalSquares = (screenWidth / squareSize);
+
         // Make sure all of the screen is covered horizontally if the numbers don't divide
         // perfectly.
         if (numHorizontalSquares * squareSize < screenWidth) {
@@ -153,6 +157,8 @@ public class GameScreen extends AppCompatActivity {
         if (numHorizontalSquares % 2 == 0) {
             numHorizontalSquares++;
         }
+        System.out.println("numHorizontalSquares is " + numHorizontalSquares);
+
 
 
 
@@ -167,19 +173,19 @@ public class GameScreen extends AppCompatActivity {
             // Get the corresponding tile image for the row.
             int imageResource = R.drawable.safe;
             switch (this.map.get(i)) {
-                case "river":
-                    imageResource = R.drawable.river;
-                    break;
-                case "road":
-                    imageResource = R.drawable.road;
-                    break;
-                case "goal":
-                    imageResource = R.drawable.goal;
-                    break;
-                default:
-                    if (this.map.get(i) != "safe") {
-                        throw new RuntimeException("you dnun goofed");
-                    }
+            case "river":
+                imageResource = R.drawable.river;
+                break;
+            case "road":
+                imageResource = R.drawable.road;
+                break;
+            case "goal":
+                imageResource = R.drawable.goal;
+                break;
+            default:
+                if (this.map.get(i) != "safe") {
+                    throw new RuntimeException("you dnun goofed");
+                }
             }
 
             // Populate the tile image onto each square in the row.
@@ -226,14 +232,14 @@ public class GameScreen extends AppCompatActivity {
         // Choooooose your fighter~!
         String character = Preferences.read("character", "duck");
         switch (character) {
-            case "bunny":
-                characterView.setImageResource(R.drawable.bunny);
-                break;
-            case "duck":
-                characterView.setImageResource(R.drawable.duck);
-                break;
-            default:
-                characterView.setImageResource(R.drawable.frog);
+        case "bunny":
+            characterView.setImageResource(R.drawable.bunny);
+            break;
+        case "duck":
+            characterView.setImageResource(R.drawable.duck);
+            break;
+        default:
+            characterView.setImageResource(R.drawable.frog);
         }
         car1.setImageResource(R.drawable.car1);
         //car2.setImageResource(R.drawable.car3);
@@ -262,6 +268,11 @@ public class GameScreen extends AppCompatActivity {
         car3.setY(squareSize * (numVerticalSquares - 2) - (3 * squareSize));
         car4.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
         car4.setY(squareSize * (numVerticalSquares - 2) - (4 * squareSize));
+
+        Vehicle vehicle1 = new Vehicle("car1", numVerticalSquares, squareSize);
+        Vehicle vehicle2 = new Vehicle("car2", numVerticalSquares, squareSize);
+        Vehicle vehicle3 = new Vehicle("car3", numVerticalSquares, squareSize);
+        Vehicle vehicle4 = new Vehicle("car4", numVerticalSquares, squareSize);
 
         // Put the character in the horizontal middle square of the map.
         characterView.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
@@ -407,11 +418,7 @@ public class GameScreen extends AppCompatActivity {
     }
 
     public boolean getScoreChange(String movement) {
-        if (movement == "moveUp") {
-            return true;
-        } else {
-            return false;
-        }
+        return movement.equals("moveUp");
     }
     //car1.getLayoutParams().height = squareSize;
     //        car1.getLayoutParams().width = squareSize;
@@ -455,6 +462,10 @@ public class GameScreen extends AppCompatActivity {
 
     public int getNumVerticalSquares() {
         return this.map.size();
+    }
+
+    public int getSquareSize() {
+        return squareSize;
     }
     
 
