@@ -31,7 +31,6 @@ public class GameScreen extends AppCompatActivity {
     private ImageView car2;
     private ImageView car3;
     private ImageView car4;
-    //private int startPositionCar1;
     private Handler mHandler;
     private RelativeLayout backgroundLayout;
 
@@ -47,6 +46,7 @@ public class GameScreen extends AppCompatActivity {
     private Runnable mStatusChecker2;
     private Runnable mStatusChecker3;
     private Runnable mStatusChecker4;
+    private Game game;
 
 
     public GameScreen() {
@@ -145,6 +145,7 @@ public class GameScreen extends AppCompatActivity {
         }
 
         // Instantiate game and player objects.
+        game = new Game();
         Player user = new Player();
 
         // Calculate the horizontal offset needed so that the middle column of tiles is centered.
@@ -300,13 +301,16 @@ public class GameScreen extends AppCompatActivity {
         difficultyView.setText("Difficulty: " + difficulty);
         switch (difficulty) {
         case "hard":
-            livesView.setText("Lives: " + 1);
+            game.setDifficulty("hard");
+            livesView.setText("Lives: " + game.getLives());
             break;
         case "medium":
-            livesView.setText("Lives: " + 3);
+            game.setDifficulty("medium");
+            livesView.setText("Lives: " + game.getLives());
             break;
         default:
-            livesView.setText("Lives: " + 7);
+            game.setDifficulty("easy");
+            livesView.setText("Lives: " + game.getLives());
         }
     }
     //movement for the cars
@@ -343,9 +347,9 @@ public class GameScreen extends AppCompatActivity {
                             ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
                     System.out.print("not at the greatest spot");
                 }
-                System.out.println("Score is " + this.score);
-                System.out.println("current position is " + this.currPos);
-                System.out.println("max Position is  " + this.greatestPos);
+                //System.out.println("Score is " + this.score);
+                //System.out.println("current position is " + this.currPos);
+                //System.out.println("max Position is  " + this.greatestPos);
                 scoreNumber.setText("" + score);
             }
             break;
