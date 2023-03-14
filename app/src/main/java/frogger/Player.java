@@ -147,11 +147,4 @@ public class Player {
         this.name = input;
     }
 
-    public boolean scoreChange(String movement) {
-        if (movement == "moveup") {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
