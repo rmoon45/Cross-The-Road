@@ -85,7 +85,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker1 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar1();
                 mHandler.postDelayed(mStatusChecker1, 400);
@@ -94,7 +94,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker2 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar2();
                 mHandler.postDelayed(mStatusChecker2, 500);
@@ -103,7 +103,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker3 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar3();
                 mHandler.postDelayed(mStatusChecker3, 200);
@@ -112,7 +112,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker4 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar4();
                 mHandler.postDelayed(mStatusChecker4, 350);
