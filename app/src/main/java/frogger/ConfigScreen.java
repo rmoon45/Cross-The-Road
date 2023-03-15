@@ -5,113 +5,152 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import com.example.s0.R;
 import preferences.Preferences;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ConfigScreen extends AppCompatActivity {
 
-    private EditText nameInput;
-    private TextView invalidName;
-    private boolean startGame;
-    private Button setName;
-    private ImageView bunny;
-    private ImageView duck;
-    private ImageView frog;
-    private Game game;
+    // Difficulty, lives, character, and name to pass to the game screen.
+    private String difficulty;
+    private int lives;
+    private String character;
+    private String name;
+
+    // Make sure a valid name, character, and difficulty have been selected.
+    private boolean isNameValid;
+    private boolean isDifficultySelected;
+    private boolean isCharacterSelected;
+
+    // UI resource ids for convenience
+    private int[] difficultyButtonIds;
+    private int[] characterButtonIds;
+    private Button startButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_screen);
 
-        bunny = (ImageView) findViewById(R.id.bunny);
-        duck = (ImageView) findViewById(R.id.duck);
-        frog = (ImageView) findViewById(R.id.frog);
+        this.isNameValid = false;
+        this.isDifficultySelected = false;
+        this.isCharacterSelected = false;
 
-        Player user = new Player();
-        Game game = new Game();
+        this.difficultyButtonIds = new int[]{R.id.easyButton, R.id.mediumButton, R.id.hardButton};
+        this.characterButtonIds = new int[]{R.id.bunny, R.id.frog, R.id.duck};
 
-        nameInput = (EditText) findViewById(R.id.nameInput);
-        invalidName = (TextView) findViewById(R.id.nameInvalid);
-        setName = (Button) findViewById(R.id.setName);
-        setName.setOnClickListener(new View.OnClickListener() {
+        this.startButton = findViewById(R.id.startButton);
+
+        this.startButton.setEnabled(false);
+
+        initializeNameValidation();
+    }
+
+    public void onStartGame(View v) {
+        Intent intent = new Intent(ConfigScreen.this, frogger.GameScreen.class);
+        intent.putExtra("name", this.name);
+        intent.putExtra("difficulty", this.difficulty);
+        intent.putExtra("lives", this.lives);
+        intent.putExtra("character", this.character);
+        Preferences.write("name", this.name); // Goal is to get rid of Preferences and use
+        Preferences.write("difficulty", this.difficulty); // intent instead.
+        Preferences.write("lives", this.lives);
+        Preferences.write("character", this.character);
+        startActivity(intent);
+        finish();
+    }
+
+    public void initializeNameValidation() {
+        this.name = "Name";
+        this.isNameValid = true;
+
+        ((EditText) findViewById(R.id.nameInput)).addTextChangedListener(new TextWatcher() {
+
             @Override
-            public void onClick(View view) {
-                startGame = false;
-                String userName = nameInput.getText().toString();
-                if (!user.checkName(userName)) {
-                    invalidName.setVisibility(View.VISIBLE);
-                    nameInput.setError("Invalid Name! Please enter valid name.");
-                    setName.setBackgroundColor(Color.RED);
+            public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String name = s.toString();
+                boolean isNameValid = (name.trim().length() != 0);
+
+                ConfigScreen.this.name = name;
+                ConfigScreen.this.isNameValid = isNameValid;
+
+                if (isNameValid) {
+                    findViewById(R.id.nameInvalid).setVisibility(View.INVISIBLE);
                 } else {
-                    invalidName.setVisibility(View.INVISIBLE);
-                    Preferences.write("name", userName);
-                    setName.setBackgroundColor(Color.GREEN);
-                    startGame = true;
+                    findViewById(R.id.nameInvalid).setVisibility(View.VISIBLE);
                 }
+
+                updateStartButton();
             }
         });
     }
 
     public void onBunnySelected(View v) {
-        Log.d("test", "bunny selected");
-        Preferences.write("character", "bunny");
-        bunny.setBackgroundColor(Color.BLUE);
-        duck.setBackgroundColor(Color.GRAY);
-        frog.setBackgroundColor(Color.GRAY);
-    }
-
-    public void onFrogSelected(View v) {
-        Log.d("test", "frog selected");
-        Preferences.write("character", "frog");
-        bunny.setBackgroundColor(Color.GRAY);
-        duck.setBackgroundColor(Color.GRAY);
-        frog.setBackgroundColor(Color.BLUE);
+        displaySelectedCharacter(R.id.bunny);
+        this.character = "bunny";
     }
 
     public void onDuckSelected(View v) {
-        Log.d("test", "duck selected");
-        Preferences.write("character", "duck");
-        bunny.setBackgroundColor(Color.GRAY);
-        duck.setBackgroundColor(Color.BLUE);
-        frog.setBackgroundColor(Color.GRAY);
+        displaySelectedCharacter(R.id.duck);
+        this.character = "duck";
     }
-    public void onStartGame(View v) {
-        if (startGame) {
-            Preferences.read("name", "Prichard");
-            Intent intent = new Intent(ConfigScreen.this, frogger.GameScreen.class);
-            startActivity(intent);
-            finish();
-        }
+
+    public void onFrogSelected(View v) {
+        displaySelectedCharacter(R.id.frog);
+        this.character = "frog";
     }
 
     public void onEasySelected(View v) {
-        ((Button) findViewById(R.id.easyButton)).setBackgroundColor(Color.BLUE);
-        ((Button) findViewById(R.id.mediumButton)).setBackgroundColor(-7829368);
-        ((Button) findViewById(R.id.hardButton)).setBackgroundColor(-7829368);
-        Log.d("test", "easy selected");
-        Preferences.write("difficulty", "easy");
+        displaySelectedDifficulty(R.id.easyButton);
+        this.difficulty = "easy";
+        this.lives = 7;
     }
 
     public void onMediumSelected(View v) {
-        findViewById(R.id.easyButton).setBackgroundColor(-7829368);
-        findViewById(R.id.mediumButton).setBackgroundColor(Color.BLUE);
-        findViewById(R.id.hardButton).setBackgroundColor(-7829368);
-        Log.d("test", "medium selected");
-        Preferences.write("difficulty", "medium");
+        displaySelectedDifficulty(R.id.mediumButton);
+        this.difficulty = "medium";
+        this.lives = 3;
     }
 
     public void onHardSelected(View v) {
-        findViewById(R.id.easyButton).setBackgroundColor(-7829368);
-        findViewById(R.id.mediumButton).setBackgroundColor(-7829368);
-        findViewById(R.id.hardButton).setBackgroundColor(Color.BLUE);
-        Log.d("test", "hard selected");
-        Preferences.write("difficulty", "hard");
+        displaySelectedDifficulty(R.id.hardButton);
+        this.difficulty = "hard";
+        this.lives = 1;
+    }
+
+    private void displaySelectedCharacter(int selectedCharacterId) {
+        this.isCharacterSelected = true;
+        displaySelectedButton(selectedCharacterId, characterButtonIds);
+    }
+
+    private void displaySelectedDifficulty(int selectedDifficultyId) {
+        this.isDifficultySelected = true;
+        displaySelectedButton(selectedDifficultyId, difficultyButtonIds);
+    }
+
+    private void displaySelectedButton(int selectedResourceId, int[] resourceIds) {
+        for (int currentResourceId: resourceIds) {
+            (findViewById(currentResourceId)).setBackgroundColor(Color.GRAY);
+        }
+        (findViewById(selectedResourceId)).setBackgroundColor(Color.BLUE);
+        updateStartButton();
+    }
+
+    private void updateStartButton() {
+        if (isNameValid && isCharacterSelected && isDifficultySelected) {
+            this.startButton.setEnabled(true);
+        } else {
+            this.startButton.setEnabled(false);
+        }
     }
 }
