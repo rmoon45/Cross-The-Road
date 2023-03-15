@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import com.example.s0.R;
 import preferences.Preferences;
 import android.widget.EditText;
@@ -29,7 +28,6 @@ public class ConfigScreen extends AppCompatActivity {
     // UI resource ids for convenience
     private int[] difficultyButtonIds;
     private int[] characterButtonIds;
-    private Button startButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +41,7 @@ public class ConfigScreen extends AppCompatActivity {
         this.difficultyButtonIds = new int[]{R.id.easyButton, R.id.mediumButton, R.id.hardButton};
         this.characterButtonIds = new int[]{R.id.bunny, R.id.frog, R.id.duck};
 
-        this.startButton = findViewById(R.id.startButton);
-
-        this.startButton.setEnabled(false);
+        findViewById(R.id.startButton).setEnabled(false);
 
         initializeNameValidation();
     }
@@ -148,9 +144,9 @@ public class ConfigScreen extends AppCompatActivity {
 
     private void updateStartButton() {
         if (isNameValid && isCharacterSelected && isDifficultySelected) {
-            this.startButton.setEnabled(true);
+            findViewById(R.id.startButton).setEnabled(true);
         } else {
-            this.startButton.setEnabled(false);
+            findViewById(R.id.startButton).setEnabled(false);
         }
     }
 }
