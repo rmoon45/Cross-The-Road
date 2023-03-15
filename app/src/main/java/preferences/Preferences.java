@@ -31,6 +31,15 @@ public class Preferences {
         return sharedPreferences.getString(key, defaultValue);
     }
 
+    public static void write(String key, int val) {
+        sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putInt(key, val);
+        sharedPreferencesEditor.commit();
+    }
+    public static int read(String key, int defaultValue) {
+        return sharedPreferences.getInt(key, defaultValue);
+    }
+
     // Credit to
     // https://stackoverflow.com/questions/70288072/creating-a-common-shared-preference-class-in-android-and-using-that-class-to-fet
     // for this class

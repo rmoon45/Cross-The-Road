@@ -137,9 +137,9 @@ public class GameScreen extends AppCompatActivity {
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         // to-do: if someone could fix this to get the actual usable height, that would be great.
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
-            - getResources().getDimensionPixelSize(
+                - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
-            );
+        );
         numVerticalSquares = this.map.size();
         System.out.println("numVerticalSquares is " + numVerticalSquares);
         squareSize = screenHeight / numVerticalSquares;
@@ -467,6 +467,6 @@ public class GameScreen extends AppCompatActivity {
     public int getSquareSize() {
         return squareSize;
     }
-    
+
 
 }
