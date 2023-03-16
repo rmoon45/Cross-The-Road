@@ -13,9 +13,10 @@ import frogger.ConfigScreen;
 import frogger.Game;
 import frogger.GameScreen;
 import frogger.Player;
+import frogger.Player1;
 
 public class UserTests {
-    private Player user;
+    private Player1 user;
 
     private Looper looper = null;
     private Context context;
@@ -26,7 +27,7 @@ public class UserTests {
         context = mock(Context.class);
         when(context.getMainLooper()).thenReturn(looper);
 
-        user = mock(Player.class);
+        user = mock(Player1.class);
     }
 
     // Nicole: valid name is valid

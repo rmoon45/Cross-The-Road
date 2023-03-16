@@ -1,150 +1,141 @@
 package frogger;
 
-import android.widget.ImageView;
+import android.content.Context;
+import android.view.KeyEvent;
+import android.widget.LinearLayout;
 
-public class Player {
-    private float posX;
-    private float posY;
-    private ImageView characterView;
-    private boolean moveUp;
-    private boolean moveDown;
-    private boolean moveRight;
-    private boolean moveLeft;
-    private String name;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 
-    public Player() {
-        this.posX = 0;
-        this.posY = 0;
-        this.moveUp = false;
-        this.moveDown = false;
-        this.moveLeft = false;
-        this.moveRight = false;
+import com.example.s0.R;
+
+public class Player extends AppCompatImageView {
+
+    private int squareSize;
+    private int numHorizontalSquares;
+    private int numVerticalSquares;
+    private int horizontalOffset;
+
+    private int gridX;
+    private int gridY;
+
+    private int spawnX;
+    private int spawnY;
+
+    private int furthestReached;
+
+    // hmmm don't use this
+    public Player(@NonNull Context context) {
+        super(context);
     }
 
-    public boolean checkName(String nameInput) {
-        if (nameInput == null) {
+    public Player(@NonNull Context context, String character, int squareSize,
+                  int numHorizontalSquares, int numVerticalSquares, int horizontalOffset) {
+        super(context);
+        this.squareSize = squareSize;
+        this.numHorizontalSquares = numHorizontalSquares;
+        this.numVerticalSquares = numVerticalSquares;
+        this.horizontalOffset = horizontalOffset;
+
+        switch (character) {
+            case "bunny":
+                setImageResource(R.drawable.bunny);
+                break;
+            case "duck":
+                setImageResource(R.drawable.duck);
+                break;
+            default:
+                setImageResource(R.drawable.frog);
+        }
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                this.squareSize, this.squareSize);
+        this.setLayoutParams(layoutParams);
+
+        // Put the character in the vertical second-to-bottommost square.
+        this.setX(this.horizontalOffset + (this.numHorizontalSquares / 2) * this.squareSize);
+        this.setY(this.squareSize * (this.numVerticalSquares - 2));
+
+        this.gridX = this.numHorizontalSquares / 2;
+        this.gridY = this.numVerticalSquares - 2;
+        this.spawnX = this.gridX;
+        this.spawnY = this.gridY;
+
+        this.furthestReached = this.spawnY;
+    }
+
+    public boolean movePlayer(int keycode) {
+        boolean hasMoved = false;
+        switch (keycode) {
+        //based off of the input string, change the position to be moving in said direction.
+        //use subtract for going up/left and plus for down/right bc the origin is at top left.
+        case KeyEvent.KEYCODE_W:
+            hasMoved = moveUp();
+            break;
+        case KeyEvent.KEYCODE_S:
+            moveDown();
+            break;
+        case KeyEvent.KEYCODE_A:
+            moveLeft();
+            break;
+        case KeyEvent.KEYCODE_D:
+            moveRight();
+            break;
+        default:
+            hasMoved = false;
+        }
+        return hasMoved;
+    }
+
+    private boolean moveUp() {
+        if (this.gridY > 0) {
+            this.setGridY(this.gridY - 1);
+            if (this.furthestReached > this.gridY) {
+                this.furthestReached = this.gridY;
+                return true;
+            }
             return false;
-        }
-        String userName = nameInput.trim();
-        System.out.println(userName);
-        return (!(nameInput.length() == 0 || userName.length() == 0));
-    }
-
-    public void movePlayerTest(String movement, int squareSize, int screenWidth, int screenHeight) {
-        switch (movement) {
-        //based off of the input string, change the position to be moving in said direction.
-        //use subtract for going up/left and plus for down/right bc the origin is at top left.
-        case "moveUp":
-            if (this.getPosY() >= 0) {
-                moveUp = true;
-            } else {
-                moveUp = false;
-            }
-            break;
-        case "moveLeft":
-            if (this.getPosX() >= 0 - (squareSize / 2)) {
-                moveLeft = true;
-            } else {
-                moveLeft = false;
-            }
-            break;
-        case "moveRight":
-            if ((this.getPosX() + squareSize)
-                < screenWidth - (squareSize / 2)) {
-                moveRight = true;
-            } else {
-                moveRight = false;
-            }
-            break;
-        default:
-            if ((this.getPosY() + (2 * squareSize)) < screenHeight) {
-                moveDown = true;
-            } else {
-                moveDown = false;
-            }
-        }
-    }
-    /*public void moveCar1Left(ImageView car, Game game, int startPosition) {
-        //this.movePlayerTest(movement, game);
-        int squareSize = game.getSquareSize();
-        int screenWidth = game.getScreenWidth();
-        int screenHeight = game.getScreenHeight();
-        while (car.getX() > 0 + (squareSize / 2)) {
-            car.setX(car.getX() - squareSize);
-        }
-        car.setX(startPosition);
-        //moveCar1Left(car, game, startPosition);
-    }*/
-
-    public boolean movePlayer(String movement, int squareSize, int screenWidth, int screenHeight) {
-        this.movePlayerTest(movement, squareSize, screenWidth, screenHeight);
-        switch (movement) {
-        //based off of the input string, change the position to be moving in said direction.
-        //use subtract for going up/left and plus for down/right bc the origin is at top left.
-        case "moveUp":
-            if (characterView.getY() > 0 && moveUp) {
-                characterView.setY(characterView.getY() - squareSize);
-                this.posY = characterView.getY();
-                return true;
-            }
-            break;
-        case "moveLeft":
-            if (characterView.getX() > 0 + (squareSize / 2) && moveLeft) {
-                characterView.setX(characterView.getX() - squareSize);
-                this.posX = characterView.getX();
-            }
-            break;
-        case "moveRight":
-            if ((characterView.getX() + squareSize) < screenWidth - (squareSize / 2) && moveRight) {
-                characterView.setX(characterView.getX() + squareSize);
-                this.posX = characterView.getX();
-            }
-            break;
-        default:
-            if ((characterView.getY() + (2 * squareSize)) < screenHeight && moveDown) {
-                characterView.setY(characterView.getY() + squareSize);
-                this.posY = characterView.getY();
-                return true;
-            }
         }
         return false;
     }
 
-    public void setPosX(float x) {
-        posX = x;
-    }
-    public void setPosY(float y) {
-        posY = y;
-    }
-    public float getPosX() {
-        return this.posX;
-    }
-    public float getPosY() {
-        return this.posY;
+    private boolean moveDown() {
+        if (this.gridY < numVerticalSquares - 1) {
+            this.setGridY(this.gridY + 1);
+        }
+        return false;
     }
 
-    public void setCharacterView(ImageView characterView) {
-        this.characterView = characterView;
+    private boolean moveRight() {
+        if (this.gridX < numHorizontalSquares - 2) {
+            this.setGridX(this.gridX + 1);
+        }
+        return false;
     }
 
-    public boolean isMoveUp() {
-        return moveUp;
+    private boolean moveLeft() {
+        if (this.gridX > 1) {
+            this.setGridX(this.gridX - 1);
+        }
+        return false;
     }
 
-    public boolean isMoveDown() {
-        return moveDown;
+    public void respawn() {
+        this.setGridX(spawnX);
+        this.setGridY(spawnY);
     }
 
-    public boolean isMoveRight() {
-        return moveRight;
+    private void setGridX(int gridX) {
+        this.gridX = gridX;
+        this.setX(this.horizontalOffset + gridX * this.squareSize);
     }
 
-    public boolean isMoveLeft() {
-        return moveLeft;
+    private void setGridY(int gridY) {
+        this.gridY = gridY;
+        this.setY(this.squareSize * gridY);
     }
 
-    public void setName(String input) {
-        this.name = input;
+    public int getGridY() {
+        return this.gridY;
     }
-
 }

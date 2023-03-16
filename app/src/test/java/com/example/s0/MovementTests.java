@@ -11,11 +11,11 @@ import android.os.Looper;
 
 import frogger.Game;
 import frogger.GameScreen;
-import frogger.Player;
+import frogger.Player1;
 
 public class MovementTests {
     private Looper looper = null;
-    private Player user = null;
+    private Player1 user = null;
     private int squareSize;
     private int screenWidth;
     private int screenHeight;
@@ -25,7 +25,7 @@ public class MovementTests {
         looper = mock(Looper.class);
         Context context = mock(Context.class);
         when(context.getMainLooper()).thenReturn(looper);
-        user = new Player();
+        user = new Player1();
         squareSize = 20;
         screenWidth = 100;
         screenHeight = 200;
