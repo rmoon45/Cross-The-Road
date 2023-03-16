@@ -9,6 +9,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.s0.R;
 
+import java.util.ArrayList;
+
 public class Player extends AppCompatImageView {
 
     private int squareSize;
@@ -64,60 +66,82 @@ public class Player extends AppCompatImageView {
         this.furthestReached = this.spawnY;
     }
 
-    public boolean movePlayer(int keycode) {
-        boolean hasMoved = false;
+    public int move(ArrayList<String> map, int keycode) {
+        int movementResult = 0;
         switch (keycode) {
         //based off of the input string, change the position to be moving in said direction.
         //use subtract for going up/left and plus for down/right bc the origin is at top left.
         case KeyEvent.KEYCODE_W:
-            hasMoved = moveUp();
+            movementResult = moveUp(map);
             break;
         case KeyEvent.KEYCODE_S:
-            moveDown();
+            movementResult = moveDown(map);
             break;
         case KeyEvent.KEYCODE_A:
-            moveLeft();
+            movementResult = moveLeft(map);
             break;
         case KeyEvent.KEYCODE_D:
-            moveRight();
+            movementResult = moveRight(map);
             break;
         default:
-            hasMoved = false;
+            movementResult = 0;
         }
-        return hasMoved;
+        return movementResult;
     }
 
-    private boolean moveUp() {
+    /*
+    0 - nothing happens
+    1 - increase score
+    2 - decrease lives
+     */
+    private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
-            this.setGridY(this.gridY - 1);
-            if (this.furthestReached > this.gridY) {
-                this.furthestReached = this.gridY;
-                return true;
+            int newGridY = this.gridY - 1;
+            if (map.get(newGridY) == "river") {
+                this.respawn();
+                return 2;
+            } else {
+                this.setGridY(newGridY);
+                if (this.furthestReached > this.gridY) {
+                    this.furthestReached = this.gridY;
+                    return 1;
+                }
             }
-            return false;
         }
-        return false;
+        return 0;
     }
 
-    private boolean moveDown() {
+    private int moveDown(ArrayList<String> map) {
         if (this.gridY < numVerticalSquares - 1) {
-            this.setGridY(this.gridY + 1);
+            int newGridY = this.gridY + 1;
+            if (map.get(newGridY) == "river") {
+                this.respawn();
+                return 2;
+            } else {
+                this.setGridY(newGridY);
+            }
         }
-        return false;
+        return 0;
     }
 
-    private boolean moveRight() {
-        if (this.gridX < numHorizontalSquares - 2) {
+    private int moveRight(ArrayList<String> map) {
+        if (map.get(gridY) == "river") {
+            this.respawn();
+            return 2;
+        } else if (this.gridX < numHorizontalSquares - 2) {
             this.setGridX(this.gridX + 1);
         }
-        return false;
+        return 0;
     }
 
-    private boolean moveLeft() {
-        if (this.gridX > 1) {
+    private int moveLeft(ArrayList<String> map) {
+        if (map.get(gridY) == "river") {
+            this.respawn();
+            return 2;
+        } else if (this.gridX > 1) {
             this.setGridX(this.gridX - 1);
         }
-        return false;
+        return 0;
     }
 
     public void respawn() {
