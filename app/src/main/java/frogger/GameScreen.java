@@ -26,11 +26,11 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
     private int score;
+    private boolean scoreChange;
     private ImageView car1;
     private ImageView car2;
     private ImageView car3;
     private ImageView car4;
-    //private int startPositionCar1;
     private Handler mHandler;
     private RelativeLayout backgroundLayout;
 
@@ -46,7 +46,11 @@ public class GameScreen extends AppCompatActivity {
     private Runnable mStatusChecker2;
     private Runnable mStatusChecker3;
     private Runnable mStatusChecker4;
+    private Game game;
 
+    private int numVerticalSquares;
+    private int numHorizontalSquares;
+    private int horizontalOffset;
 
     public GameScreen() {
         // Change the contents of the level by modifying this list.
@@ -81,7 +85,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker1 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar1();
                 mHandler.postDelayed(mStatusChecker1, 400);
@@ -90,7 +94,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker2 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar2();
                 mHandler.postDelayed(mStatusChecker2, 500);
@@ -99,7 +103,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker3 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar3();
                 mHandler.postDelayed(mStatusChecker3, 200);
@@ -108,7 +112,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.mStatusChecker4 = () -> {
             try {
-                //updateStatus();
+                System.out.println("vroom vroom I'm a car");
             } finally {
                 randomMovementCar4();
                 mHandler.postDelayed(mStatusChecker4, 350);
@@ -122,16 +126,27 @@ public class GameScreen extends AppCompatActivity {
 
         setContentView(R.layout.activity_game_screen);
 
+
+        layoutSetup();
+        playerAndVehiclesOnGame();
+
+    }
+
+    public void layoutSetup() {
         backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         // to-do: if someone could fix this to get the actual usable height, that would be great.
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
-            - getResources().getDimensionPixelSize(
+                - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
-            );
-        int numVerticalSquares = this.map.size();
+        );
+        numVerticalSquares = this.map.size();
+        System.out.println("numVerticalSquares is " + numVerticalSquares);
         squareSize = screenHeight / numVerticalSquares;
-        int numHorizontalSquares = (screenWidth / squareSize);
+        System.out.println("squareSize is " + squareSize);
+
+        numHorizontalSquares = (screenWidth / squareSize);
+
         // Make sure all of the screen is covered horizontally if the numbers don't divide
         // perfectly.
         if (numHorizontalSquares * squareSize < screenWidth) {
@@ -142,13 +157,14 @@ public class GameScreen extends AppCompatActivity {
         if (numHorizontalSquares % 2 == 0) {
             numHorizontalSquares++;
         }
+        System.out.println("numHorizontalSquares is " + numHorizontalSquares);
 
-        // Instantiate game and player objects.
-        Player user = new Player();
+
+
 
         // Calculate the horizontal offset needed so that the middle column of tiles is centered.
         // This should be a negative number or zero.
-        int horizontalOffset = (screenWidth / 2)
+        horizontalOffset = (screenWidth / 2)
                 - (squareSize / 2)
                 - (numHorizontalSquares / 2) * squareSize;
 
@@ -192,6 +208,15 @@ public class GameScreen extends AppCompatActivity {
         params.width = numHorizontalSquares * squareSize;
         backgroundLayout.setLayoutParams(params);
 
+
+
+    }
+
+    public void playerAndVehiclesOnGame() {
+        // Instantiate game and player objects.
+        game = new Game();
+        Player user = new Player();
+
         // Get the TextViews to set the text of.
         characterView = findViewById(R.id.characterView);
         car1 = findViewById(R.id.car1);
@@ -231,6 +256,7 @@ public class GameScreen extends AppCompatActivity {
         car3.getLayoutParams().width = squareSize * 3;
         car4.getLayoutParams().height = squareSize;
         car4.getLayoutParams().width = squareSize * 4;
+        System.out.println("hii" + getCar1Width());
         //car1.setX(numHorizontalSquares);
         car1.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
         //this.startPositionCar1 = horizontalOffset + (numHorizontalSquares / 2) * squareSize;
@@ -242,6 +268,11 @@ public class GameScreen extends AppCompatActivity {
         car3.setY(squareSize * (numVerticalSquares - 2) - (3 * squareSize));
         car4.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
         car4.setY(squareSize * (numVerticalSquares - 2) - (4 * squareSize));
+
+        Vehicle vehicle1 = new Vehicle("car1", numVerticalSquares, squareSize);
+        Vehicle vehicle2 = new Vehicle("car2", numVerticalSquares, squareSize);
+        Vehicle vehicle3 = new Vehicle("car3", numVerticalSquares, squareSize);
+        Vehicle vehicle4 = new Vehicle("car4", numVerticalSquares, squareSize);
 
         // Put the character in the horizontal middle square of the map.
         characterView.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
@@ -257,6 +288,7 @@ public class GameScreen extends AppCompatActivity {
         movementOfCars();
         //movementOfCars();
         //randomMovementCar1();
+
     }
     private void movementOfCars() {
         mStatusChecker1.run();
@@ -299,13 +331,16 @@ public class GameScreen extends AppCompatActivity {
         difficultyView.setText("Difficulty: " + difficulty);
         switch (difficulty) {
         case "hard":
-            livesView.setText("Lives: " + 1);
+            game.setDifficulty("hard");
+            livesView.setText("Lives: " + game.getLives());
             break;
         case "medium":
-            livesView.setText("Lives: " + 3);
+            game.setDifficulty("medium");
+            livesView.setText("Lives: " + game.getLives());
             break;
         default:
-            livesView.setText("Lives: " + 7);
+            game.setDifficulty("easy");
+            livesView.setText("Lives: " + game.getLives());
         }
     }
     //movement for the cars
@@ -327,6 +362,7 @@ public class GameScreen extends AppCompatActivity {
         case KeyEvent.KEYCODE_W:
             if (user.movePlayer("moveUp", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos++;
+
                 boolean atGreatestSpot = false;
                 if (this.currPos > this.greatestPos) {
                     this.greatestPos = this.currPos;
@@ -335,25 +371,33 @@ public class GameScreen extends AppCompatActivity {
                 System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
                 if (atGreatestSpot) {
                     this.score = ScoreManager.getScoreAfterMove(this.score,
-                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map), true);
                 } else {
+                    this.score = ScoreManager.getScoreAfterMove(this.score,
+                            ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
                     System.out.print("not at the greatest spot");
                 }
-                System.out.println("Score is " + this.score);
-                System.out.println("current position is " + this.currPos);
-                System.out.println("max Position is  " + this.greatestPos);
+                //System.out.println("Score is " + this.score);
+                //System.out.println("current position is " + this.currPos);
+                //System.out.println("max Position is  " + this.greatestPos);
                 scoreNumber.setText("" + score);
             }
             break;
         case KeyEvent.KEYCODE_A:
             user.movePlayer("moveLeft", this.squareSize, this.screenWidth, this.screenHeight);
+            this.score = ScoreManager.getScoreAfterMove(this.score,
+                    ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
             break;
         case KeyEvent.KEYCODE_D:
             user.movePlayer("moveRight", this.squareSize, this.screenWidth, this.screenHeight);
+            this.score = ScoreManager.getScoreAfterMove(this.score,
+                    ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
             break;
         case KeyEvent.KEYCODE_S:
             if (user.movePlayer("moveDown", this.squareSize, this.screenWidth, this.screenHeight)) {
                 this.currPos--;
+                this.score = ScoreManager.getScoreAfterMove(this.score,
+                        ScoreManager.getTileCorrespondingToPosition(currPos, this.map), false);
                 //System.out.println("Score is " + this.score);
                 //System.out.println("current position is " + this.currPos);
                 //System.out.println("max Position is  " + this.greatestPos);
@@ -365,4 +409,64 @@ public class GameScreen extends AppCompatActivity {
         }
         return true;
     }
+    public void setCurrPos(int currPos) {
+        this.currPos = currPos;
+    }
+
+    public void setGreatestPos(int greatestPos) {
+        this.greatestPos = greatestPos;
+    }
+
+    public boolean getScoreChange(String movement) {
+        return movement.equals("moveUp");
+    }
+    //car1.getLayoutParams().height = squareSize;
+    //        car1.getLayoutParams().width = squareSize;
+    //        car2.getLayoutParams().height = squareSize;
+    //        car2.getLayoutParams().width = squareSize * 2;
+    //        car3.getLayoutParams().height = squareSize;
+    //        car3.getLayoutParams().width = squareSize * 3;
+    //        car4.getLayoutParams().height = squareSize;
+    //        car4.getLayoutParams().width = squareSize * 4;
+    public int getCar1Width() {
+        return car1.getLayoutParams().width;
+    }
+
+    public int getCar2Width() {
+        return car2.getLayoutParams().width;
+    }
+
+    public int getCar3Width() {
+        return car3.getLayoutParams().width;
+    }
+
+    public int getCar4Width() {
+        return car4.getLayoutParams().width;
+    }
+
+    public float getCar1Y() {
+        return car1.getY();
+    }
+
+    public float getCar2Y() {
+        return car4.getY();
+    }
+
+    public float getCar1Speed() {
+        return car1.getX() - squareSize;
+    }
+
+    public float getCar3Speed() {
+        return car3.getX() - (2 * squareSize);
+    }
+
+    public int getNumVerticalSquares() {
+        return this.map.size();
+    }
+
+    public int getSquareSize() {
+        return squareSize;
+    }
+
+
 }
