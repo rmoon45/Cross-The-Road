@@ -27,6 +27,7 @@ import frogger.ConfigScreen;
 import frogger.Game;
 import frogger.GameScreen;
 import frogger.Player;
+import frogger.Player1;
 import frogger.ScoreManager;
 
 public class ScoreTests {
@@ -34,7 +35,7 @@ public class ScoreTests {
     private ScoreManager scoreManager;
     private GameScreen gamescreen;
     private Looper looper = null;
-    private Player user = null;
+    private Player1 user = null;
     private int squareSize;
     private int screenWidth;
     private int screenHeight;
@@ -46,7 +47,7 @@ public class ScoreTests {
         looper = mock(Looper.class);
         Context context = mock(Context.class);
         when(context.getMainLooper()).thenReturn(looper);
-        user = new Player();
+        user = new Player1();
         squareSize = 20;
         screenWidth = 100;
         screenHeight = 200;
