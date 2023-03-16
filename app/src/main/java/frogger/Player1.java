@@ -2,6 +2,7 @@ package frogger;
 
 import android.widget.ImageView;
 
+@Deprecated
 public class Player1 {
     private float posX;
     private float posY;
