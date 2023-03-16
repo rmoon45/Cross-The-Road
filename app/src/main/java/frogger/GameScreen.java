@@ -35,6 +35,7 @@ public class GameScreen extends AppCompatActivity {
     private Player player;
 
     private int score;
+    private int lives;
 
     // I don't want to have this as a field but here we are
     private int screenWidth;
@@ -114,7 +115,7 @@ public class GameScreen extends AppCompatActivity {
         ((TextView) findViewById(R.id.nameView)).setText(extras.getString("name"));
         ((TextView) findViewById(R.id.difficultyView)).setText("Difficulty: "
                 + extras.getString("difficulty"));
-        ((TextView) findViewById(R.id.livesView)).setText("Lives: " + extras.getInt("lives"));
+        setLives(extras.getInt("lives"));
         setScore(0);
     }
 
@@ -221,8 +222,15 @@ public class GameScreen extends AppCompatActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (this.player.movePlayer(keyCode)) {
-            setScore(this.score + this.tileValues.get(this.map.get(this.player.getGridY() + 1)));
+        switch (this.player.move(this.map, keyCode)) {
+            case 1:
+                this.setScore(this.score + this.tileValues.get(this.map.get(this.player.getGridY() + 1)));
+                break;
+            case 2:
+                this.setLives(this.lives - 1);
+                break;
+            default:
+                return true;
         }
         return true;
     }
@@ -230,6 +238,11 @@ public class GameScreen extends AppCompatActivity {
     private void setScore(int score) {
         this.score = score;
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
+    }
+
+    private void setLives(int lives) {
+        this.lives = lives;
+        ((TextView) findViewById(R.id.livesView)).setText("Lives: " + lives);
     }
 
     public void setCurrPos(int currPos) {
