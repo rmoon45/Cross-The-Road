@@ -1,190 +1,192 @@
 package frogger;
 
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context;
+import android.view.KeyEvent;
+import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+
+import com.example.s0.R;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-public class Player {
+public class Player extends AppCompatImageView {
 
-    private String name;
+    private int squareSize;
+    private int numHorizontalSquares;
+    private int numVerticalSquares;
+    private int horizontalOffset;
 
-    private int character;
-    private int lives;
-    private float posX;
-    private float posY;
-    private ImageView characterView;
-    private boolean moveUp;
-    private boolean moveDown;
-    private boolean moveRight;
-    private boolean moveLeft;
-    private ArrayList<String> rowArray;
+    private int gridX;
+    private int gridY;
 
-    public Player() {
-        this.name = "";
-        this.character = 0;
-        this.lives = -1;
-        this.posX = 0;
-        this.posY = 0;
-        this.moveUp = false;
-        this.moveDown = false;
-        this.moveLeft = false;
-        this.moveRight = false;
+    private int spawnX;
+    private int spawnY;
+
+    private int furthestReached;
+
+    private boolean movingEnabled;
+
+    // hmmm don't use this
+    public Player(@NonNull Context context) {
+        super(context);
     }
 
-    public boolean checkName(String nameInput) {
-        if (nameInput == null) {
+    public Player(@NonNull Context context, String character, int squareSize,
+                  int numHorizontalSquares, int numVerticalSquares, int horizontalOffset) {
+        super(context);
+        this.squareSize = squareSize;
+        this.numHorizontalSquares = numHorizontalSquares;
+        this.numVerticalSquares = numVerticalSquares;
+        this.horizontalOffset = horizontalOffset;
+
+        switch (character) {
+        case "bunny":
+            setImageResource(R.drawable.bunny);
+            break;
+        case "duck":
+            setImageResource(R.drawable.duck);
+            break;
+        default:
+            setImageResource(R.drawable.frog);
+        }
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                this.squareSize, this.squareSize);
+        this.setLayoutParams(layoutParams);
+
+        // Put the character in the vertical second-to-bottommost square.
+        this.setX(this.horizontalOffset + (this.numHorizontalSquares / 2) * this.squareSize);
+        this.setY(this.squareSize * (this.numVerticalSquares - 2));
+
+        this.gridX = this.numHorizontalSquares / 2;
+        this.gridY = this.numVerticalSquares - 2;
+        this.spawnX = this.gridX;
+        this.spawnY = this.gridY;
+
+        this.furthestReached = this.spawnY;
+
+        this.movingEnabled = true;
+    }
+
+    public int move(ArrayList<String> map, int keycode) {
+        if (!this.movingEnabled) {
+            return 0;
+        }
+        int movementResult = 0;
+        switch (keycode) {
+        //based off of the input string, change the position to be moving in said direction.
+        //use subtract for going up/left and plus for down/right bc the origin is at top left.
+        case KeyEvent.KEYCODE_W:
+            movementResult = moveUp(map);
+            break;
+        case KeyEvent.KEYCODE_S:
+            movementResult = moveDown(map);
+            break;
+        case KeyEvent.KEYCODE_A:
+            movementResult = moveLeft(map);
+            break;
+        case KeyEvent.KEYCODE_D:
+            movementResult = moveRight(map);
+            break;
+        default:
+            movementResult = 0;
+        }
+        return movementResult;
+    }
+
+    /*
+    0 - nothing happens
+    1 - increase score
+    2 - decrease lives
+     */
+    private int moveUp(ArrayList<String> map) {
+        if (this.gridY > 0) {
+            int newGridY = this.gridY - 1;
+            if (map.get(newGridY) == "river") {
+                this.respawn();
+                return 2;
+            } else {
+                this.setGridY(newGridY);
+                if (this.furthestReached > this.gridY) {
+                    this.furthestReached = this.gridY;
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private int moveDown(ArrayList<String> map) {
+        if (this.gridY < numVerticalSquares - 1) {
+            int newGridY = this.gridY + 1;
+            if (map.get(newGridY) == "river") {
+                this.respawn();
+                return 2;
+            } else {
+                this.setGridY(newGridY);
+            }
+        }
+        return 0;
+    }
+
+    private int moveRight(ArrayList<String> map) {
+        if (map.get(gridY) == "river") {
+            this.respawn();
+            return 2;
+        } else if (this.gridX < numHorizontalSquares - 2) {
+            this.setGridX(this.gridX + 1);
+        }
+        this.setScaleX(1);
+        return 0;
+    }
+
+    private int moveLeft(ArrayList<String> map) {
+        if (map.get(gridY) == "river") {
+            this.respawn();
+            return 2;
+        } else if (this.gridX > 1) {
+            this.setGridX(this.gridX - 1);
+        }
+        this.setScaleX(-1);
+        return 0;
+    }
+
+    // The movingEnabled stuff here seems to decrease occurrences when two lives are subtracted
+    // instead of one due to lag, but that might be a placebo.
+    public void respawn() {
+        this.movingEnabled = false;
+        this.setGridX(spawnX);
+        this.setGridY(spawnY);
+        this.movingEnabled = true;
+    }
+
+    private void setGridX(int gridX) {
+        this.gridX = gridX;
+        this.setX(this.horizontalOffset + gridX * this.squareSize);
+    }
+
+    private void setGridY(int gridY) {
+        this.gridY = gridY;
+        this.setY(this.squareSize * gridY);
+    }
+
+    public int getGridY() {
+        return this.gridY;
+    }
+
+    public boolean isColliding(float xTopLeft, float yTopLeft, float xBottomRight,
+                               float yBottomRight) {
+        if (xTopLeft > this.getX() + this.squareSize
+                || xBottomRight < this.getX()
+                || yTopLeft < this.getY()
+                || yBottomRight > this.getY() + this.squareSize
+        ) {
             return false;
         }
-        String userName = nameInput.trim();
-        System.out.println(userName);
-        return (!(nameInput.length() == 0 || userName.length() == 0));
-    }
 
-    public void movePlayerTest(String movement, Game game) {
-        switch (movement) {
-        //based off of the input string, change the position to be moving in said direction.
-        //use subtract for going up/left and plus for down/right bc the origin is at top left.
-        case "moveUp":
-            if (this.getPosY() >= 0) {
-                moveUp = true;
-            } else {
-                moveUp = false;
-            }
-            break;
-        case "moveLeft":
-            if (this.getPosX() >= 0 - (game.getSquareSize() / 2)) {
-                moveLeft = true;
-            } else {
-                moveLeft = false;
-            }
-            break;
-        case "moveRight":
-            if ((this.getPosX() + game.getSquareSize())
-                < game.getScreenWidth() - (game.getSquareSize() / 2)) {
-                moveRight = true;
-            } else {
-                moveRight = false;
-            }
-            break;
-        default:
-            if ((this.getPosY() + (2 * game.getSquareSize())) < game.getScreenHeight()) {
-                moveDown = true;
-            } else {
-                moveDown = false;
-            }
-        }
+        respawn();
+        return true;
     }
-    public void moveCar1Left(ImageView car, Game game, int startPosition) {
-        //this.movePlayerTest(movement, game);
-        int squareSize = game.getSquareSize();
-        int screenWidth = game.getScreenWidth();
-        int screenHeight = game.getScreenHeight();
-        while (car.getX() > 0 + (squareSize / 2)) {
-            car.setX(car.getX() - squareSize);
-        }
-        car.setX(startPosition);
-        //moveCar1Left(car, game, startPosition);
-    }
-
-    public void movePlayer(String movement, Game game) {
-        this.movePlayerTest(movement, game);
-        int squareSize = game.getSquareSize();
-        int screenWidth = game.getScreenWidth();
-        int screenHeight = game.getScreenHeight();
-        switch (movement) {
-        //based off of the input string, change the position to be moving in said direction.
-        //use subtract for going up/left and plus for down/right bc the origin is at top left.
-        case "moveUp":
-            if (characterView.getY() > 0 && moveUp) {
-                characterView.setY(characterView.getY() - squareSize);
-                this.posY = characterView.getY();
-            }
-            break;
-        case "moveLeft":
-            if (characterView.getX() > 0 + (squareSize / 2) && moveLeft) {
-                characterView.setX(characterView.getX() - squareSize);
-                this.posX = characterView.getX();
-            }
-            break;
-        case "moveRight":
-            if ((characterView.getX() + squareSize) < screenWidth - (squareSize / 2) && moveRight) {
-                characterView.setX(characterView.getX() + squareSize);
-                this.posX = characterView.getX();
-            }
-            break;
-        default:
-            if ((characterView.getY() + (2 * squareSize)) < screenHeight && moveDown) {
-                characterView.setY(characterView.getY() + squareSize);
-                this.posY = characterView.getY();
-
-            }
-        }
-    }
-
-    public void setName(String input) {
-        name = input;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-    public int getLives() {
-        return this.lives;
-    }
-
-    public void setPosX(float x) {
-        posX = x;
-    }
-    public void setPosY(float y) {
-        posY = y;
-    }
-    public float getPosX() {
-        return this.posX;
-    }
-    public float getPosY() {
-        return this.posY;
-    }
-
-    public ImageView getCharacterView() {
-        return characterView;
-    }
-
-    public void setCharacterView(ImageView characterView) {
-        this.characterView = characterView;
-    }
-
-    public boolean isMoveUp() {
-        return moveUp;
-    }
-
-    public void setMoveUp(boolean moveUp) {
-        this.moveUp = moveUp;
-    }
-
-    public boolean isMoveDown() {
-        return moveDown;
-    }
-
-    public void setMoveDown(boolean moveDown) {
-        this.moveDown = moveDown;
-    }
-
-    public boolean isMoveRight() {
-        return moveRight;
-    }
-
-    public void setMoveRight(boolean moveRight) {
-        this.moveRight = moveRight;
-    }
-
-    public boolean isMoveLeft() {
-        return moveLeft;
-    }
-
-    public void setMoveLeft(boolean moveLeft) {
-        this.moveLeft = moveLeft;
-    }
-
 }

@@ -1,7 +1,6 @@
 package frogger;
 
 import android.content.res.Resources;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
@@ -9,67 +8,124 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-
-import android.graphics.Bitmap;
 import android.view.KeyEvent;
 
 import com.example.s0.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import preferences.Preferences;
-import java.util.Random;
+import java.util.HashMap;
 
 public class GameScreen extends AppCompatActivity {
 
-    private ImageView characterView;
-    private TextView livesView;
-    private TextView difficultyView;
-    private TextView nameView;
-    private TextView scoreNumber;
+    // The map and the score for each type of tile.
+    private ArrayList<String> map;
+    private HashMap<String, Integer> tileValues;
+
+    // "constants" for drawing
+    private int squareSize;
+    private int numHorizontalSquares;
+    private int numVerticalSquares;
+    private int horizontalOffset; // This is the number of pixels needed to add to the first tile
+    //                               to make the center tile align correctly.
+
+    // character-related stuff for moving
+    private Player player;
+
+    private int score;
+    private int lives;
+
+    // I don't want to have this as a field but here we are
+    private int screenWidth;
+    
+    // ttttest
     private int currPos;
     private int greatestPos;
-    private int score;
-    private ImageView car1;
-    private ImageView car2;
-    private ImageView car3;
-    private ImageView car4;
-    private ArrayList<Object> spawnList;
-    private int startPositionCar1;
-    private Handler mHandler;
-    private int mInterval=200; // 1 seconds
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    private RelativeLayout backgroundLayout;
+        setContentView(R.layout.activity_game_screen);
 
-    private Bitmap bitmap;
+        initializeMap();
+        Bundle extras = getIntent().getExtras();
+        initializeTextViews(extras);
 
-    private int squareSize;
+        this.player = new Player(this, extras.getString("character"), this.squareSize,
+                this.numHorizontalSquares, this.numVerticalSquares, this.horizontalOffset);
+        ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(player);
 
-    private int screenWidth;
+        initializeCars();
+    }
 
+    private void createCar(int carId, boolean isGoingRight, int width, int x, int y,
+                           int delayMillis, Handler handler) {
 
+        ImageView car = findViewById(carId);
+        car.getLayoutParams().height = squareSize;
+        car.getLayoutParams().width = width;
+        car.setX(x);
+        car.setY(y);
 
-    private int screenHeight;
+        Runnable mStatusChecker = new Runnable() {
+            @Override
+            public void run() {
+                if (isGoingRight) {
+                    if (car.getX() > -car.getWidth()) {
+                        car.setX(car.getX() - 20);
+                    } else {
+                        car.setX(screenWidth);
+                    }
+                } else {
+                    if (car.getX() < screenWidth) {
+                        car.setX(car.getX() + 20);
+                    } else {
+                        car.setX(-car.getWidth());
+                    }
+                }
+                // The 0.15% offset doesn't make sense but makes the collision look accurate for
+                // some reason.
+                if (GameScreen.this.player.isColliding(car.getX() + car.getWidth() * 0.15f,
+                        car.getY(), car.getX() + car.getWidth() * 0.85f,
+                        car.getY() + car.getHeight())) {
+                    GameScreen.this.setLives(GameScreen.this.lives - 1);
+                }
+                handler.postDelayed(this, delayMillis);
+            }
+        };
+        mStatusChecker.run();
+    }
 
-    //private int horizontalOffset;
-    //private
+    private void initializeCars() {
+        Handler mHandler = new Handler();
 
-    private ArrayList<String> map;
+        createCar(R.id.car1, true, squareSize, horizontalOffset
+                + (numHorizontalSquares / 2) * squareSize, squareSize * (numVerticalSquares - 2)
+                - squareSize, 1, mHandler);
 
-    public GameScreen() {
-        // Change the contents of the level by modifying this list.
-        // The top row will always be the goal, and the bottom two rows will always be safe tiles
-        // for now. (the goal is to have only the bottom row need to be a safe tile, but
-        // there is an issue with getting the accurate screen height in the current code that
-        // makes it necessary to have the bottom two rows as safe tiles. )
-        /* The three tile options here are river, safe, and road.
-         * Per the specs, rivers should always have a different width than roads, and safe tiles
-         * should always be narrower than rivers and roads.
-         */
+        createCar(R.id.car2, false, squareSize * 2, this.screenWidth,
+                squareSize * (numVerticalSquares - 2) - (2 * squareSize), 10, mHandler);
+
+        createCar(R.id.car3, true, squareSize * 3, 0,
+                squareSize * (numVerticalSquares - 2) - (3 * squareSize), 3, mHandler);
+
+        createCar(R.id.car4, false, squareSize * 4, horizontalOffset
+                + (numHorizontalSquares / 2) * squareSize,
+                squareSize * (numVerticalSquares - 2) - (4 * squareSize), 20, mHandler);
+    }
+
+    private void initializeTextViews(Bundle extras) {
+        ((TextView) findViewById(R.id.nameView)).setText(extras.getString("name"));
+        ((TextView) findViewById(R.id.difficultyView)).setText("Difficulty: "
+                + extras.getString("difficulty"));
+        setLives(extras.getInt("lives"));
+        setScore(0);
+    }
+
+    private void initializeMap() {
         this.map = new ArrayList<String>(Arrays.asList(
                 "safe",
                 "river",
@@ -90,32 +146,28 @@ public class GameScreen extends AppCompatActivity {
         this.map.add(0, "goal"); // Don't put these into the List definition plz thx
         this.map.add("safe");
         this.map.add("safe");
-        //characterView.setImageResource(R.drawable.frog);
 
-        //this.spawnList = new ArrayList<>(Arrays.asList(car1,car2,car3));
+        this.tileValues = new HashMap<String, Integer>();
+        tileValues.put("safe", 1);
+        tileValues.put("river", 3);
+        tileValues.put("road", 2);
+
+        drawMap();
     }
-    private void spawnObject(){
-        Random random = new Random();
 
+    private void drawMap() {
+        RelativeLayout backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_game_screen);
-
-        backgroundLayout = (RelativeLayout) findViewById(R.id.backgroundLayout);
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        this.screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         // to-do: if someone could fix this to get the actual usable height, that would be great.
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
-            - getResources().getDimensionPixelSize(
+        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
+                - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
-            );
-        int numVerticalSquares = this.map.size();
+        );
+        numVerticalSquares = this.map.size();
         squareSize = screenHeight / numVerticalSquares;
-        int numHorizontalSquares = (screenWidth / squareSize);
+        numHorizontalSquares = (screenWidth / squareSize);
+
         // Make sure all of the screen is covered horizontally if the numbers don't divide
         // perfectly.
         if (numHorizontalSquares * squareSize < screenWidth) {
@@ -127,13 +179,9 @@ public class GameScreen extends AppCompatActivity {
             numHorizontalSquares++;
         }
 
-        // Instantiate game and player objects.
-        Game game = new Game(screenWidth, screenHeight, squareSize);
-        Player user = new Player();
-
         // Calculate the horizontal offset needed so that the middle column of tiles is centered.
         // This should be a negative number or zero.
-        int horizontalOffset = (screenWidth / 2)
+        horizontalOffset = (screenWidth / 2)
                 - (squareSize / 2)
                 - (numHorizontalSquares / 2) * squareSize;
 
@@ -176,244 +224,59 @@ public class GameScreen extends AppCompatActivity {
         params.height = numVerticalSquares * squareSize;
         params.width = numHorizontalSquares * squareSize;
         backgroundLayout.setLayoutParams(params);
-
-        // Get the TextViews to set the text of.
-        characterView = findViewById(R.id.characterView);
-        car1=findViewById(R.id.car1);
-        car2=findViewById(R.id.car2);
-        car3=findViewById(R.id.car3);
-        car4=findViewById(R.id.car4);
-
-
-        user.setCharacterView(characterView);
-
-        // Set and display lives and difficulty.
-        setDifficultyText(findViewById(R.id.difficultyView), findViewById(R.id.livesView));
-
-        // Choooooose your fighter~!
-        String character = Preferences.read("character", "duck");
-        switch (character) {
-        case "bunny":
-            characterView.setImageResource(R.drawable.bunny);
-            break;
-        case "duck":
-            characterView.setImageResource(R.drawable.duck);
-            break;
-        default:
-            characterView.setImageResource(R.drawable.frog);
-        }
-        car1.setImageResource(R.drawable.car1);
-//        car2.setImageResource(R.drawable.car3);
-//        car3.setImageResource(R.drawable.car1);
-
-        // Set the size and location of your fighter.
-        characterView.getLayoutParams().height = squareSize;
-        characterView.getLayoutParams().width = squareSize;
-        car1.getLayoutParams().height = squareSize;
-        car1.getLayoutParams().width = squareSize;
-        car2.getLayoutParams().height = squareSize;
-        car2.getLayoutParams().width = squareSize*2;
-        car3.getLayoutParams().height = squareSize;
-        car3.getLayoutParams().width = squareSize*3;
-        car4.getLayoutParams().height = squareSize;
-        car4.getLayoutParams().width = squareSize*4;
-//        //car1.setX(numHorizontalSquares);
-        car1.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
-        this.startPositionCar1=horizontalOffset + (numHorizontalSquares / 2) * squareSize;
-
-        car1.setY(squareSize * (numVerticalSquares - 2)-squareSize);
-        car2.setX(screenWidth);
-        car2.setY(squareSize * (numVerticalSquares - 2)-(2*squareSize));
-        car3.setX(0);
-        car3.setY(squareSize * (numVerticalSquares - 2)-(3*squareSize));
-        car4.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
-        car4.setY(squareSize * (numVerticalSquares - 2)-(4*squareSize));
-
-        // Put the character in the horizontal middle square of the map.
-        characterView.setX(horizontalOffset + (numHorizontalSquares / 2) * squareSize);
-        user.setPosX(characterView.getX());
-        // Put the character in the vertical second-to-bottommost square.
-        characterView.setY(squareSize * (numVerticalSquares - 2));
-        user.setPosY(characterView.getY());
-
-        // Display the name. Or the best name, Prichard.
-        nameView = findViewById(R.id.nameView);
-        nameView.setText(Preferences.read("name", "Prichard"));
-        mHandler=new Handler();
-        movementOfCars();
-        //movementOfCars();
-        //randomMovementCar1();
-    }
-    private void movementOfCars(){
-        mStatusChecker1.run();
-        mStatusChecker2.run();
-        mStatusChecker3.run();
-        mStatusChecker4.run();
-        //while(true){
-          //  randomMovementCar1();
-//            randomMovementCar2();
-//            randomMovementCar3();
-      //  }
-    }
-    Runnable mStatusChecker1 = new Runnable(){
-        @Override
-        public void run(){
-            try{
-                //updateStatus();
-            } finally {
-                randomMovementCar1();
-                mHandler.postDelayed(mStatusChecker1,400);
-            }
-        }
-    };
-    Runnable mStatusChecker2 = new Runnable(){
-        @Override
-        public void run(){
-            try{
-                //updateStatus();
-            } finally {
-                randomMovementCar2();
-                mHandler.postDelayed(mStatusChecker2,500);
-            }
-        }
-    };
-    Runnable mStatusChecker4 = new Runnable(){
-        @Override
-        public void run(){
-            try{
-                //updateStatus();
-            } finally {
-                randomMovementCar4();
-                mHandler.postDelayed(mStatusChecker4,350);
-            }
-        }
-    };
-    Runnable mStatusChecker3 = new Runnable(){
-        @Override
-        public void run(){
-            try{
-                //updateStatus();
-            } finally {
-                randomMovementCar3();
-                mHandler.postDelayed(mStatusChecker3,200);
-            }
-        }
-    };
-    private void randomMovementCar1(){
-        if(car1.getX()>0){
-            car1.setX(car1.getX()-squareSize);
-        } else{
-            car1.setX(screenWidth);
-        }
-    }
-    private void randomMovementCar2(){
-        if(car2.getX()<screenWidth){
-            car2.setX(car2.getX()+squareSize);
-        } else{
-            car2.setX(0);
-        }
-    }
-    private void randomMovementCar4(){
-        if(car4.getX()<screenWidth){
-            car4.setX(car4.getX()+squareSize);
-        } else{
-            car4.setX(0);
-        }
-    }
-    private void randomMovementCar3(){
-        if(car3.getX()>0){
-            car3.setX(car3.getX()-(2*squareSize));
-        } else{
-            car3.setX(screenWidth);
-        }
     }
 
-
-
-    private void setDifficultyText(TextView difficultyView, TextView livesView) {
-        String difficulty = Preferences.read("difficulty", "easy");
-        difficultyView.setText("Difficulty: " + difficulty);
-        switch (difficulty) {
-        case "hard":
-            livesView.setText("Lives: " + 1);
-            break;
-        case "medium":
-            livesView.setText("Lives: " + 3);
-            break;
-        default:
-            livesView.setText("Lives: " + 7);
-        }
-    }
-    //movement for the cars
-//    public static void randomMovementCar1(){
-//        Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
-//        Player user = new Player();
-//        //user.setCharacterView(characterView);
-//        user.moveCar1Left(car1, game, startPositionCar1 );
-//    }
-
-    // KeyEvent method; opens up its own thread so no need to put in onCreate.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Game game = new Game(this.screenWidth, this.screenHeight, this.squareSize);
-        Player user = new Player();
-        user.setCharacterView(characterView);
-        scoreNumber = (TextView) findViewById(R.id.scoreNumber);
-        switch (keyCode) {
-        //Uses WASD system.
-        case KeyEvent.KEYCODE_W:
-
-            user.movePlayer("moveUp", game);
-            this.currPos++;
-            boolean atGreatestSpot=false;
-            if(this.currPos>this.greatestPos){
-                this.greatestPos=this.currPos;
-                atGreatestSpot=true;
-            }
-            System.out.println(ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
-            if (atGreatestSpot) {
-                this.score = ScoreManager.getScoreAfterMove(this.score,
-                        ScoreManager.getTileCorrespondingToPosition(currPos, this.map));
-            } else {
-                System.out.print("not at the greatest spot");
-            }
-            System.out.println("Score is " + this.score);
-            System.out.println("current position is " + this.currPos);
-            System.out.println("max Position is  " + this.greatestPos);
-            scoreNumber.setText(""+ score);
-            return true;
-        case KeyEvent.KEYCODE_A:
-            user.movePlayer("moveLeft", game);
-            return true;
-        case KeyEvent.KEYCODE_D:
-            user.movePlayer("moveRight", game);
-            return true;
-        case KeyEvent.KEYCODE_S:
-            user.movePlayer("moveDown", game);
-            this.currPos--;
-//            System.out.println("Score is " + this.score);
-//            System.out.println("current position is " + this.currPos);
-//            System.out.println("max Position is  " + this.greatestPos);
-            return true;
+        switch (this.player.move(this.map, keyCode)) {
+        case 1:
+            this.setScore(this.score
+                    + this.tileValues.get(this.map.get(this.player.getGridY() + 1)));
+            break;
+        case 2:
+            this.setLives(this.lives - 1);
+            break;
         default:
-            return super.onKeyUp(keyCode, event);
+            return true;
         }
-
+        return true;
     }
 
-    public TextView getNameView() {
-        return this.nameView;
+    private void setScore(int score) {
+        this.score = score;
+        ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
     }
 
-    public TextView getDifficultyView() {
-        return this.difficultyView;
+    private void setLives(int lives) {
+        this.lives = lives;
+        ((TextView) findViewById(R.id.livesView)).setText("Lives: " + lives);
     }
 
-    public TextView getLivesView() {
-        return this.livesView;
+    public void setCurrPos(int currPos) {
+        this.currPos = currPos;
     }
 
-    public void setMap(ArrayList<String> map) {
-        this.map = map;
+    public void setGreatestPos(int greatestPos) {
+        this.greatestPos = greatestPos;
+    }
+
+    public boolean getScoreChange(String movement) {
+        return movement.equals("moveUp");
+    }
+
+    public int getNumVerticalSquares() {
+        return this.map.size();
+    }
+
+    public int getSquareSize() {
+        return squareSize;
+    }
+
+    public float getCar1Y() {
+        return findViewById(R.id.car1).getY();
+    }
+
+    public float getCar2Y() {
+        return findViewById(R.id.car4).getY();
     }
 }
