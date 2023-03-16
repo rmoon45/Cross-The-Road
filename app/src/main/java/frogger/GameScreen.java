@@ -75,18 +75,24 @@ public class GameScreen extends AppCompatActivity {
             public void run() {
                 if (isGoingRight) {
                     if (car.getX() > -car.getWidth()) {
-                        car.setX(car.getX() - squareSize);
+                        car.setX(car.getX() - 20);
                     } else {
                         car.setX(screenWidth);
                     }
                 } else {
                     if (car.getX() < screenWidth) {
-                        car.setX(car.getX() + squareSize);
+                        car.setX(car.getX() + 20);
                     } else {
                         car.setX(-car.getWidth());
                     }
                 }
-
+                // The 0.15% offset doesn't make sense but makes the collision look accurate for
+                // some reason.
+                if (GameScreen.this.player.isColliding(car.getX() + car.getWidth() * 0.15f,
+                        car.getY(), car.getX() + car.getWidth() * 0.85f,
+                        car.getY() + car.getHeight())) {
+                    GameScreen.this.setLives(GameScreen.this.lives - 1);
+                }
                 handler.postDelayed(this, delayMillis);
             }
         };
@@ -98,17 +104,17 @@ public class GameScreen extends AppCompatActivity {
 
         createCar(R.id.car1, true, squareSize, horizontalOffset
                 + (numHorizontalSquares / 2) * squareSize, squareSize * (numVerticalSquares - 2)
-                - squareSize, 400, mHandler);
+                - squareSize, 1, mHandler);
 
         createCar(R.id.car2, false, squareSize * 2, this.screenWidth,
-                squareSize * (numVerticalSquares - 2) - (2 * squareSize), 500, mHandler);
+                squareSize * (numVerticalSquares - 2) - (2 * squareSize), 10, mHandler);
 
         createCar(R.id.car3, true, squareSize * 3, 0,
-                squareSize * (numVerticalSquares - 2) - (3 * squareSize), 200, mHandler);
+                squareSize * (numVerticalSquares - 2) - (3 * squareSize), 3, mHandler);
 
         createCar(R.id.car4, false, squareSize * 4, horizontalOffset
                 + (numHorizontalSquares / 2) * squareSize,
-                squareSize * (numVerticalSquares - 2) - (4 * squareSize), 350, mHandler);
+                squareSize * (numVerticalSquares - 2) - (4 * squareSize), 20, mHandler);
     }
 
     private void initializeTextViews(Bundle extras) {
@@ -223,14 +229,15 @@ public class GameScreen extends AppCompatActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (this.player.move(this.map, keyCode)) {
-            case 1:
-                this.setScore(this.score + this.tileValues.get(this.map.get(this.player.getGridY() + 1)));
-                break;
-            case 2:
-                this.setLives(this.lives - 1);
-                break;
-            default:
-                return true;
+        case 1:
+            this.setScore(this.score
+                    + this.tileValues.get(this.map.get(this.player.getGridY() + 1)));
+            break;
+        case 2:
+            this.setLives(this.lives - 1);
+            break;
+        default:
+            return true;
         }
         return true;
     }

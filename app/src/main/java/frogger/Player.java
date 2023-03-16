@@ -26,6 +26,8 @@ public class Player extends AppCompatImageView {
 
     private int furthestReached;
 
+    private boolean movingEnabled;
+
     // hmmm don't use this
     public Player(@NonNull Context context) {
         super(context);
@@ -64,9 +66,14 @@ public class Player extends AppCompatImageView {
         this.spawnY = this.gridY;
 
         this.furthestReached = this.spawnY;
+
+        this.movingEnabled = true;
     }
 
     public int move(ArrayList<String> map, int keycode) {
+        if (!this.movingEnabled) {
+            return 0;
+        }
         int movementResult = 0;
         switch (keycode) {
         //based off of the input string, change the position to be moving in said direction.
@@ -144,9 +151,13 @@ public class Player extends AppCompatImageView {
         return 0;
     }
 
+    // The movingEnabled stuff here seems to decrease occurrences when two lives are subtracted
+    // instead of one due to lag, but that might be a placebo.
     public void respawn() {
+        this.movingEnabled = false;
         this.setGridX(spawnX);
         this.setGridY(spawnY);
+        this.movingEnabled = true;
     }
 
     private void setGridX(int gridX) {
@@ -161,5 +172,19 @@ public class Player extends AppCompatImageView {
 
     public int getGridY() {
         return this.gridY;
+    }
+
+    public boolean isColliding(float xTopLeft, float yTopLeft, float xBottomRight,
+                               float yBottomRight) {
+        if (xTopLeft > this.getX() + this.squareSize
+                || xBottomRight < this.getX()
+                || yTopLeft < this.getY()
+                || yBottomRight > this.getY() + this.squareSize
+        ) {
+            return false;
+        }
+
+        respawn();
+        return true;
     }
 }
