@@ -29,7 +29,8 @@
             android:exported="true">
         </activity>
         <activity
-            android:name="frogger.GameScreen"></activity>
+            android:name="frogger.GameScreen"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

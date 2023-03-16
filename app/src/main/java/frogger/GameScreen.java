@@ -243,18 +243,7 @@ public class GameScreen extends AppCompatActivity {
             this.setLives(this.lives - 1);
 
 
-            //start gameOveractivity when you lose all lives
-            if (this.lives == 0) {
 
-                System.out.println("Game Over");
-
-                //activity is subclass of GameScreen context
-                Intent intent = new Intent(GameScreen.this, GameOverScreen.class);
-                intent.putExtra("score", this.score);
-                startActivity(intent);
-
-                finish();
-            }
 
             break;
         default:
@@ -270,7 +259,21 @@ public class GameScreen extends AppCompatActivity {
 
     private void setLives(int lives) {
         this.lives = lives;
+
         ((TextView) findViewById(R.id.livesView)).setText("Lives: " + lives);
+
+        //start gameOveractivity when you lose all lives
+        if (this.lives == 0) {
+
+            System.out.println("Game Over");
+
+            //activity is subclass of GameScreen context
+            Intent intent = new Intent(GameScreen.this, GameOverScreen.class);
+            intent.putExtra("score", this.score);
+            startActivity(intent);
+
+            finish();
+        }
     }
 
     @Deprecated

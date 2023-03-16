@@ -21,12 +21,13 @@ public class GameOverScreen extends AppCompatActivity {
     }
 
     private void initializeScoreView(Bundle extra) {
-        ((TextView) findViewById(R.id.scoreView)).setText(extra.getString("Score: \n" + extra.getString("score")));
+        //final score should be displayed on gameoverscreen
+        ((TextView) findViewById(R.id.scoreText)).setText("Score: \n" + extra.getString("score"));
     }
 
     //2 buttons: restart and exit game
-    //restart -> go back to config screen
     public void onRestartGame(View view) {
+        //restart -> go back to config screen
         Intent intent = new Intent(GameOverScreen.this, ConfigScreen.class);
         startActivity(intent);
     }
@@ -36,5 +37,4 @@ public class GameOverScreen extends AppCompatActivity {
         finish();
     }
 
-    //final score should be displayed on gameoverscreen
 }
