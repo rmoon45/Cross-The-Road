@@ -38,14 +38,14 @@ public class Player extends AppCompatImageView {
         this.horizontalOffset = horizontalOffset;
 
         switch (character) {
-            case "bunny":
-                setImageResource(R.drawable.bunny);
-                break;
-            case "duck":
-                setImageResource(R.drawable.duck);
-                break;
-            default:
-                setImageResource(R.drawable.frog);
+        case "bunny":
+            setImageResource(R.drawable.bunny);
+            break;
+        case "duck":
+            setImageResource(R.drawable.duck);
+            break;
+        default:
+            setImageResource(R.drawable.frog);
         }
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(

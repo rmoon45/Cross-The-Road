@@ -28,7 +28,8 @@ public class GameScreen extends AppCompatActivity {
     private int squareSize;
     private int numHorizontalSquares;
     private int numVerticalSquares;
-    private int horizontalOffset; // This is the number of pixels needed to add to the first tile to make the center tile align correctly.
+    private int horizontalOffset; // This is the number of pixels needed to add to the first tile
+    //                               to make the center tile align correctly.
 
     // character-related stuff for moving
     private Player player;
@@ -111,7 +112,8 @@ public class GameScreen extends AppCompatActivity {
 
     private void initializeTextViews(Bundle extras) {
         ((TextView) findViewById(R.id.nameView)).setText(extras.getString("name"));
-        ((TextView) findViewById(R.id.difficultyView)).setText("Difficulty: " + extras.getString("difficulty"));
+        ((TextView) findViewById(R.id.difficultyView)).setText("Difficulty: "
+                + extras.getString("difficulty"));
         ((TextView) findViewById(R.id.livesView)).setText("Lives: " + extras.getInt("lives"));
         setScore(0);
     }
@@ -181,19 +183,19 @@ public class GameScreen extends AppCompatActivity {
             // Get the corresponding tile image for the row.
             int imageResource = R.drawable.safe;
             switch (this.map.get(i)) {
-                case "river":
-                    imageResource = R.drawable.river;
-                    break;
-                case "road":
-                    imageResource = R.drawable.road;
-                    break;
-                case "goal":
-                    imageResource = R.drawable.goal;
-                    break;
-                default:
-                    if (this.map.get(i) != "safe") {
-                        throw new RuntimeException("you dnun goofed");
-                    }
+            case "river":
+                imageResource = R.drawable.river;
+                break;
+            case "road":
+                imageResource = R.drawable.road;
+                break;
+            case "goal":
+                imageResource = R.drawable.goal;
+                break;
+            default:
+                if (this.map.get(i) != "safe") {
+                    throw new RuntimeException("you dnun goofed");
+                }
             }
 
             // Populate the tile image onto each square in the row.
