@@ -138,6 +138,7 @@ public class Player extends AppCompatImageView {
         } else if (this.gridX < numHorizontalSquares - 2) {
             this.setGridX(this.gridX + 1);
         }
+        this.setScaleX(1);
         return 0;
     }
 
@@ -148,6 +149,7 @@ public class Player extends AppCompatImageView {
         } else if (this.gridX > 1) {
             this.setGridX(this.gridX - 1);
         }
+        this.setScaleX(-1);
         return 0;
     }
 
