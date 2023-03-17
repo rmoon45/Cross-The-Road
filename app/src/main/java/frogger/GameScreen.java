@@ -257,20 +257,24 @@ public class GameScreen extends AppCompatActivity {
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
     }
 
+    public int getScore() {
+        return score;
+    }
     private void setLives(int lives) {
         this.lives = lives;
 
         ((TextView) findViewById(R.id.livesView)).setText("Lives: " + lives);
 
         //start gameOveractivity when you lose all lives
-        if (this.lives == 0) {
+        if (this.lives <= 0) {
 
             System.out.println("Game Over");
+            System.out.println("score is " + this.score);
 
             //activity is subclass of GameScreen context
-            Intent intent = new Intent(GameScreen.this, GameOverScreen.class);
-            intent.putExtra("score", this.score);
-            startActivity(intent);
+            Intent intent2 = new Intent(GameScreen.this, GameOverScreen.class);
+            intent2.putExtra("score", this.score);
+            startActivity(intent2);
 
             finish();
         }

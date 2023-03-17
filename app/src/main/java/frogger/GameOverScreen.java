@@ -17,23 +17,23 @@ public class GameOverScreen extends AppCompatActivity {
         setContentView(R.layout.activity_game_over_screen);
 
         Bundle extra = getIntent().getExtras();
-        initializeScoreView(extra);
+
+        ((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("score"));
     }
 
-    private void initializeScoreView(Bundle extra) {
-        //final score should be displayed on gameoverscreen
-        ((TextView) findViewById(R.id.scoreText)).setText("Score: \n" + extra.getString("score"));
-    }
 
     //2 buttons: restart and exit game
     public void onRestartGame(View view) {
         //restart -> go back to config screen
         Intent intent = new Intent(GameOverScreen.this, ConfigScreen.class);
         startActivity(intent);
+        finish();
     }
 
     //exit: not the 'x' button
     public void onExitGame(View view) {
+        Intent intent = new Intent(GameOverScreen.this, StartActivity.class);
+        startActivity(intent);
         finish();
     }
 
