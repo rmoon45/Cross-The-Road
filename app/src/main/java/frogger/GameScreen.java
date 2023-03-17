@@ -1,5 +1,6 @@
 package frogger;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -71,6 +72,8 @@ public class GameScreen extends AppCompatActivity {
         car.setY(y);
 
         Runnable mStatusChecker = new Runnable() {
+
+            //car movement
             @Override
             public void run() {
                 if (isGoingRight) {
@@ -91,6 +94,8 @@ public class GameScreen extends AppCompatActivity {
                 if (GameScreen.this.player.isColliding(car.getX() + car.getWidth() * 0.15f,
                         car.getY(), car.getX() + car.getWidth() * 0.85f,
                         car.getY() + car.getHeight())) {
+
+                    //if player collides with car, decrease life by 1
                     GameScreen.this.setLives(GameScreen.this.lives - 1);
                 }
                 handler.postDelayed(this, delayMillis);
@@ -226,6 +231,7 @@ public class GameScreen extends AppCompatActivity {
         backgroundLayout.setLayoutParams(params);
     }
 
+    //score and lives being set depending on situation
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (this.player.move(this.map, keyCode)) {
@@ -235,6 +241,10 @@ public class GameScreen extends AppCompatActivity {
             break;
         case 2:
             this.setLives(this.lives - 1);
+
+
+
+
             break;
         default:
             return true;
@@ -247,15 +257,35 @@ public class GameScreen extends AppCompatActivity {
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
     }
 
+    public int getScore() {
+        return score;
+    }
     private void setLives(int lives) {
         this.lives = lives;
+
         ((TextView) findViewById(R.id.livesView)).setText("Lives: " + lives);
+
+        //start gameOveractivity when you lose all lives
+        if (this.lives <= 0) {
+
+            System.out.println("Game Over");
+            System.out.println("score is " + this.score);
+
+            //activity is subclass of GameScreen context
+            Intent intent2 = new Intent(GameScreen.this, GameOverScreen.class);
+            intent2.putExtra("score", this.score);
+            startActivity(intent2);
+
+            finish();
+        }
     }
 
+    @Deprecated
     public void setCurrPos(int currPos) {
         this.currPos = currPos;
     }
 
+    @Deprecated
     public void setGreatestPos(int greatestPos) {
         this.greatestPos = greatestPos;
     }
@@ -264,18 +294,22 @@ public class GameScreen extends AppCompatActivity {
         return movement.equals("moveUp");
     }
 
+    @Deprecated
     public int getNumVerticalSquares() {
         return this.map.size();
     }
 
+    @Deprecated
     public int getSquareSize() {
         return squareSize;
     }
 
+    @Deprecated
     public float getCar1Y() {
         return findViewById(R.id.car1).getY();
     }
 
+    @Deprecated
     public float getCar2Y() {
         return findViewById(R.id.car4).getY();
     }
