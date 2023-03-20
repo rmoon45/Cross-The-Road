@@ -2,14 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.s0">
 
-    <application
+
+<application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.S0">
-
         <activity
             android:name="frogger.StartActivity"
             android:exported="true">
@@ -19,23 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="frogger.ConfigScreen"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name="com.example.s0.MainActivity"
+            android:name="frogger.GameOverScreen"
             android:exported="true">
         </activity>
         <activity
             android:name="frogger.GameScreen"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
+
 </manifest>
