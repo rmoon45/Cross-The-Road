@@ -60,8 +60,6 @@ public class VehicleTests {
         float lane2 = gamescreen.getSquareSize() * (gamescreen.getNumVerticalSquares() - 2) - (2 * gamescreen.getSquareSize());
         assertEquals(gamescreen.getCar1Y(), lane1, 0);
         assertEquals(gamescreen.getCar2Y(), lane2, 0);
-
-
     }
 
     //Ashwini: vehicles should not collide with each other

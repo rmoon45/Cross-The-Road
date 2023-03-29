@@ -9,7 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import com.example.s0.R;
-import preferences.Preferences;
 import android.widget.EditText;
 
 public class ConfigScreen extends AppCompatActivity {
@@ -52,10 +51,6 @@ public class ConfigScreen extends AppCompatActivity {
         intent.putExtra("difficulty", this.difficulty);
         intent.putExtra("lives", this.lives);
         intent.putExtra("character", this.character);
-        Preferences.write("name", this.name); // Goal is to get rid of Preferences and use
-        Preferences.write("difficulty", this.difficulty); // intent instead.
-        Preferences.write("lives", this.lives);
-        Preferences.write("character", this.character);
         startActivity(intent);
         finish();
     }
