@@ -1,5 +1,6 @@
 package frogger;
 
+@Deprecated
 public class Game {
     private String difficulty;
     private int lives;
