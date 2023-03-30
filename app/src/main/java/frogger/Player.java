@@ -2,6 +2,7 @@ package frogger;
 
 import android.content.Context;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -99,7 +100,7 @@ public class Player extends AppCompatImageView {
     /*
     0 - nothing happens
     1 - increase score
-    2 - decrease lives
+    2 - decrease lives & scoreww
      */
     private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
@@ -185,7 +186,6 @@ public class Player extends AppCompatImageView {
         ) {
             return false;
         }
-
         respawn();
         return true;
     }

@@ -14,8 +14,6 @@ public class Vehicle {
         setVehicleSpeed(car, squareSize);
         setXPosition(car, squareSize);
         setYPosition(car, squareSize, numVerticalSquares);
-
-
     }
 
     //height is squareSize for all
