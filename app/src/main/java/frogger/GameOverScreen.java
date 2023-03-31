@@ -18,8 +18,8 @@ public class GameOverScreen extends AppCompatActivity {
 
         Bundle extra = getIntent().getExtras();
 
-        //((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("score"));
-        ((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("displayScore"));
+        ((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("score"));
+        //((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("displayScore"));
     }
 
 

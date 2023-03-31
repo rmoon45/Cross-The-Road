@@ -98,7 +98,7 @@ public class GameScreen extends AppCompatActivity {
 
                     //if player collides with car, decrease life by 1
                     GameScreen.this.setLives(GameScreen.this.lives - 1);
-                    displayScore = score;
+                    GameScreen.this.displayScore = score;
                     GameScreen.this.setScore(0);
                 }
                 handler.postDelayed(this, delayMillis);
@@ -281,6 +281,10 @@ public class GameScreen extends AppCompatActivity {
 
     public int getLives() {
         return this.lives;
+    }
+
+    public int getDisplayScore() {
+        return this.displayScore;
     }
 
     @Deprecated
