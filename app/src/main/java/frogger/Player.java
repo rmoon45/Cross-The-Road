@@ -163,6 +163,7 @@ public class Player extends AppCompatImageView {
         this.movingEnabled = false;
         this.setGridX(spawnX);
         this.setGridY(spawnY);
+        this.furthestReached = spawnY;
         this.movingEnabled = true;
         this.respawned=true;
     }
