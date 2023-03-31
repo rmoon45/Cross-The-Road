@@ -97,6 +97,9 @@ public class GameScreen extends AppCompatActivity {
 
                     //if player collides with car, decrease life by 1
                     GameScreen.this.setLives(GameScreen.this.lives - 1);
+                    if (GameScreen.this.lives > 0) {
+                        GameScreen.this.setScore(0);
+                    }
                 }
                 handler.postDelayed(this, delayMillis);
             }
@@ -241,10 +244,9 @@ public class GameScreen extends AppCompatActivity {
             break;
         case 2:
             this.setLives(this.lives - 1);
-
-
-
-
+            if (this.lives > 0) {
+                this.setScore(0);
+            }
             break;
         default:
             return true;
