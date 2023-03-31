@@ -29,6 +29,8 @@ public class Player extends AppCompatImageView {
 
     private boolean movingEnabled;
 
+    private boolean respawned;
+
     // hmmm don't use this
     public Player(@NonNull Context context) {
         super(context);
@@ -107,6 +109,7 @@ public class Player extends AppCompatImageView {
             int newGridY = this.gridY - 1;
             if (map.get(newGridY) == "river") {
                 this.respawn();
+                System.out.println(this.getY());
                 return 2;
             } else {
                 this.setGridY(newGridY);
@@ -161,7 +164,10 @@ public class Player extends AppCompatImageView {
         this.setGridX(spawnX);
         this.setGridY(spawnY);
         this.movingEnabled = true;
+        this.respawned=true;
     }
+
+
 
     private void setGridX(int gridX) {
         this.gridX = gridX;

@@ -46,6 +46,8 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
 
+    private boolean liveReset=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +102,7 @@ public class GameScreen extends AppCompatActivity {
                     GameScreen.this.setLives(GameScreen.this.lives - 1);
                     displayScore = score;
                     GameScreen.this.setScore(0);
+
                 }
                 handler.postDelayed(this, delayMillis);
             }

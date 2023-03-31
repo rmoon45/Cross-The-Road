@@ -13,7 +13,9 @@ public class Player1 {
     private boolean moveLeft;
     private int score;
     private int lives;
-
+    private boolean respawned=false;
+    private String name;
+    private boolean liveReset=false;
     public Player1() {
         this.posX = 0;
         this.posY = 0;
@@ -113,9 +115,20 @@ public class Player1 {
         }
         this.lives--;
         //respawn();
+        respawned=true;
+        liveReset=true;
         return true;
     }
+    public boolean getRespawned(){
+        return this.respawned;
+    }
+    public boolean getLivesReset(){
+        return this.liveReset;
+    }
 
+    public void setName(String x){
+        this.name=x;
+    }
     public void setPosX(float x) {
         posX = x;
     }

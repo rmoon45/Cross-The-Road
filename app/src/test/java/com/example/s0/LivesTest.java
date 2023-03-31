@@ -20,6 +20,7 @@ import frogger.Game;
 public class LivesTest {
     private Looper looper = null;
     private Player1 player = null;
+
     private Vehicle car = null;
     private GameScreen gamescreen = null;
     private Game game = null;
@@ -82,8 +83,32 @@ public class LivesTest {
 
     @Test
     public void testRiverLivesDecrease() {
+        if(player.isColliding(50.0F, 1472, 50.0F, 50.0F)) {
+            assertTrue(player.getLives() == 2);
+        }
+    }
+    @Test
+    public void testRespawnHittingWaterAtStarting() {
+
+        if(player.isColliding(50.0F, 1472, 50.0F, 50.0F)) {
+            assertTrue(player.getRespawned());
+        }
+    }
+    @Test
+    public void testRespawnHittingCarAtStarting() {
+
+        if(player.isColliding(10.0F, 10.F, 10.F, 10.0F)) {
+            assertTrue(player.getRespawned());
+        }
+    } @Test
+    public void testLiveResetAfterHittingCar() {
+        if(player.isColliding(10.0F, 10.F, 10.F, 10.0F)) {
+            assertTrue(player.getLivesReset());
+        }
+
 
     }
+
 
     @Test
     public void testScoreDisplay() {
