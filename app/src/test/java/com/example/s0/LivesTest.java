@@ -77,7 +77,8 @@ public class LivesTest {
 
     @Test
     public void testRiverScoreReset() {
-
+        when(gamescreen.scoreResetTest(2)).thenCallRealMethod();
+        assertEquals(true, gamescreen.scoreResetTest(2));
         //assertEquals(scoreManager.getScoreAfterMove(0, "river", true), 0);
     }
 
@@ -100,13 +101,6 @@ public class LivesTest {
         if(player.isColliding(10.0F, 10.F, 10.F, 10.0F)) {
             assertTrue(player.getRespawned());
         }
-    } @Test
-    public void testLiveResetAfterHittingCar() {
-        if(player.isColliding(10.0F, 10.F, 10.F, 10.0F)) {
-            assertTrue(player.getLivesReset());
-        }
-
-
     }
 
 

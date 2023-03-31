@@ -37,6 +37,7 @@ public class GameScreen extends AppCompatActivity {
 
     private int score;
     private int lives;
+    private boolean scoreReset=false;
     private int displayScore;
 
     // I don't want to have this as a field but here we are
@@ -104,6 +105,11 @@ public class GameScreen extends AppCompatActivity {
                     if (GameScreen.this.lives > 0) {
                         GameScreen.this.setScore(0);
                     }
+
+
+                    displayScore = score;
+
+
                     GameScreen.this.setScore(0);
 
 
@@ -252,8 +258,9 @@ public class GameScreen extends AppCompatActivity {
         case 2:
             this.setLives(this.lives - 1);
 
-            if (this.lives > 0) {
+            if (scoreResetTest(this.lives)) {
                 this.setScore(0);
+
             }
 
             break;
@@ -262,10 +269,24 @@ public class GameScreen extends AppCompatActivity {
         }
         return true;
     }
+    public boolean scoreResetTest(int lives){
+        if (lives > 0) {
+            //System.out.println("hello");
+            return true;
+
+        }
+        else{
+            return false;
+        }
+    }
 
     private void setScore(int score) {
         this.score = score;
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
+    }
+
+    public boolean getScoreReset(){
+        return this.scoreReset;
     }
 
     public int getScore() {
