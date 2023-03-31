@@ -104,8 +104,6 @@ public class GameScreen extends AppCompatActivity {
                     if (GameScreen.this.lives > 0) {
                         GameScreen.this.setScore(0);
                     }
-=======
-                    displayScore = score;
                     GameScreen.this.setScore(0);
 
 
@@ -295,6 +293,10 @@ public class GameScreen extends AppCompatActivity {
 
     public int getLives() {
         return this.lives;
+    }
+
+    public int getDisplayScore() {
+        return this.displayScore;
     }
 
     @Deprecated
