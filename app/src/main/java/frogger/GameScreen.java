@@ -46,7 +46,7 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
 
-    private boolean liveReset=false;
+   
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
