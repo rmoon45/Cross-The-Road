@@ -11,11 +11,15 @@ public class Player1 {
     private boolean moveDown;
     private boolean moveRight;
     private boolean moveLeft;
+    private int score;
+    private int lives;
+    private boolean respawned=false;
     private String name;
-
+    private boolean liveReset=false;
     public Player1() {
         this.posX = 0;
         this.posY = 0;
+        this.lives = 3;
         this.moveUp = false;
         this.moveDown = false;
         this.moveLeft = false;
@@ -65,17 +69,6 @@ public class Player1 {
             }
         }
     }
-    /*public void moveCar1Left(ImageView car, Game game, int startPosition) {
-        //this.movePlayerTest(movement, game);
-        int squareSize = game.getSquareSize();
-        int screenWidth = game.getScreenWidth();
-        int screenHeight = game.getScreenHeight();
-        while (car.getX() > 0 + (squareSize / 2)) {
-            car.setX(car.getX() - squareSize);
-        }
-        car.setX(startPosition);
-        //moveCar1Left(car, game, startPosition);
-    }*/
 
     public boolean movePlayer(String movement, int squareSize, int screenWidth, int screenHeight) {
         this.movePlayerTest(movement, squareSize, screenWidth, screenHeight);
@@ -111,6 +104,31 @@ public class Player1 {
         return false;
     }
 
+    public boolean isColliding(float xTopLeft, float yTopLeft, float xBottomRight,
+                               float yBottomRight) {
+        if (xTopLeft > this.getPosX() + 112
+                || xBottomRight < this.getPosX()
+                || yTopLeft < this.getPosY()
+                || yBottomRight > this.getPosY() + 112
+        ) {
+            return false;
+        }
+        this.lives--;
+        //respawn();
+        respawned=true;
+        liveReset=true;
+        return true;
+    }
+    public boolean getRespawned(){
+        return this.respawned;
+    }
+    public boolean getLivesReset(){
+        return this.liveReset;
+    }
+
+    public void setName(String x){
+        this.name=x;
+    }
     public void setPosX(float x) {
         posX = x;
     }
@@ -144,8 +162,20 @@ public class Player1 {
         return moveLeft;
     }
 
-    public void setName(String input) {
-        this.name = input;
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public int getLives() {
+        return this.lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
 }
