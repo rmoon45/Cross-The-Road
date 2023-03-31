@@ -2,6 +2,7 @@ package frogger;
 
 import android.content.Context;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ public class Player extends AppCompatImageView {
     private int furthestReached;
 
     private boolean movingEnabled;
+
+    private boolean respawned;
 
     // hmmm don't use this
     public Player(@NonNull Context context) {
@@ -99,13 +102,14 @@ public class Player extends AppCompatImageView {
     /*
     0 - nothing happens
     1 - increase score
-    2 - decrease lives
+    2 - decrease lives & scoreww
      */
     private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
             int newGridY = this.gridY - 1;
             if (map.get(newGridY) == "river") {
                 this.respawn();
+                System.out.println(this.getY());
                 return 2;
             } else {
                 this.setGridY(newGridY);
@@ -159,8 +163,12 @@ public class Player extends AppCompatImageView {
         this.movingEnabled = false;
         this.setGridX(spawnX);
         this.setGridY(spawnY);
+        this.furthestReached = spawnY;
         this.movingEnabled = true;
+        this.respawned=true;
     }
+
+
 
     private void setGridX(int gridX) {
         this.gridX = gridX;
@@ -185,7 +193,6 @@ public class Player extends AppCompatImageView {
         ) {
             return false;
         }
-
         respawn();
         return true;
     }
