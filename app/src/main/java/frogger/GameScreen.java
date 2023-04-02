@@ -18,6 +18,7 @@ import com.example.s0.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class GameScreen extends AppCompatActivity {
 
@@ -301,6 +302,26 @@ public class GameScreen extends AppCompatActivity {
     }
 
     @Deprecated
+    public int getScoreAfterMove(int score, String currentSquare, boolean scoreChange) {
+        if (scoreChange) {
+            if (currentSquare == "road") {
+                score += 2;
+            } else if (currentSquare == "river") {
+                score += 3;
+            } else {
+                score += 1;
+            }
+            return score;
+        }
+        return score;
+    }
+
+    @Deprecated
+    public String getTileCorrespondingToPosition(int playerPosition, List<String> map) {
+        return map.get(map.size() - playerPosition - 1);
+    }
+
+    @Deprecated
     public void setCurrPos(int currPos) {
         this.currPos = currPos;
     }
@@ -310,6 +331,7 @@ public class GameScreen extends AppCompatActivity {
         this.greatestPos = greatestPos;
     }
 
+    @Deprecated
     public boolean getScoreChange(String movement) {
         return movement.equals("moveUp");
     }
