@@ -37,8 +37,6 @@ public class GameScreen extends AppCompatActivity {
 
     private int score;
     private int lives;
-    private boolean scoreReset=false;
-    private int displayScore;
 
     // I don't want to have this as a field but here we are
     private int screenWidth;
@@ -106,13 +104,7 @@ public class GameScreen extends AppCompatActivity {
                         GameScreen.this.setScore(0);
                     }
 
-
-                    displayScore = score;
-
-
                     GameScreen.this.setScore(0);
-
-
                 }
                 handler.postDelayed(this, delayMillis);
             }
@@ -285,10 +277,6 @@ public class GameScreen extends AppCompatActivity {
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
     }
 
-    public boolean getScoreReset(){
-        return this.scoreReset;
-    }
-
     public int getScore() {
         return score;
     }
@@ -314,10 +302,6 @@ public class GameScreen extends AppCompatActivity {
 
     public int getLives() {
         return this.lives;
-    }
-
-    public int getDisplayScore() {
-        return this.displayScore;
     }
 
     @Deprecated
