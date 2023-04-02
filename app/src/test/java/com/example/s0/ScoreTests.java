@@ -2,56 +2,30 @@ package com.example.s0;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.MockedConstruction;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockConstruction;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.Looper;
 
-import androidx.appcompat.app.AppCompatDelegate;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import frogger.ConfigScreen;
-import frogger.Game;
 import frogger.GameScreen;
-import frogger.Player;
-import frogger.Player1;
 import frogger.ScoreManager;
 
 public class ScoreTests {
 
     private ScoreManager scoreManager;
     private GameScreen gamescreen;
-    private Looper looper = null;
-    private Player1 user = null;
-    private int squareSize;
-    private int screenWidth;
-    private int screenHeight;
 
     @Before
     public void setup() {
         scoreManager = mock(ScoreManager.class);
         gamescreen = mock(GameScreen.class);
-        looper = mock(Looper.class);
-        Context context = mock(Context.class);
-        when(context.getMainLooper()).thenReturn(looper);
-        user = new Player1();
-        squareSize = 20;
-        screenWidth = 100;
-        screenHeight = 200;
-
     }
 
     // Nicole: score increases by 3 after crossing a river
