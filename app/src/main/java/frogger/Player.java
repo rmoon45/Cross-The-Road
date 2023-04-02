@@ -29,8 +29,6 @@ public class Player extends AppCompatImageView {
 
     private boolean movingEnabled;
 
-    private boolean respawned;
-
     // hmmm don't use this
     public Player(@NonNull Context context) {
         super(context);
@@ -165,7 +163,6 @@ public class Player extends AppCompatImageView {
         this.setGridY(spawnY);
         this.furthestReached = spawnY;
         this.movingEnabled = true;
-        this.respawned=true;
     }
 
 
