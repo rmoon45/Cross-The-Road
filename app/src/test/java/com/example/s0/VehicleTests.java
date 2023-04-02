@@ -13,10 +13,7 @@ import static org.junit.Assert.assertNotEquals;
 import android.content.Context;
 import android.os.Looper;
 
-import frogger.ConfigScreen;
-import frogger.Game;
 import frogger.GameScreen;
-import frogger.Player;
 import frogger.Vehicle;
 
 public class VehicleTests {

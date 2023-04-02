@@ -300,10 +300,6 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
-    public int getLives() {
-        return this.lives;
-    }
-
     @Deprecated
     public void setCurrPos(int currPos) {
         this.currPos = currPos;
