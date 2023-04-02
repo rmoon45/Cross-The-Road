@@ -6,9 +6,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import android.content.Context;
-import android.os.Looper;
-
 import java.lang.reflect.Field;
 
 import frogger.Player;
@@ -23,7 +20,7 @@ public class MovementTests {
     public void setup() {
         squareSize = 20;
         setField(player, "squareSize", squareSize);
-        
+
         screenWidth = 100;
         screenHeight = 200;
     }
