@@ -8,10 +8,14 @@ import static org.mockito.Mockito.*;
 
 import android.content.Context;
 import android.os.Looper;
+import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import frogger.GameScreen;
 import frogger.Player;
@@ -63,12 +67,18 @@ public class LivesTest {
 
     @Test
     public void testCollisionLivesDecrease() {
-        player.setPosX(10);
-        player.setPosY(10);
-        player.setLives(3);
-        if(player.isColliding(10.0F, 10.0F, 10.0F, 10.0F)) {
-            assertTrue(player.getLives() == 2);
+        when(newPlayer.getX()).thenReturn(10.0f);
+        when(newPlayer.getY()).thenReturn(10.0f);
+        when(newPlayer.move((ArrayList<String>) any(), anyInt())).thenReturn(2);
+        setField(gamescreen, "lives", 3);
+
+        try {
+            gamescreen.onKeyUp(KeyEvent.KEYCODE_W, mock(KeyEvent.class));
+        } catch (Exception e) {
+            System.out.println("yup that broken");
         }
+
+        verify(gamescreen, times(1)).setLives(2);
     }
 
     @Test
