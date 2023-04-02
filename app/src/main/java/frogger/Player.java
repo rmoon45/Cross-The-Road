@@ -29,6 +29,15 @@ public class Player extends AppCompatImageView {
 
     private boolean movingEnabled;
 
+    @Deprecated
+    private boolean isMoveUp;
+    @Deprecated
+    private boolean isMoveDown;
+    @Deprecated
+    private boolean isMoveRight;
+    @Deprecated
+    private boolean isMoveLeft;
+
     // hmmm don't use this
     public Player(@NonNull Context context) {
         super(context);
@@ -192,5 +201,41 @@ public class Player extends AppCompatImageView {
         }
         respawn();
         return true;
+    }
+
+    @Deprecated
+    public void movePlayerTest(String movement, int squareSize, int screenWidth, int screenHeight) {
+        switch (movement) {
+            //based off of the input string, change the position to be moving in said direction.
+            //use subtract for going up/left and plus for down/right bc the origin is at top left.
+            case "moveUp":
+                if (this.getY() >= 0) {
+                    isMoveUp = true;
+                } else {
+                    isMoveUp = false;
+                }
+                break;
+            case "moveLeft":
+                if (this.getX() >= 0 - (squareSize / 2)) {
+                    isMoveLeft = true;
+                } else {
+                    isMoveLeft = false;
+                }
+                break;
+            case "moveRight":
+                if ((this.getX() + squareSize)
+                        < screenWidth - (squareSize / 2)) {
+                    isMoveRight = true;
+                } else {
+                    isMoveRight = false;
+                }
+                break;
+            default:
+                if ((this.getY() + (2 * squareSize)) < screenHeight) {
+                    isMoveDown = true;
+                } else {
+                    isMoveDown = false;
+                }
+        }
     }
 }
