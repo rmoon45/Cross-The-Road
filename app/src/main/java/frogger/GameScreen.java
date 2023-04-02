@@ -18,6 +18,7 @@ import com.example.s0.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class GameScreen extends AppCompatActivity {
 
@@ -37,8 +38,6 @@ public class GameScreen extends AppCompatActivity {
 
     private int score;
     private int lives;
-    private boolean scoreReset=false;
-    private int displayScore;
 
     // I don't want to have this as a field but here we are
     private int screenWidth;
@@ -106,13 +105,7 @@ public class GameScreen extends AppCompatActivity {
                         GameScreen.this.setScore(0);
                     }
 
-
-                    displayScore = score;
-
-
                     GameScreen.this.setScore(0);
-
-
                 }
                 handler.postDelayed(this, delayMillis);
             }
@@ -285,10 +278,6 @@ public class GameScreen extends AppCompatActivity {
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
     }
 
-    public boolean getScoreReset(){
-        return this.scoreReset;
-    }
-
     public int getScore() {
         return score;
     }
@@ -312,12 +301,24 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
-    public int getLives() {
-        return this.lives;
+    @Deprecated
+    public int getScoreAfterMove(int score, String currentSquare, boolean scoreChange) {
+        if (scoreChange) {
+            if (currentSquare == "road") {
+                score += 2;
+            } else if (currentSquare == "river") {
+                score += 3;
+            } else {
+                score += 1;
+            }
+            return score;
+        }
+        return score;
     }
 
-    public int getDisplayScore() {
-        return this.displayScore;
+    @Deprecated
+    public String getTileCorrespondingToPosition(int playerPosition, List<String> map) {
+        return map.get(map.size() - playerPosition - 1);
     }
 
     @Deprecated
@@ -330,6 +331,7 @@ public class GameScreen extends AppCompatActivity {
         this.greatestPos = greatestPos;
     }
 
+    @Deprecated
     public boolean getScoreChange(String movement) {
         return movement.equals("moveUp");
     }

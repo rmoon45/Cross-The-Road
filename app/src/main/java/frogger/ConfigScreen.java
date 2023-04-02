@@ -102,21 +102,21 @@ public class ConfigScreen extends AppCompatActivity {
     }
 
     public void onEasySelected(View v) {
-        displaySelectedDifficulty(R.id.easyButton);
         this.difficulty = "easy";
         this.lives = 7;
+        displaySelectedDifficulty(R.id.easyButton);
     }
 
     public void onMediumSelected(View v) {
-        displaySelectedDifficulty(R.id.mediumButton);
         this.difficulty = "medium";
         this.lives = 3;
+        displaySelectedDifficulty(R.id.mediumButton);
     }
 
     public void onHardSelected(View v) {
-        displaySelectedDifficulty(R.id.hardButton);
         this.difficulty = "hard";
         this.lives = 1;
+        displaySelectedDifficulty(R.id.hardButton);
     }
 
     private void displaySelectedCharacter(int selectedCharacterId) {
