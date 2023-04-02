@@ -174,8 +174,6 @@ public class Player extends AppCompatImageView {
         this.movingEnabled = true;
     }
 
-
-
     private void setGridX(int gridX) {
         this.gridX = gridX;
         this.setX(this.horizontalOffset + gridX * this.squareSize);
@@ -237,5 +235,14 @@ public class Player extends AppCompatImageView {
                     isMoveDown = false;
                 }
         }
+    }
+
+    @Deprecated
+    public boolean checkName(String nameInput) {
+        if (nameInput == null) {
+            return false;
+        }
+        String userName = nameInput.trim();
+        return (!(nameInput.length() == 0 || userName.length() == 0));
     }
 }
