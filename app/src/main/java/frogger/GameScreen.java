@@ -254,7 +254,6 @@ public class GameScreen extends AppCompatActivity {
 
             if (scoreResetTest(this.lives)) {
                 this.setScore(0);
-
             }
 
             break;
