@@ -351,7 +351,7 @@ public class GameScreen extends AppCompatActivity {
     }
 
     private void manageScore() {
-        ScoreManager.getScoreAfterMove(1,"",true);
+        ScoreManager.getScoreAfterMove(1, "", true);
         ScoreManager.getTileCorrespondingToPosition(1, new ArrayList<String>(Arrays.asList()));
     }
 }
