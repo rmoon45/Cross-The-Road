@@ -349,4 +349,9 @@ public class GameScreen extends AppCompatActivity {
     public float getCar2Y() {
         return findViewById(R.id.car4).getY();
     }
+
+    private void manageScore() {
+        ScoreManager.getScoreAfterMove(1,"",true);
+        ScoreManager.getTileCorrespondingToPosition(1, new ArrayList<String>(Arrays.asList()));
+    }
 }

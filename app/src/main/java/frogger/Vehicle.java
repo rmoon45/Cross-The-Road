@@ -7,7 +7,6 @@ public class Vehicle extends AbstractVehicle {
     private float yPosition;
     private float vehicleSpeed;
 
-
     public Vehicle(String car, int numVerticalSquares, int squareSize) {
         setVehicleHeight(squareSize);
         setVehicleWidth(car, squareSize);
