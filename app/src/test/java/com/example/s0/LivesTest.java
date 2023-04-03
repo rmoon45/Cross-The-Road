@@ -24,6 +24,8 @@ public class LivesTest {
     private Player player = mock(Player.class, CALLS_REAL_METHODS);
     private GameScreen gamescreen = mock(GameScreen.class, CALLS_REAL_METHODS);
 
+    private GameOverScreen gameOverScreen = mock(GameOverScreen.class, CALLS_REAL_METHODS);
+
     @Before
     public void setup() {
         initializePlayerFields(player);
@@ -118,20 +120,26 @@ public class LivesTest {
         }
     }
 
-    // Esther: when Player does not collide with a river, do not decrease lives
+    // Esther: score display displays the correct score
     @Test
-    public void testNotRiverNoLivesChange() {
-        setField(player, "gridX", 1);
-        setField(player, "gridY", 1);
-        setField(gamescreen, "map", new ArrayList<String>(Arrays.asList("safe", "safe", "safe", "safe")));
-
+    public void testScoreDisplay() {
         try {
-            gamescreen.onKeyUp(KeyEvent.KEYCODE_W, mock(KeyEvent.class));
-        } catch (Exception e) {
+            gamescreen.setScore(10);
+        } catch (Exception E){
             System.out.println("harmless expected error");
         }
 
-        verify(gamescreen, times(0)).setLives(anyInt());
+        try {
+            gamescreen.setLives(0);
+
+        } catch (Exception E) {
+            System.out.println("harmless expected error");
+        }
+
+        GameOverScreen gameoverscreen = mock(GameOverScreen.class, CALLS_REAL_METHODS);
+        // gameoverscreen.onRestartGame(mock(Bundle.class));
+
+        assertEquals(10, gamescreen.getScore());
     }
 
     // Nicole: when Player does not collide with a river, do not decrease score

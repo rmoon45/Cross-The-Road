@@ -266,7 +266,7 @@ public class GameScreen extends AppCompatActivity {
         return (lives > 0);
     }
 
-    private void setScore(int score) {
+    public void setScore(int score) {
         this.score = score;
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
     }
