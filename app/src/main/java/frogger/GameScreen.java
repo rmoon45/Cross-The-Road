@@ -262,15 +262,8 @@ public class GameScreen extends AppCompatActivity {
         }
         return true;
     }
-    public boolean scoreResetTest(int lives){
-        if (lives > 0) {
-            //System.out.println("hello");
-            return true;
-
-        }
-        else{
-            return false;
-        }
+    public boolean scoreResetTest(int lives) {
+        return (lives > 0);
     }
 
     private void setScore(int score) {
