@@ -1,6 +1,6 @@
 package frogger;
 
-public class Vehicle {
+public class Vehicle extends AbstractVehicle {
     private int vehicleWidth;
     private int vehicleHeight;
     private float xPosition;

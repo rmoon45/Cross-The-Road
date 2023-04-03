@@ -38,6 +38,7 @@ public class GameScreen extends AppCompatActivity {
 
     private int score;
     private int lives;
+    private boolean gameOver;
 
     // I don't want to have this as a field but here we are
     private int screenWidth;
@@ -296,6 +297,7 @@ public class GameScreen extends AppCompatActivity {
             Intent intent2 = new Intent(GameScreen.this, GameOverScreen.class);
             intent2.putExtra("score", this.score);
             startActivity(intent2);
+            this.gameOver = true;
 
             finish();
         }
