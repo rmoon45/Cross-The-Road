@@ -13,8 +13,6 @@ public class ScoreManager {
             } else {
                 score += 1;
             }
-            return score;
-
         }
         return score;
     }
