@@ -6,7 +6,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -14,12 +17,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import frogger.GameOverScreen;
 import frogger.GameScreen;
 import frogger.Player;
 
 public class LivesTest {
     private Player player = mock(Player.class, CALLS_REAL_METHODS);
     private GameScreen gamescreen = mock(GameScreen.class, CALLS_REAL_METHODS);
+
+    private GameOverScreen gameOverScreen = mock(GameOverScreen.class, CALLS_REAL_METHODS);
 
     @Before
     public void setup() {
@@ -106,10 +112,32 @@ public class LivesTest {
         }
     }
 
+    @Test
+    public void testGameOverScreenCanLaunchNewScreen() {
+        GameOverScreen gameoverscreen = mock(GameOverScreen.class, CALLS_REAL_METHODS);
+        gameoverscreen.onRestartGame(mock(View.class));
+        verify(gameoverscreen, times(1)).startActivity((Intent) any());
+    }
 
     @Test
     public void testScoreDisplay() {
+        try {
+            gamescreen.setScore(10);
+        } catch (Exception E){
+            System.out.println("harmless expected error");
+        }
 
+        try {
+            gamescreen.setLives(0);
+
+        } catch (Exception E) {
+            System.out.println("harmless expected error");
+        }
+
+        GameOverScreen gameoverscreen = mock(GameOverScreen.class, CALLS_REAL_METHODS);
+        // gameoverscreen.onRestartGame(mock(Bundle.class));
+
+        assertEquals(10, gamescreen.getScore());
     }
 
     private <T> void setField(T object, String fieldName, T value) {
