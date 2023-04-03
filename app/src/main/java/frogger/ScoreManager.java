@@ -2,7 +2,6 @@ package frogger;
 
 import java.util.List;
 
-@Deprecated
 public class ScoreManager {
 
     public static int getScoreAfterMove(int score, String currentSquare, boolean scoreChange) {
