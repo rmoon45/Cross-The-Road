@@ -2,7 +2,6 @@ package frogger;
 
 import android.content.Context;
 import android.view.KeyEvent;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -204,36 +203,36 @@ public class Player extends AppCompatImageView {
     @Deprecated
     public void movePlayerTest(String movement, int squareSize, int screenWidth, int screenHeight) {
         switch (movement) {
-            //based off of the input string, change the position to be moving in said direction.
-            //use subtract for going up/left and plus for down/right bc the origin is at top left.
-            case "moveUp":
-                if (this.getY() >= 0) {
-                    isMoveUp = true;
-                } else {
-                    isMoveUp = false;
-                }
-                break;
-            case "moveLeft":
-                if (this.getX() >= 0 - (squareSize / 2)) {
-                    isMoveLeft = true;
-                } else {
-                    isMoveLeft = false;
-                }
-                break;
-            case "moveRight":
-                if ((this.getX() + squareSize)
-                        < screenWidth - (squareSize / 2)) {
-                    isMoveRight = true;
-                } else {
-                    isMoveRight = false;
-                }
-                break;
-            default:
-                if ((this.getY() + (2 * squareSize)) < screenHeight) {
-                    isMoveDown = true;
-                } else {
-                    isMoveDown = false;
-                }
+        //based off of the input string, change the position to be moving in said direction.
+        //use subtract for going up/left and plus for down/right bc the origin is at top left.
+        case "moveUp":
+            if (this.getY() >= 0) {
+                isMoveUp = true;
+            } else {
+                isMoveUp = false;
+            }
+            break;
+        case "moveLeft":
+            if (this.getX() >= 0 - (squareSize / 2)) {
+                isMoveLeft = true;
+            } else {
+                isMoveLeft = false;
+            }
+            break;
+        case "moveRight":
+            if ((this.getX() + squareSize)
+                    < screenWidth - (squareSize / 2)) {
+                isMoveRight = true;
+            } else {
+                isMoveRight = false;
+            }
+            break;
+        default:
+            if ((this.getY() + (2 * squareSize)) < screenHeight) {
+                isMoveDown = true;
+            } else {
+                isMoveDown = false;
+            }
         }
     }
 

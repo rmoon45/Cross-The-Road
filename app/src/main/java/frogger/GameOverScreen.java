@@ -21,7 +21,6 @@ public class GameOverScreen extends AppCompatActivity {
         displayScore = extra.getInt("score");
 
         ((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("score"));
-        //((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("displayScore"));
     }
 
 
