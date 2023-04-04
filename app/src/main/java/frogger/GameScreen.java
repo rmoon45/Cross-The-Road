@@ -1,5 +1,6 @@
 package frogger;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -38,7 +41,6 @@ public class GameScreen extends AppCompatActivity {
 
     private int score;
     private int lives;
-    private boolean gameOver;
 
     // I don't want to have this as a field but here we are
     private int screenWidth;
@@ -47,7 +49,8 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
 
-   
+    // temporary
+    private Log log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +62,30 @@ public class GameScreen extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         initializeTextViews(extras);
 
+        // temporary: this.log
         this.player = new Player(this, extras.getString("character"), this.squareSize,
-                this.numHorizontalSquares, this.numVerticalSquares, this.horizontalOffset);
+                this.numHorizontalSquares, this.numVerticalSquares, this.horizontalOffset, this.log);
         ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(player);
 
         initializeCars();
+
+        // temporary
+        moveLog();
+    }
+
+    // temporary
+    private void moveLog() {
+
+        Handler handler = new Handler();
+        Runnable mStatusChecker = new Runnable() {
+
+            @Override
+            public void run() {
+                GameScreen.this.log.move(GameScreen.this.player);
+                handler.postDelayed(this, 1);
+            }
+        };
+        mStatusChecker.run();
     }
 
     private void createCar(int carId, boolean isGoingRight, int width, int x, int y,
@@ -132,6 +154,7 @@ public class GameScreen extends AppCompatActivity {
                 squareSize * (numVerticalSquares - 2) - (4 * squareSize), 20, mHandler);
     }
 
+    @SuppressLint("SetTextI18n")
     private void initializeTextViews(Bundle extras) {
         ((TextView) findViewById(R.id.nameView)).setText(extras.getString("name"));
         ((TextView) findViewById(R.id.difficultyView)).setText("Difficulty: "
@@ -175,7 +198,7 @@ public class GameScreen extends AppCompatActivity {
 
         this.screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         // to-do: if someone could fix this to get the actual usable height, that would be great.
-        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
+        @SuppressLint("InternalInsetResource") int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
                 - getResources().getDimensionPixelSize(
                 getResources().getIdentifier("navigation_bar_height", "dimen", "android")
         );
@@ -236,9 +259,21 @@ public class GameScreen extends AppCompatActivity {
         // tiles take up. This stops the rightmost and bottommost tiles from being resized when the
         // tiles don't fit exactly onto the screen.
         ViewGroup.LayoutParams params = backgroundLayout.getLayoutParams();
-        params.height = numVerticalSquares * squareSize;
         params.width = numHorizontalSquares * squareSize;
+        params.height = numVerticalSquares * squareSize;
         backgroundLayout.setLayoutParams(params);
+
+        // temporary
+        this.log = new Log(this, screenWidth, 10, horizontalOffset, squareSize, false);
+        initializeLog(this.log);
+    }
+
+    private void initializeLog(Log log) {
+        ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(log);
+        ViewGroup.LayoutParams logParams = log.getLayoutParams();
+        logParams.width = 3 * squareSize;
+        logParams.height = 7 * squareSize / 6;
+        log.setLayoutParams(logParams);
     }
 
     //score and lives being set depending on situation
@@ -266,6 +301,7 @@ public class GameScreen extends AppCompatActivity {
         return (lives > 0);
     }
 
+    @SuppressLint("SetTextI18n")
     public void setScore(int score) {
         this.score = score;
         ((TextView) findViewById(R.id.scoreView)).setText("Score: " + this.score);
@@ -274,6 +310,7 @@ public class GameScreen extends AppCompatActivity {
     public int getScore() {
         return score;
     }
+    @SuppressLint("SetTextI18n")
     public void setLives(int lives) {
         this.lives = lives;
 
@@ -289,7 +326,6 @@ public class GameScreen extends AppCompatActivity {
             Intent intent2 = new Intent(GameScreen.this, GameOverScreen.class);
             intent2.putExtra("score", this.score);
             startActivity(intent2);
-            this.gameOver = true;
 
             finish();
         }

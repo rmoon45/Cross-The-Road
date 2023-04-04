@@ -37,9 +37,19 @@ public class Player extends AppCompatImageView {
     @Deprecated
     private boolean isMoveLeft;
 
+    // temporary
+    private Log log;
+
     // hmmm don't use this
     public Player(@NonNull Context context) {
         super(context);
+    }
+
+    // temporary
+    public Player(@NonNull Context context, String character, int squareSize,
+         int numHorizontalSquares, int numVerticalSquares, int horizontalOffset, Log log) {
+        this(context, character, squareSize, numHorizontalSquares, numVerticalSquares, horizontalOffset);
+        this.log = log;
     }
 
     public Player(@NonNull Context context, String character, int squareSize,
@@ -77,6 +87,7 @@ public class Player extends AppCompatImageView {
         this.furthestReached = this.spawnY;
 
         this.movingEnabled = true;
+        System.out.println(this.gridY);
     }
 
     public int move(ArrayList<String> map, int keycode) {
@@ -113,9 +124,9 @@ public class Player extends AppCompatImageView {
     private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
             int newGridY = this.gridY - 1;
-            if (map.get(newGridY) == "river") {
+            // temporary: && !this.log.isColliding(this.gridX, newGridY)
+            if (map.get(newGridY) == "river" && !this.log.isColliding(this.gridX, newGridY)) {
                 this.respawn();
-                System.out.println(this.getY());
                 return 2;
             } else {
                 this.setGridY(newGridY);
@@ -129,9 +140,11 @@ public class Player extends AppCompatImageView {
     }
 
     private int moveDown(ArrayList<String> map) {
+
         if (this.gridY < numVerticalSquares - 1) {
             int newGridY = this.gridY + 1;
-            if (map.get(newGridY) == "river") {
+            // temporary: && !this.log.isColliding(this.gridX, newGridY)
+            if (map.get(newGridY) == "river" && !this.log.isColliding(this.gridX, newGridY)) {
                 this.respawn();
                 return 2;
             } else {
@@ -142,7 +155,15 @@ public class Player extends AppCompatImageView {
     }
 
     private int moveRight(ArrayList<String> map) {
+        // temporary: && !this.log.isColliding(this.gridX + 1, this.gridY)
         if (map.get(gridY) == "river") {
+            if (this.log.isColliding(this.gridX + 1, this.gridY)) {
+                this.gridX++;
+                this.setX(this.getX() + this.squareSize);
+            } else {
+                this.respawn();
+                return 2;
+            }
             this.respawn();
             return 2;
         } else if (this.gridX < numHorizontalSquares - 2) {
@@ -153,9 +174,15 @@ public class Player extends AppCompatImageView {
     }
 
     private int moveLeft(ArrayList<String> map) {
+        // temporary: && !this.log.isColliding(this.gridX - 1, this.gridY)
         if (map.get(gridY) == "river") {
-            this.respawn();
-            return 2;
+            if (this.log.isColliding(this.gridX - 1, this.gridY)) {
+                this.gridX--;
+                this.setX(this.getX() - this.squareSize);
+            } else {
+                this.respawn();
+                return 2;
+            }
         } else if (this.gridX > 1) {
             this.setGridX(this.gridX - 1);
         }
@@ -178,6 +205,10 @@ public class Player extends AppCompatImageView {
         this.setX(this.horizontalOffset + gridX * this.squareSize);
     }
 
+    public void setGridXWithoutUpdatingPosition(int gridX) {
+        this.gridX = gridX;
+    }
+
     private void setGridY(int gridY) {
         this.gridY = gridY;
         this.setY(this.squareSize * gridY);
@@ -185,6 +216,10 @@ public class Player extends AppCompatImageView {
 
     public int getGridY() {
         return this.gridY;
+    }
+
+    public int getGridX() {
+        return this.gridX;
     }
 
     public boolean isColliding(float xTopLeft, float yTopLeft, float xBottomRight,
@@ -198,6 +233,13 @@ public class Player extends AppCompatImageView {
         }
         respawn();
         return true;
+    }
+
+    // Returns whether or not the player has respawned from being out of bounds
+    public void checkBordersAndRespawnIfNecessary() {
+        if (this.gridX < 0 || this.gridX > numHorizontalSquares) {
+            respawn();
+        }
     }
 
     @Deprecated
