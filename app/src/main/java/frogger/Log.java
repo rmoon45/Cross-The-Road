@@ -68,7 +68,6 @@ public class Log extends AppCompatImageView {
         float xPos = this.getX();
         int movementSpeed = isFast ? FASTSPEED : SLOWSPEED;
         if (xPos < this.screenWidth) {
-            System.out.println("got here");
             this.setX(xPos + movementSpeed);
         } else {
             this.setX(-3 * this.squareSize);
