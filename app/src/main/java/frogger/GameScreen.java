@@ -70,22 +70,7 @@ public class GameScreen extends AppCompatActivity {
         initializeCars();
 
         // temporary
-        moveLog();
-    }
-
-    // temporary
-    private void moveLog() {
-
-        Handler handler = new Handler();
-        Runnable mStatusChecker = new Runnable() {
-
-            @Override
-            public void run() {
-                GameScreen.this.log.move(GameScreen.this.player);
-                handler.postDelayed(this, 1);
-            }
-        };
-        mStatusChecker.run();
+        log.movement(this.player);
     }
 
     private void createCar(int carId, boolean isGoingRight, int width, int x, int y,

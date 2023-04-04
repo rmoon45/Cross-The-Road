@@ -1,6 +1,7 @@
 package frogger;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -45,7 +46,21 @@ public class Log extends AppCompatImageView {
         this.setY(this.gridY * this.squareSize);
     }
 
-    public void move(Player player) {
+    public void movement(Player player) {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                Log.this.updateLogPositionAndMovePlayerIfNeeded(player);
+                handler.postDelayed(this, 1);
+            }
+        };
+        runnable.run();
+    }
+
+    // This should be called every x milliseconds
+    public void updateLogPositionAndMovePlayerIfNeeded(Player player) {
         // Check if the player is on the log (must be checked before moving the log)
         boolean isCarryingPlayer = isColliding(player.getGridX(), player.getGridY());
 
@@ -53,6 +68,7 @@ public class Log extends AppCompatImageView {
         float xPos = this.getX();
         int movementSpeed = isFast ? FASTSPEED : SLOWSPEED;
         if (xPos < this.screenWidth) {
+            System.out.println("got here");
             this.setX(xPos + movementSpeed);
         } else {
             this.setX(-3 * this.squareSize);
@@ -61,30 +77,31 @@ public class Log extends AppCompatImageView {
         }
 
         // Check if log has moved enough that gridX needs to be updated
-        boolean hasMovedRightOneGridSquare
-                = this.getX() > this.leftGridX * this.squareSize + this.horizontalOffset;
+        boolean needToUpdateGridX = hasMovedRightOneGridSquare();
 
         // Move the player if they are on the log
         if (isCarryingPlayer) {
             player.setX(player.getX() + movementSpeed);
-            if (hasMovedRightOneGridSquare) {
+            if (needToUpdateGridX) {
                 player.setGridXWithoutUpdatingPosition(player.getGridX() + 1);
                 player.checkBordersAndRespawnIfNecessary();
             }
         }
 
-        if (hasMovedRightOneGridSquare) {
+        // Update gridX as necessary
+        if (needToUpdateGridX) {
             this.leftGridX++;
             this.rightGridX++;
         }
     }
 
+    // Determine if the log's absolute coordinates are past its grid coordinates
+    // Kind of janky right now
+    private boolean hasMovedRightOneGridSquare() {
+        return this.getX() > this.leftGridX * this.squareSize + this.horizontalOffset;
+    }
+
     public boolean isColliding(int gridX, int gridY) {
-        /*System.out.println("isColliding: " + (gridY == this.gridY
-                && gridX >= this.leftGridX
-                && gridX <= this.rightGridX));
-        System.out.println("log grid coords: " + this.gridY + ", " + this.leftGridX);
-        System.out.println("player tested grid Y: " + gridY + ", " + gridX);*/
         return gridY == this.gridY
             && gridX >= this.leftGridX
             && gridX <= this.rightGridX;
