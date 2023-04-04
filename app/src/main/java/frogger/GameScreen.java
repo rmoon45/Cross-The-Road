@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameScreen extends AppCompatActivity {
 
@@ -208,25 +209,21 @@ public class GameScreen extends AppCompatActivity {
                 - (squareSize / 2)
                 - (numHorizontalSquares / 2) * squareSize;
 
+        Map<String, Integer> tileImageResources = new HashMap<String, Integer>(Map.of(
+                "river",
+                R.drawable.river,
+                "road",
+                R.drawable.road,
+                "goal",
+                R.drawable.goal,
+                "safe",
+                R.drawable.safe
+        ));
+
         // Draw the tiles.
         for (int i = 0; i < numVerticalSquares; i++) {
             // Get the corresponding tile image for the row.
-            int imageResource = R.drawable.safe;
-            switch (this.map.get(i)) {
-            case "river":
-                imageResource = R.drawable.river;
-                break;
-            case "road":
-                imageResource = R.drawable.road;
-                break;
-            case "goal":
-                imageResource = R.drawable.goal;
-                break;
-            default:
-                if (this.map.get(i) != "safe") {
-                    throw new RuntimeException("you dnun goofed");
-                }
-            }
+            int imageResource = tileImageResources.get(this.map.get(i));
 
             // Populate the tile image onto each square in the row.
             for (int j = 0; j < numHorizontalSquares; j++) {
