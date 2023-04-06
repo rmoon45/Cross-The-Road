@@ -1,12 +1,11 @@
 package frogger;
 
-public class Vehicle {
+public class Vehicle extends AbstractVehicle {
     private int vehicleWidth;
     private int vehicleHeight;
     private float xPosition;
     private float yPosition;
     private float vehicleSpeed;
-
 
     public Vehicle(String car, int numVerticalSquares, int squareSize) {
         setVehicleHeight(squareSize);
