@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -14,6 +15,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import frogger.Log;
 import frogger.Player;
@@ -25,66 +30,84 @@ public class LogTests {
 
     @Before
     public void setup() {
-        setField(log, "SLOWSPEED", 10);
-        setField(log, "FASTSPEED", 20);
         setField(log, "screenWidth", 50);
     }
 
     @Test
-    public void testLogCanMoveAtMultipleMovementSpeeds() {
-        doReturn(0.0f).when(log).getX();
+    /*
+    Note: this test pulls ten random speeds and asserts that there are at least two different speeds.
+    This test could fail by random chance. Try running it again if it fails.
+     */
+    public void testLogCanMoveAtMultipleMovementSpeeds() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        HashSet<Integer> speeds = new HashSet<Integer>();
 
-        setField(log, "isFast", false);
-        log.updateLogPositionAndMovePlayerIfNeeded(player);
+        Method indexOfMethod = Log.class.getDeclaredMethod("generateSpeed");
+        indexOfMethod.setAccessible(true);
 
-        verify(log, times(1)).setX(10);
+        for (int i = 0; i < 10; i++) {
+            indexOfMethod.invoke(log);
+            speeds.add((Integer) getField(log, "speed"));
+        }
 
-        setField(log, "isFast", true);
-        log.updateLogPositionAndMovePlayerIfNeeded(player);
-
-        verify(log, times(1)).setX(20);
+        assertTrue(speeds.size() >= 2);
     }
 
     @Test
-    public void testPlayerOnLogMovesAtSameSpeedAsLog() {
+    public void testPlayerOnLogMovesWithTheLog() {
+        doReturn(0).when(log).collisionLocationAbsoluteCoords(anyInt(), anyInt());
         doReturn(true).when(log).isColliding(anyInt(), anyInt());
-        doReturn(5.0f).when(player).getX();
+        doReturn(0).when(log).calculateClosestGridX();
 
-        setField(log, "isFast", false);
+        doReturn(5.0f).when(log).getX();
         log.updateLogPositionAndMovePlayerIfNeeded(player);
-        verify(player, times(1)).setX(5.0f + 10);
+        verify(player, times(1)).setX(5.0f);
 
-        setField(log, "isFast", true);
+        doReturn(10.0f).when(log).getX();
         log.updateLogPositionAndMovePlayerIfNeeded(player);
-        verify(player, times(1)).setX(5.0f + 20);
+        verify(player, times(1)).setX(10.0f);
     }
 
     @Test
     public void testLogDoesNotMovePlayerIfPlayerNotOnLog() {
-        setField(log, "isFast", false);
+        doReturn(-1).when(log).collisionLocationAbsoluteCoords(anyInt(), anyInt());
         doReturn(false).when(log).isColliding(anyInt(), anyInt());
-        doReturn(5.0f).when(player).getX();
+        doReturn(0).when(log).calculateClosestGridX();
 
+        doReturn(5.0f).when(log).getX();
         log.updateLogPositionAndMovePlayerIfNeeded(player);
         verify(player, times(0)).setX(anyFloat());
     }
 
     @Test
     public void testLogCorrectDetectsIfSomethingIsOnLog() {
+        doReturn(3.0f * 10.0f).when(log).getX();
         setField(log, "leftGridX", 3);
-        setField(log, "rightGridX", 5);
         setField(log, "gridY", 7);
+        setField(log, "squareSize", 10);
 
-        assertTrue(log.isColliding(4, 7));
+        assertTrue(log.isColliding(4 * 10, 7));
     }
 
     @Test
     public void testLogCorrectDetectsIfNothingIsOnLog() {
+        doReturn(3.0f * 10.0f).when(log).getX();
         setField(log, "leftGridX", 3);
-        setField(log, "rightGridX", 5);
         setField(log, "gridY", 7);
+        setField(log, "squareSize", 10);
 
-        assertFalse(log.isColliding(10, 8));
+        assertFalse(log.isColliding(9 * 10, 8));
+    }
+
+    private <T> Object getField(T object, String fieldName) {
+        try {
+            Field field = object.getClass().getSuperclass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(object);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private <T> void setField(T object, String fieldName, T value) {
