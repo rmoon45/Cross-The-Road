@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,6 +72,8 @@ public class GameScreen extends AppCompatActivity {
         ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(player);
 
         initializeCars();
+        initializeCoins();
+
     }
 
     private void initializeLogs() {
@@ -88,6 +92,7 @@ public class GameScreen extends AppCompatActivity {
         }
         player.setLogs(this.logs);
     }
+
 
     private void createCar(int carId, boolean isGoingRight, int width, int x, int y,
                            int delayMillis, Handler handler) {
@@ -136,6 +141,28 @@ public class GameScreen extends AppCompatActivity {
         };
         mStatusChecker.run();
     }
+    public void createCoin(ImageView coin){
+        Handler mHandler = new Handler();
+        Runnable mStatusChecker = new Runnable() {
+
+            public void run(){
+
+                if ( GameScreen.this.player.isColliding(coin.getX() + coin.getWidth() * 0.15f,
+                        coin.getY(), coin.getX() + coin.getWidth() * 0.85f,
+                        coin.getY() + coin.getHeight())){
+
+                        GameScreen.this.setLives(GameScreen.this.lives++);
+                        coin.setVisibility(View.INVISIBLE);
+
+                }
+                mHandler.postDelayed(this, 1);
+            }
+        };
+        mStatusChecker.run();
+
+
+
+    }
 
     private void initializeCars() {
         Handler mHandler = new Handler();
@@ -153,6 +180,30 @@ public class GameScreen extends AppCompatActivity {
         createCar(R.id.car4, false, squareSize * 4, horizontalOffset
                         + (numHorizontalSquares / 2) * squareSize,
                 squareSize * (numVerticalSquares - 2) - (4 * squareSize), 20, mHandler);
+    }
+    private void initializeCoins(){
+        Random r = new Random();
+        Handler mHandler = new Handler();
+        ImageView coin1 = findViewById(R.id.coin1);
+        coin1.setX(r.nextInt(screenWidth-33));
+        coin1.setY(squareSize * (numVerticalSquares - 2) - (2 * squareSize));
+        ImageView coin2 = findViewById(R.id.coin2);
+        coin2.setX(r.nextInt(screenWidth-33));
+        coin2.setY(squareSize * (numVerticalSquares - 2) - (4 * squareSize));//18-9
+        ImageView coin3 = findViewById(R.id.coin3);
+        coin3.setX(r.nextInt(screenWidth-33));
+        coin3.setY((numVerticalSquares/2) + 240);
+        ImageView coin4 = findViewById(R.id.coin4);
+        coin4.setX(r.nextInt(screenWidth-33));
+        coin4.setY((numVerticalSquares/2)+400);
+        ImageView coin5 = findViewById(R.id.coin5);
+        coin5.setX(r.nextInt(screenWidth-33));
+        coin5.setY((numVerticalSquares/2) + 560);
+        createCoin(coin1);
+        createCoin(coin2);
+        createCoin(coin3);
+        createCoin(coin4);
+        createCoin(coin5);
     }
 
     @SuppressLint("SetTextI18n")
