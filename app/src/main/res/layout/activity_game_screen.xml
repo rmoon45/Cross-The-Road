@@ -80,6 +80,46 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/coin1"
+                android:layout_width="33dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/coin"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="185dp" />
+
+            <ImageView
+                android:id="@+id/coin2"
+                android:layout_width="33dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/coin2"
+                tools:layout_editor_absoluteX="116dp"
+                tools:layout_editor_absoluteY="185dp" />
+
+            <ImageView
+                android:id="@+id/coin3"
+                android:layout_width="33dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/coin3"
+                tools:layout_editor_absoluteX="184dp"
+                tools:layout_editor_absoluteY="185dp" />
+
+            <ImageView
+                android:id="@+id/coin4"
+                android:layout_width="33dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/coin4"
+                tools:layout_editor_absoluteX="245dp"
+                tools:layout_editor_absoluteY="215dp" />
+
+            <ImageView
+                android:id="@+id/coin5"
+                android:layout_width="33dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/coin5"
+                tools:layout_editor_absoluteX="53dp"
+                tools:layout_editor_absoluteY="250dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 

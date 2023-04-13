@@ -116,6 +116,7 @@ public class Player extends AppCompatImageView {
      */
     private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
+            System.out.println(this.gridY);
             int newGridY = this.gridY - 1;
             if (map.get(newGridY) == "river" && !isCollidingWithLog((int) getX(), newGridY)) {
                 this.respawn();
