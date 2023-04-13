@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.s0.R;
 
 public class GameOverScreen extends AppCompatActivity {
+    private int displayScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +18,9 @@ public class GameOverScreen extends AppCompatActivity {
         setContentView(R.layout.activity_game_over_screen);
 
         Bundle extra = getIntent().getExtras();
+        displayScore = extra.getInt("score");
 
         ((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("score"));
-        //((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("displayScore"));
     }
 
 
@@ -36,6 +37,14 @@ public class GameOverScreen extends AppCompatActivity {
         Intent intent = new Intent(GameOverScreen.this, StartActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public int getDisplayScore() {
+        return displayScore;
+    }
+
+    public void setDisplayScore(int i) {
+        displayScore = i;
     }
 
 }
