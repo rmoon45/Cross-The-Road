@@ -104,7 +104,7 @@ public class Log extends AppCompatImageView {
         }
     }
 
-    private int calculateClosestGridX() {
+    public int calculateClosestGridX() {
         return (int) (getX() - this.horizontalOffset) / squareSize;
     }
 

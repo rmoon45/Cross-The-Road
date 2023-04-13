@@ -117,7 +117,6 @@ public class Player extends AppCompatImageView {
     private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
             int newGridY = this.gridY - 1;
-            // temporary: && !this.log.isColliding(this.gridX, newGridY)
             if (map.get(newGridY) == "river" && !isCollidingWithLog((int) getX(), newGridY)) {
                 this.respawn();
                 return 2;
@@ -136,7 +135,6 @@ public class Player extends AppCompatImageView {
 
         if (this.gridY < numVerticalSquares - 1) {
             int newGridY = this.gridY + 1;
-            // temporary: && !this.log.isColliding(this.gridX, newGridY)
             if (map.get(newGridY) == "river" && !isCollidingWithLog((int) getX(), newGridY)) {
                 this.respawn();
                 return 2;
@@ -148,7 +146,6 @@ public class Player extends AppCompatImageView {
     }
 
     private int moveRight(ArrayList<String> map) {
-        // temporary: && !this.log.isColliding(this.gridX + 1, this.gridY)
         if (map.get(gridY) == "river") {
             if (isCollidingWithLog((int) this.getX() + this.squareSize, this.gridY)) {
                 this.gridX++;
@@ -167,7 +164,6 @@ public class Player extends AppCompatImageView {
     }
 
     private int moveLeft(ArrayList<String> map) {
-        // temporary: && !this.log.isColliding(this.gridX - 1, this.gridY)
         if (map.get(gridY) == "river") {
             if (isCollidingWithLog((int) this.getX() - this.squareSize, this.gridY)) {
                 this.gridX--;
