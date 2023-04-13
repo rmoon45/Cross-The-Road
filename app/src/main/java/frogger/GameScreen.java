@@ -50,8 +50,6 @@ public class GameScreen extends AppCompatActivity {
     private int currPos;
     private int greatestPos;
 
-    // temporary
-    private Log log;
     private ArrayList<Log> logs;
 
     @Override
