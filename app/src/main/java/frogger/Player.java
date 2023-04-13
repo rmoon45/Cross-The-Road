@@ -228,6 +228,18 @@ public class Player extends AppCompatImageView {
         respawn();
         return true;
     }
+    public boolean isCollidingWithCoin(float xTopLeft, float yTopLeft, float xBottomRight,
+                               float yBottomRight) {
+        if (xTopLeft > this.getX() + this.squareSize
+                || xBottomRight < this.getX()
+                || yTopLeft < this.getY()
+                || yBottomRight > this.getY() + this.squareSize
+        ) {
+            return false;
+        }
+        //respawn();
+        return true;
+    }
 
     @Deprecated
     public void movePlayerTest(String movement, int squareSize, int screenWidth, int screenHeight) {

@@ -147,7 +147,7 @@ public class GameScreen extends AppCompatActivity {
 
             public void run(){
 
-                if ( GameScreen.this.player.isColliding(coin.getX() + coin.getWidth() * 0.15f,
+                if ( GameScreen.this.player.isCollidingWithCoin(coin.getX() + coin.getWidth() * 0.15f,
                         coin.getY(), coin.getX() + coin.getWidth() * 0.85f,
                         coin.getY() + coin.getHeight())){
 
