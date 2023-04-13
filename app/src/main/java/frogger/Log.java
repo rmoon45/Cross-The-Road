@@ -9,6 +9,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.s0.R;
 
+import java.util.Random;
+
 public class Log extends AppCompatImageView {
 
     private int gridY;
@@ -16,34 +18,38 @@ public class Log extends AppCompatImageView {
     private int squareSize;
 
     private int leftGridX;
-    private int rightGridX;
-
-    private boolean isFast;
-    private final int FASTSPEED = 20;
-    private final int SLOWSPEED = 10;
 
     private int horizontalOffset;
+    private int numHorizontalSquares;
+
+    private final int MINSPEED = 1;
+    private final int MAXSPEED = 10;
+    private int speed;
+    private boolean isGoingRight;
 
     public Log(@NonNull Context context) {
         super(context);
     }
 
-    public Log(@NonNull Context context, int screenWidth, int gridY, int horizontalOffset, int squareSize, boolean isFast) {
+    public Log(@NonNull Context context, int screenWidth, int gridY, int horizontalOffset, int squareSize, int numHorizontalSquares) {
         this(context);
 
         this.screenWidth = screenWidth;
         this.gridY = gridY;
         this.squareSize = squareSize;
-        this.isFast = isFast;
+        this.numHorizontalSquares = numHorizontalSquares;
 
         this.leftGridX = -3;
-        this.rightGridX = -1;
 
         this.horizontalOffset = horizontalOffset;
 
         this.setImageResource(R.drawable.log);
         this.setX(-3 * this.squareSize);
         this.setY(this.gridY * this.squareSize);
+
+        this.isGoingRight = (gridY % 2 == 0);
+
+        generateSpeed();
     }
 
     public void movement(Player player) {
@@ -61,59 +67,72 @@ public class Log extends AppCompatImageView {
 
     // This should be called every x milliseconds
     public void updateLogPositionAndMovePlayerIfNeeded(Player player) {
-        int playerLocationOnLog = collisionLocation(player.getGridX(), player.getGridY());
+        int playerLocationOnLog = collisionLocationAbsoluteCoords((int) player.getX(), player.getGridY());
 
         // Move the log
         float xPos = this.getX();
-        int movementSpeed = isFast ? FASTSPEED : SLOWSPEED;
-        if (xPos < this.screenWidth) {
-            this.setX(xPos + movementSpeed);
+        if (isGoingRight) {
+            if (xPos < this.screenWidth) {
+                this.setX(xPos + this.speed);
+            } else {
+                this.setX(-3 * this.squareSize);
+                this.leftGridX = -3;
+            }
         } else {
-            this.setX(-3 * this.squareSize);
-            this.leftGridX = -3;
-            this.rightGridX = -1;
+            if (xPos > -3 * this.squareSize) {
+                this.setX(xPos - this.speed);
+            } else {
+                this.setX(this.screenWidth);
+                this.leftGridX = numHorizontalSquares + 1;
+            }
         }
 
         // Check if log has moved enough that gridX needs to be updated
-        boolean needToUpdateGridX = hasMovedRightOneGridSquare();
+        int closestGridX = calculateClosestGridX();
 
         // Move the player if they are on the log
         if (playerLocationOnLog != -1) {
             player.setX(getX() + squareSize * playerLocationOnLog);
-            if (needToUpdateGridX) {
-                player.setGridXWithoutUpdatingPosition(player.getGridX() + 1);
-                player.checkBordersAndRespawnIfNecessary();
+            if (this.leftGridX != closestGridX) {
+                player.setGridXWithoutUpdatingPosition(closestGridX + playerLocationOnLog);
             }
         }
 
         // Update gridX as necessary
-        if (needToUpdateGridX) {
-            this.leftGridX++;
-            this.rightGridX++;
+        if (this.leftGridX != closestGridX) {
+            this.leftGridX = closestGridX;
         }
     }
 
-    // Determine if the log's absolute coordinates are past its grid coordinates
-    // Kind of janky right now
-    private boolean hasMovedRightOneGridSquare() {
-        return this.getX() > this.leftGridX * this.squareSize + this.horizontalOffset;
+    private int calculateClosestGridX() {
+        return (int) (getX() - this.horizontalOffset) / squareSize;
     }
 
-    // 0 for left part of log, 1 for middle of log, 2 for right part of log
-    public int collisionLocation(int gridX, int gridY) {
+    public int collisionLocationAbsoluteCoords(int x, int gridY) {
         if (gridY != this.gridY) {
             return -1;
-        } else if (gridX == this.leftGridX) {
-            return 0;
-        } else if (gridX == this.leftGridX + 1) {
-            return 1;
-        } else if (gridX == this.rightGridX) {
-            return 2;
+        } else {
+            float leftX = getX();
+            float slack = 0.5f; // This is the fraction of a square that the player can be
+                    // outside of the log at but still count as hitting the log
+            if (x >= leftX - squareSize * slack) {
+                if (x < leftX + (squareSize / 2)) {
+                    return 0;
+                } else if (x < leftX + (squareSize) + (squareSize / 2)) {
+                    return 1;
+                } else if (x < leftX + (3 * squareSize) + squareSize * slack) {
+                    return 2;
+                }
+            }
         }
         return -1;
     }
 
-    public boolean isColliding(int gridX, int gridY) {
-        return collisionLocation(gridX, gridY) != -1;
+    public boolean isColliding(int x, int gridY) {
+        return collisionLocationAbsoluteCoords(x, gridY) != -1;
+    }
+
+    private void generateSpeed() {
+        this.speed = new Random().nextInt((this.MAXSPEED - this.MINSPEED) + 1) + this.MINSPEED;
     }
 }

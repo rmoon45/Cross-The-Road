@@ -76,7 +76,7 @@ public class GameScreen extends AppCompatActivity {
         this.logs = new ArrayList<Log>();
         for (int i = 0; i < this.map.size(); i++) {
             if (this.map.get(i) == "river") {
-                Log log = new Log(this, screenWidth, i, horizontalOffset, squareSize, false);
+                Log log = new Log(this, screenWidth, i, horizontalOffset, squareSize, numHorizontalSquares);
                 this.logs.add(log);
                 ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(log);
                 ViewGroup.LayoutParams logParams = log.getLayoutParams();

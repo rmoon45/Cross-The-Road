@@ -118,7 +118,7 @@ public class Player extends AppCompatImageView {
         if (this.gridY > 0) {
             int newGridY = this.gridY - 1;
             // temporary: && !this.log.isColliding(this.gridX, newGridY)
-            if (map.get(newGridY) == "river" && !isCollidingWithLog(this.gridX, newGridY)) {
+            if (map.get(newGridY) == "river" && !isCollidingWithLog((int) getX(), newGridY)) {
                 this.respawn();
                 return 2;
             } else {
@@ -137,7 +137,7 @@ public class Player extends AppCompatImageView {
         if (this.gridY < numVerticalSquares - 1) {
             int newGridY = this.gridY + 1;
             // temporary: && !this.log.isColliding(this.gridX, newGridY)
-            if (map.get(newGridY) == "river" && !isCollidingWithLog(this.gridX, newGridY)) {
+            if (map.get(newGridY) == "river" && !isCollidingWithLog((int) getX(), newGridY)) {
                 this.respawn();
                 return 2;
             } else {
@@ -150,7 +150,7 @@ public class Player extends AppCompatImageView {
     private int moveRight(ArrayList<String> map) {
         // temporary: && !this.log.isColliding(this.gridX + 1, this.gridY)
         if (map.get(gridY) == "river") {
-            if (isCollidingWithLog(this.gridX + 1, this.gridY)) {
+            if (isCollidingWithLog((int) this.getX() + this.squareSize, this.gridY)) {
                 this.gridX++;
                 this.setX(this.getX() + this.squareSize);
             } else {
@@ -169,7 +169,7 @@ public class Player extends AppCompatImageView {
     private int moveLeft(ArrayList<String> map) {
         // temporary: && !this.log.isColliding(this.gridX - 1, this.gridY)
         if (map.get(gridY) == "river") {
-            if (isCollidingWithLog(this.gridX - 1, this.gridY)) {
+            if (isCollidingWithLog((int) this.getX() - this.squareSize, this.gridY)) {
                 this.gridX--;
                 this.setX(this.getX() - this.squareSize);
             } else {
@@ -199,7 +199,11 @@ public class Player extends AppCompatImageView {
     }
 
     public void setGridXWithoutUpdatingPosition(int gridX) {
-        this.gridX = gridX;
+        if (gridX < 0 || gridX > numHorizontalSquares) {
+            respawn();
+        } else {
+            this.gridX = gridX;
+        }
     }
 
     private void setGridY(int gridY) {
@@ -226,13 +230,6 @@ public class Player extends AppCompatImageView {
         }
         respawn();
         return true;
-    }
-
-    // Returns whether or not the player has respawned from being out of bounds
-    public void checkBordersAndRespawnIfNecessary() {
-        if (this.gridX < 0 || this.gridX > numHorizontalSquares) {
-            respawn();
-        }
     }
 
     @Deprecated
@@ -271,9 +268,9 @@ public class Player extends AppCompatImageView {
         }
     }
 
-    private boolean isCollidingWithLog(int gridX, int gridY) {
+    private boolean isCollidingWithLog(int x, int y) {
         for (Log log : this.logs) {
-            if (log.isColliding(gridX, gridY)) {
+            if (log.isColliding(x, y)) {
                 return true;
             }
         }
