@@ -52,6 +52,7 @@ public class GameScreen extends AppCompatActivity {
 
     // temporary
     private Log log;
+    private ArrayList<Log> logs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +64,31 @@ public class GameScreen extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         initializeTextViews(extras);
 
-        // temporary: this.log
         this.player = new Player(this, extras.getString("character"), this.squareSize,
-                this.numHorizontalSquares, this.numVerticalSquares, this.horizontalOffset, this.log);
+                this.numHorizontalSquares, this.numVerticalSquares, this.horizontalOffset);
+
+        initializeLogs();
+
         ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(player);
 
         initializeCars();
+    }
 
-        // temporary
-        log.movement(this.player);
+    private void initializeLogs() {
+        this.logs = new ArrayList<Log>();
+        for (int i = 0; i < this.map.size(); i++) {
+            if (this.map.get(i) == "river") {
+                Log log = new Log(this, screenWidth, i, horizontalOffset, squareSize, false);
+                this.logs.add(log);
+                ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(log);
+                ViewGroup.LayoutParams logParams = log.getLayoutParams();
+                logParams.width = 3 * squareSize;
+                logParams.height = 7 * squareSize / 6;
+                log.setLayoutParams(logParams);
+                log.movement(this.player);
+            }
+        }
+        player.setLogs(this.logs);
     }
 
     private void createCar(int carId, boolean isGoingRight, int width, int x, int y,
@@ -136,7 +153,7 @@ public class GameScreen extends AppCompatActivity {
                 squareSize * (numVerticalSquares - 2) - (3 * squareSize), 3, mHandler);
 
         createCar(R.id.car4, false, squareSize * 4, horizontalOffset
-                + (numHorizontalSquares / 2) * squareSize,
+                        + (numHorizontalSquares / 2) * squareSize,
                 squareSize * (numVerticalSquares - 2) - (4 * squareSize), 20, mHandler);
     }
 
@@ -244,18 +261,6 @@ public class GameScreen extends AppCompatActivity {
         params.width = numHorizontalSquares * squareSize;
         params.height = numVerticalSquares * squareSize;
         backgroundLayout.setLayoutParams(params);
-
-        // temporary
-        this.log = new Log(this, screenWidth, 10, horizontalOffset, squareSize, false);
-        initializeLog(this.log);
-    }
-
-    private void initializeLog(Log log) {
-        ((ConstraintLayout) findViewById(R.id.foregroundLayout)).addView(log);
-        ViewGroup.LayoutParams logParams = log.getLayoutParams();
-        logParams.width = 3 * squareSize;
-        logParams.height = 7 * squareSize / 6;
-        log.setLayoutParams(logParams);
     }
 
     //score and lives being set depending on situation

@@ -61,8 +61,7 @@ public class Log extends AppCompatImageView {
 
     // This should be called every x milliseconds
     public void updateLogPositionAndMovePlayerIfNeeded(Player player) {
-        // Check if the player is on the log (must be checked before moving the log)
-        boolean isCarryingPlayer = isColliding(player.getGridX(), player.getGridY());
+        int playerLocationOnLog = collisionLocation(player.getGridX(), player.getGridY());
 
         // Move the log
         float xPos = this.getX();
@@ -79,8 +78,8 @@ public class Log extends AppCompatImageView {
         boolean needToUpdateGridX = hasMovedRightOneGridSquare();
 
         // Move the player if they are on the log
-        if (isCarryingPlayer) {
-            player.setX(player.getX() + movementSpeed);
+        if (playerLocationOnLog != -1) {
+            player.setX(getX() + squareSize * playerLocationOnLog);
             if (needToUpdateGridX) {
                 player.setGridXWithoutUpdatingPosition(player.getGridX() + 1);
                 player.checkBordersAndRespawnIfNecessary();
@@ -100,9 +99,21 @@ public class Log extends AppCompatImageView {
         return this.getX() > this.leftGridX * this.squareSize + this.horizontalOffset;
     }
 
+    // 0 for left part of log, 1 for middle of log, 2 for right part of log
+    public int collisionLocation(int gridX, int gridY) {
+        if (gridY != this.gridY) {
+            return -1;
+        } else if (gridX == this.leftGridX) {
+            return 0;
+        } else if (gridX == this.leftGridX + 1) {
+            return 1;
+        } else if (gridX == this.rightGridX) {
+            return 2;
+        }
+        return -1;
+    }
+
     public boolean isColliding(int gridX, int gridY) {
-        return gridY == this.gridY
-            && gridX >= this.leftGridX
-            && gridX <= this.rightGridX;
+        return collisionLocation(gridX, gridY) != -1;
     }
 }
