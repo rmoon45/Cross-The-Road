@@ -1,6 +1,7 @@
 package frogger;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 
@@ -113,11 +114,13 @@ public class Player extends AppCompatImageView {
     0 - nothing happens
     1 - increase score
     2 - decrease lives & scoreww
+    3 - you win
      */
     private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
             System.out.println(this.gridY);
             int newGridY = this.gridY - 1;
+            System.out.println(map.get(newGridY));
             if (map.get(newGridY) == "river" && !isCollidingWithLog((int) getX(), newGridY)) {
                 this.respawn();
                 return 2;
@@ -128,6 +131,14 @@ public class Player extends AppCompatImageView {
                     return 1;
                 }
             }
+
+            if (map.get(newGridY) == "safe") {
+                System.out.println("This is a safe tile");
+                return 3;
+            }
+
+
+
         }
         return 0;
     }
@@ -141,6 +152,10 @@ public class Player extends AppCompatImageView {
                 return 2;
             } else {
                 this.setGridY(newGridY);
+            }
+            if (map.get(newGridY) == "safe") {
+                System.out.println("This is a safe tile");
+                return 3;
             }
         }
         return 0;
@@ -158,6 +173,7 @@ public class Player extends AppCompatImageView {
         } else if (this.gridX < numHorizontalSquares - 2) {
             this.setGridX(this.gridX + 1);
         }
+
         this.setScaleX(1);
         return 0;
     }
@@ -187,6 +203,7 @@ public class Player extends AppCompatImageView {
         this.furthestReached = spawnY;
         this.movingEnabled = true;
     }
+
 
     private void setGridX(int gridX) {
         this.gridX = gridX;

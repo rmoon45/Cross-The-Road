@@ -324,11 +324,23 @@ public class GameScreen extends AppCompatActivity {
                     + this.tileValues.get(this.map.get(this.player.getGridY() + 1)));
             break;
         case 2:
+
             this.setLives(this.lives - 1);
 
             if (scoreResetTest(this.lives)) {
                 this.setScore(0);
             }
+
+            break;
+
+        case 3:
+            System.out.println("Case 3");
+
+            Intent intent2 = new Intent(GameScreen.this, WinScreen.class);
+            intent2.putExtra("score", this.score);
+            startActivity(intent2);
+
+            finish();
 
             break;
         default:
@@ -370,6 +382,7 @@ public class GameScreen extends AppCompatActivity {
             finish();
         }
     }
+
 
     @Deprecated
     public int getScoreAfterMove(int score, String currentSquare, boolean scoreChange) {
