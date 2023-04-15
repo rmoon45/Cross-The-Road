@@ -54,6 +54,8 @@ public class GameScreen extends AppCompatActivity {
 
     private ArrayList<Log> logs;
 
+    private String playerName; // sorry this is clutter
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,6 +211,7 @@ public class GameScreen extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void initializeTextViews(Bundle extras) {
         ((TextView) findViewById(R.id.nameView)).setText(extras.getString("name"));
+        this.playerName = extras.getString("name");
         ((TextView) findViewById(R.id.difficultyView)).setText("Difficulty: "
                 + extras.getString("difficulty"));
         setLives(extras.getInt("lives"));
@@ -361,6 +364,7 @@ public class GameScreen extends AppCompatActivity {
             //activity is subclass of GameScreen context
             Intent intent2 = new Intent(GameScreen.this, GameOverScreen.class);
             intent2.putExtra("score", this.score);
+            intent2.putExtra("name", this.playerName);
             startActivity(intent2);
 
             finish();

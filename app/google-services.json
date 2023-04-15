@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "868384405033",
+    "project_id": "cross-the-road-da768",
+    "storage_bucket": "cross-the-road-da768.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868384405033:android:ea388576b69572370a8e38",
+        "android_client_info": {
+          "package_name": "com.example.s0"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868384405033-jp7hsp9avi7fqhpto0s9pj2k3khig6qr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWQ_voMdhys_ySd_GeBpwB6GoghGpBBjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868384405033-jp7hsp9avi7fqhpto0s9pj2k3khig6qr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
