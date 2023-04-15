@@ -41,11 +41,11 @@ public class LogTests {
     public void testLogCanMoveAtMultipleMovementSpeeds() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         HashSet<Integer> speeds = new HashSet<Integer>();
 
-        Method indexOfMethod = Log.class.getDeclaredMethod("generateSpeed");
-        indexOfMethod.setAccessible(true);
+        Method speedGeneratingMethod = Log.class.getDeclaredMethod("generateSpeed");
+        speedGeneratingMethod.setAccessible(true);
 
         for (int i = 0; i < 10; i++) {
-            indexOfMethod.invoke(log);
+            speedGeneratingMethod.invoke(log);
             speeds.add((Integer) getField(log, "speed"));
         }
 
