@@ -118,6 +118,7 @@ public class Player extends AppCompatImageView {
      */
     private int moveUp(ArrayList<String> map) {
         if (this.gridY > 0) {
+            System.out.println(this.gridY);
             int newGridY = this.gridY - 1;
             System.out.println(map.get(newGridY));
             if (map.get(newGridY) == "river" && !isCollidingWithLog((int) getX(), newGridY)) {
@@ -169,8 +170,6 @@ public class Player extends AppCompatImageView {
                 this.respawn();
                 return 2;
             }
-            this.respawn();
-            return 2;
         } else if (this.gridX < numHorizontalSquares - 2) {
             this.setGridX(this.gridX + 1);
         }
@@ -242,6 +241,18 @@ public class Player extends AppCompatImageView {
             return false;
         }
         respawn();
+        return true;
+    }
+    public boolean isCollidingWithCoin(float xTopLeft, float yTopLeft, float xBottomRight,
+                               float yBottomRight) {
+        if (xTopLeft > this.getX() + this.squareSize
+                || xBottomRight < this.getX()
+                || yTopLeft < this.getY()
+                || yBottomRight > this.getY() + this.squareSize
+        ) {
+            return false;
+        }
+        //respawn();
         return true;
     }
 
