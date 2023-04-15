@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.s0.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class GameOverScreen extends AppCompatActivity {
     private int displayScore;
+    private DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +23,11 @@ public class GameOverScreen extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         displayScore = extra.getInt("score");
 
+        this.database = FirebaseDatabase.getInstance().getReference();
+
         ((TextView) findViewById(R.id.scoreText)).setText("Score: " + extra.getInt("score"));
+
+        database.child("scores").child(extra.getString("name")).setValue(displayScore);
     }
 
 

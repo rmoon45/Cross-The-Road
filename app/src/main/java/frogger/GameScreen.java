@@ -54,6 +54,8 @@ public class GameScreen extends AppCompatActivity {
 
     private ArrayList<Log> logs;
 
+    private String playerName; // sorry this is clutter
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,6 +211,7 @@ public class GameScreen extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void initializeTextViews(Bundle extras) {
         ((TextView) findViewById(R.id.nameView)).setText(extras.getString("name"));
+        this.playerName = extras.getString("name");
         ((TextView) findViewById(R.id.difficultyView)).setText("Difficulty: "
                 + extras.getString("difficulty"));
         setLives(extras.getInt("lives"));
@@ -321,11 +324,23 @@ public class GameScreen extends AppCompatActivity {
                     + this.tileValues.get(this.map.get(this.player.getGridY() + 1)));
             break;
         case 2:
+
             this.setLives(this.lives - 1);
 
             if (scoreResetTest(this.lives)) {
                 this.setScore(0);
             }
+
+            break;
+
+        case 3:
+            System.out.println("Case 3");
+
+            Intent intent2 = new Intent(GameScreen.this, WinScreen.class);
+            intent2.putExtra("score", this.score);
+            startActivity(intent2);
+
+            finish();
 
             break;
         default:
@@ -361,11 +376,13 @@ public class GameScreen extends AppCompatActivity {
             //activity is subclass of GameScreen context
             Intent intent2 = new Intent(GameScreen.this, GameOverScreen.class);
             intent2.putExtra("score", this.score);
+            intent2.putExtra("name", this.playerName);
             startActivity(intent2);
 
             finish();
         }
     }
+
 
     @Deprecated
     public int getScoreAfterMove(int score, String currentSquare, boolean scoreChange) {
