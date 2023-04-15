@@ -155,8 +155,6 @@ public class Player extends AppCompatImageView {
                 this.respawn();
                 return 2;
             }
-            this.respawn();
-            return 2;
         } else if (this.gridX < numHorizontalSquares - 2) {
             this.setGridX(this.gridX + 1);
         }
