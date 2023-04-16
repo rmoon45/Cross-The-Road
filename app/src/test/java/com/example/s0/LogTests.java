@@ -33,6 +33,7 @@ public class LogTests {
         setField(log, "screenWidth", 50);
     }
 
+    //Nicole: logs move at different movement speeds
     @Test
     /*
     Note: this test pulls ten random speeds and asserts that there are at least two different speeds.
@@ -52,6 +53,7 @@ public class LogTests {
         assertTrue(speeds.size() >= 2);
     }
 
+    //Nicole: player's position moves with the log
     @Test
     public void testPlayerOnLogMovesWithTheLog() {
         doReturn(0).when(log).collisionLocationAbsoluteCoords(anyInt(), anyInt());
@@ -67,6 +69,7 @@ public class LogTests {
         verify(player, times(1)).setX(10.0f);
     }
 
+    //Ashwini: player does not move when not on log
     @Test
     public void testLogDoesNotMovePlayerIfPlayerNotOnLog() {
         doReturn(-1).when(log).collisionLocationAbsoluteCoords(anyInt(), anyInt());
@@ -78,6 +81,7 @@ public class LogTests {
         verify(player, times(0)).setX(anyFloat());
     }
 
+    //Ashwini: detects if smthn is on log
     @Test
     public void testLogCorrectDetectsIfSomethingIsOnLog() {
         doReturn(3.0f * 10.0f).when(log).getX();
@@ -88,6 +92,7 @@ public class LogTests {
         assertTrue(log.isColliding(4 * 10, 7));
     }
 
+    //Madison: detects if nothing is on log
     @Test
     public void testLogCorrectDetectsIfNothingIsOnLog() {
         doReturn(3.0f * 10.0f).when(log).getX();

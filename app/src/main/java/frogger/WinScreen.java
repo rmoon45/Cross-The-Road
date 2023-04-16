@@ -11,6 +11,8 @@ import com.example.s0.R;
 
 public class WinScreen extends AppCompatActivity {
 
+    private int score;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,4 +37,15 @@ public class WinScreen extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    //These 2 methods are for testing please don't remove
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+
 }
